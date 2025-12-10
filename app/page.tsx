@@ -37,7 +37,6 @@ export default function Home() {
       const vanity = extractVanity(input);
       const res = await fetch(`/api/steam/resolve?vanityurl=${encodeURIComponent(vanity)}`);
       const data = await res.json();
-      console.log(data);
       if(!res.ok) {
         console.error(data.error || "Something went wrong")
       } else {
@@ -57,7 +56,6 @@ export default function Home() {
         const res = await fetch("/api/auth/me", { credentials: "include" });
         const data = await res.json();
         setLoggedIn(data.loggedIn);
-        console.log(data);
       } catch(err) {
         console.error(err),
         setLoggedIn(false);

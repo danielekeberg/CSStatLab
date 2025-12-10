@@ -35,7 +35,6 @@ export default function Header() {
                 const res = await fetch("/api/auth/me", { credentials: "include" });
                 const data = await res.json();
                 setLoggedIn(data.loggedIn);
-                console.log(data);
             } catch(err) {
                 console.error(err),
                 setLoggedIn(false);

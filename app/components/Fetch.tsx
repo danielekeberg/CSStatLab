@@ -20,7 +20,6 @@ export default function Fetch() {
         }
         fetchPlayer();
     },[user])
-    console.log(player);
     return(
         <>
         {player && (

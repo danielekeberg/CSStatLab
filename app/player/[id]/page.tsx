@@ -74,7 +74,6 @@ export default function Home() {
                   }
                 });
                 const faceitData = await faceitRes.json();
-                console.log(vanData);
                 const recentMatches = data.recent_matches;
                 const today = new Date();
                 const days = 8;
@@ -121,7 +120,6 @@ export default function Home() {
         const chance = 55.56 * x * x + 34.44 * x;
         return Math.min(99, Number(chance.toFixed(1))) 
     }
-    console.log(getCheatChance(player?.rating.aim))
     return (
         <div className="px-15 md:px-[15%]">
             <Header />
