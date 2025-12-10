@@ -180,7 +180,6 @@ export default function Home() {
             <div className="bg-neutral-900 p-3 rounded">
                 <div className="flex justify-between text-sm">
                     <p>K/D Ratio</p>
-                    <p>3.2%</p>
                 </div>
                 <h5 className="text-xl font-bold my-2">1.24</h5>
                 <p className="text-sm text-neutral-400 my-1">last 30 games</p>
@@ -191,7 +190,6 @@ export default function Home() {
             <div className="bg-neutral-900 p-3 rounded">
                 <div className="flex justify-between text-sm">
                     <p>AIM</p>
-                    <p>3.2%</p>
                 </div>
                 <h5 className="text-xl font-bold my-2">{player?.rating.aim.toFixed(1)}</h5>
                 <p className="text-sm text-neutral-400 my-1">last 30 games</p>
@@ -202,7 +200,6 @@ export default function Home() {
             <div className="bg-neutral-900 p-3 rounded">
                 <div className="flex justify-between text-sm">
                     <p>ADR</p>
-                    <p>3.2%</p>
                 </div>
                 <h5 className="text-xl font-bold my-2">124</h5>
                 <p className="text-sm text-neutral-400 my-1">last 30 games</p>
@@ -213,7 +210,6 @@ export default function Home() {
             <div className="bg-neutral-900 p-3 rounded">
                 <div className="flex justify-between text-sm">
                     <p>Preaim Degree</p>
-                    <p>3.2%</p>
                 </div>
                 <h5 className="text-xl font-bold my-2">{player?.stats.preaim.toFixed(1)}°</h5>
                 <p className="text-sm text-neutral-400 my-1">last 30 games</p>
@@ -224,7 +220,6 @@ export default function Home() {
             <div className="bg-neutral-900 p-3 rounded">
                 <div className="flex justify-between text-sm">
                     <p>Time To Damage</p>
-                    <p>3.2%</p>
                 </div>
                 <h5 className="text-xl font-bold my-2">{player?.stats.reaction_time_ms.toFixed(1)}ms</h5>
                 <p className="text-sm text-neutral-400 my-1">last 30 games</p>
