@@ -46,6 +46,7 @@ export default function Home() {
     const { id } = params;
     const [chartData, setChartData] = useState<any[]>([]);
     const [faceit, setFaceit] = useState<any>([]);
+    const [match, setMatch] = useState<any[]>([]);
 
     function average(nums: number[]) {
         if(nums.length === 0) return 0;
@@ -67,6 +68,7 @@ export default function Home() {
                 setData(vanData)
                 if(!res.ok) return;
                 const data = await res.json();
+                console.log(data);
                 const faceitRes = await fetch(`https://open.faceit.com/data/v4/players?game=cs2&game_player_id=${id}`, {
                   headers: {
                     'Authorization': `Bearer ${token}`,
@@ -84,6 +86,9 @@ export default function Home() {
                   return finished >= fromDate;
                 })
                 const matchDetails = await Promise.all(matchesLast8Days.map((m:any) => fetch(`https://api-public.cs-prod.leetify.com/v2/matches/${m.id}`).then((res) => res.json())));
+                console.log(matchDetails);
+                setMatch(recentMatches);
+                console.log(recentMatches)
                 const grouped: Record<string, {now: number[] }> = {};
                 for(const match of matchDetails) {
                   const dayKey = match.finished_at.slice(0,10);
@@ -93,7 +98,11 @@ export default function Home() {
                   const playerStats = match.stats.find((p: any) => p.steam64_id === id);
                   if(!playerStats) continue;
                   grouped[dayKey].now.push(playerStats.leetify_rating * 100)
+                  grouped[dayKey].now.push(playerStats.dpr / 5)
+                  grouped[dayKey].now.push(playerStats.accuracy * 100)
+                  grouped[dayKey].now.push(playerStats.counter_strafing_shots_good_ratio * 50)
                 }
+                console.log(grouped)
                 const playerData = Object.entries(grouped)
                   .sort(([a], [b]) => (a > b ? 1 : -1))
                   .map(([date, values]) => ({
@@ -101,6 +110,7 @@ export default function Home() {
                     now: average(values.now),
                   }))
                   setChartData(playerData);
+                  console.log(playerData)
                 if(!res.ok) {
                     throw new Error('Something went wrong :D')
                 }
@@ -139,9 +149,9 @@ export default function Home() {
                     </div>
                     <p className="text-neutral-500 text-sm">{data?.id}</p>
                         <div className="flex gap-2">
-                        <Link href={`${data?.url}`}>Steam</Link>
-                        <Link href={`https://www.csstats.gg/player/${id}`}>CSStats</Link>
-                        <Link href={`${data?.url}`}>Leetify</Link>
+                        <Link target="_blank" href={`${data?.url}`}><img className="h-6" src="../steam.svg" /></Link>
+                        <Link target="_blank" href={`https://www.csstats.gg/player/${id}`}>CSStats</Link>
+                        <Link target="_blank" href={`https://leetify.com/app/profile/${id}`}>Leetify</Link>
                     </div>
                 </div>
             </div>
@@ -173,11 +183,7 @@ export default function Home() {
                     <p>3.2%</p>
                 </div>
                 <h5 className="text-xl font-bold my-2">1.24</h5>
-                <p className="text-sm text-neutral-400 my-1">vs. last 30 days</p>
-                <div className="flex justify-between">
-                    <p className="text-sm text-neutral-400">vs. average</p>
-                    <p className="text-sm text-neutral-400">72%</p>
-                </div>
+                <p className="text-sm text-neutral-400 my-1">last 30 games</p>
                 <div className="border border-[#eae8e0]/20 mt-2 w-full h-2 rounded overflow-hidden">
                     <div className={`bg-[#eae8e0] w-[72%] h-2 rounded`} />
                 </div>
@@ -188,11 +194,7 @@ export default function Home() {
                     <p>3.2%</p>
                 </div>
                 <h5 className="text-xl font-bold my-2">{player?.rating.aim.toFixed(1)}</h5>
-                <p className="text-sm text-neutral-400 my-1">vs. last 30 days</p>
-                <div className="flex justify-between">
-                    <p className="text-sm text-neutral-400">vs. average</p>
-                    <p className="text-sm text-neutral-400">{getCheatChance(player.rating.aim)}%</p>
-                </div>
+                <p className="text-sm text-neutral-400 my-1">last 30 games</p>
                 <div className="border border-[#eae8e0]/20 mt-2 w-full h-2 rounded overflow-hidden">
                     <div className={`bg-[#eae8e0] h-2 rounded`} style={{ width: `${getCheatChance(player?.rating.aim)}%`}} />
                 </div>
@@ -203,11 +205,7 @@ export default function Home() {
                     <p>3.2%</p>
                 </div>
                 <h5 className="text-xl font-bold my-2">124</h5>
-                <p className="text-sm text-neutral-400 my-1">vs. last 30 days</p>
-                <div className="flex justify-between">
-                    <p className="text-sm text-neutral-400">vs. average</p>
-                    <p className="text-sm text-neutral-400">{getCheatChance(player.rating.aim)}%</p>
-                </div>
+                <p className="text-sm text-neutral-400 my-1">last 30 games</p>
                 <div className="border border-[#eae8e0]/20 mt-2 w-full h-2 rounded overflow-hidden">
                     <div className={`bg-[#eae8e0] w-[72%] h-2 rounded`} />
                 </div>
@@ -217,12 +215,8 @@ export default function Home() {
                     <p>Preaim Degree</p>
                     <p>3.2%</p>
                 </div>
-                <h5 className="text-xl font-bold my-2">62.4%</h5>
-                <p className="text-sm text-neutral-400 my-1">vs. last 30 days</p>
-                <div className="flex justify-between">
-                    <p className="text-sm text-neutral-400">vs. average</p>
-                    <p className="text-sm text-neutral-400">72%</p>
-                </div>
+                <h5 className="text-xl font-bold my-2">{player?.stats.preaim.toFixed(1)}°</h5>
+                <p className="text-sm text-neutral-400 my-1">last 30 games</p>
                 <div className="border border-[#eae8e0]/20 mt-2 w-full h-2 rounded overflow-hidden">
                     <div className={`bg-[#eae8e0] w-[72%] h-2 rounded`} />
                 </div>
@@ -232,12 +226,8 @@ export default function Home() {
                     <p>Time To Damage</p>
                     <p>3.2%</p>
                 </div>
-                <h5 className="text-xl font-bold my-2">424ms</h5>
-                <p className="text-sm text-neutral-400 my-1">vs. last 30 days</p>
-                <div className="flex justify-between">
-                    <p className="text-sm text-neutral-400">vs. average</p>
-                    <p className="text-sm text-neutral-400">72%</p>
-                </div>
+                <h5 className="text-xl font-bold my-2">{player?.stats.reaction_time_ms.toFixed(1)}ms</h5>
+                <p className="text-sm text-neutral-400 my-1">last 30 games</p>
                 <div className="border border-[#eae8e0]/20 mt-2 w-full h-2 rounded overflow-hidden">
                     <div className={`bg-[#eae8e0] w-[72%] h-2 rounded`} />
                 </div>
@@ -247,8 +237,8 @@ export default function Home() {
             <div className="w-full h-80">
                 <div className="mb-5 flex justify-between">
                     <div>
-                    <h5 className="font-bold">Performance Trend</h5>
-                    <p className="text-neutral-400">Rating over last 8 matches</p>
+                        <h5 className="font-bold">Performance Trend</h5>
+                        <p className="text-neutral-400 text-sm">Rating over last 8 matches</p>
                     </div>
                     <div className="flex items-center gap-3">
                     <div className="flex gap-2 items-center">
@@ -312,6 +302,43 @@ export default function Home() {
                 </div>
             </div>
         </div>
+        <div className="mt-10 mb-3">
+            <h5 className="font-bold">Recent Games</h5>
+            
+        </div>
+        <table className="w-full rounded-xl mb-100">
+            <thead>
+                <tr className="grid rounded-t-xl bg-neutral-900 grid-cols-9 px-5 py-3 border-b border-neutral-100/10 border border-neutral-100/10">
+                    <td>Map</td>
+                    <td></td>
+                    <td>Date</td>
+                    <td>Score</td>
+                    <td>Rank</td>
+                    <td>Kills</td>
+                    <td>Deaths</td>
+                    <td>K/D</td>
+                    <td>AIM</td>
+                </tr>
+            </thead>
+            <tbody className="block max-h-80 overflow-y-auto rounded-b-xl border border-neutral-100/10">
+                {match.slice(0,10).map((m) => (
+                    <tr key={m.id} className={`grid p-5 border-b cursor-pointer border-neutral-100/10 grid-cols-9 items-center bg-neutral-900/50 hover:bg-neutral-800`}>
+                        <td className="flex gap-2 items-center">
+                            <img className="h-8" src={`https://leetify.com/assets/images/map-icons/${m.map_name}.svg`} />
+                            <h1 className="font-bold">{m.map_name.slice(3,4).toUpperCase()}{m.map_name.slice(4)}</h1>
+                        </td>
+                        <td></td>
+                        <td>{m.finished_at.slice(0,10)}</td>
+                        <td className={`font-bold ${m.outcome === "win" ? 'text-green-900' : ''} ${m.outcome === "loss" ? 'text-red-900' : ''} ${m.outcome === "tie" ? 'text-neutral-500' : ''}`}>{m.score?.[0]}:{m.score?.[1]}</td>
+                        {m.rank > 20 ? <td>{m.rank}</td> : <td><img className="h-7" src={`https://leetify.com/assets/images/rank-icons/matchmaking${m.rank}.png`} /></td>}
+                        <td>kills</td>
+                        <td>deaths</td>
+                        <td>kd</td>
+                        <td>aim</td>
+                    </tr>
+                ))}
+            </tbody>
+        </table>
         </>}
     </div>
   );
