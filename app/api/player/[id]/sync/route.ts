@@ -130,7 +130,6 @@ export async function POST(req: NextRequest, context: RouteContext) {
       }
       const detail = await res.json();
       newMatchDetails.push(detail);
-      await new Promise((r) => setTimeout(r, 200));
     }
 
     for (const match of newMatchDetails) {
@@ -163,8 +162,8 @@ export async function POST(req: NextRequest, context: RouteContext) {
         kd_ratio: playerStats.kd_ratio,
         accuracy: playerStats.accuracy,
         dpr: playerStats.dpr,
-        preaim: playerStats.preaim_degree ?? null,
-        reaction_time_ms: playerStats.reaction_time_ms ?? null,
+        preaim: playerStats.preaim ?? null,
+        reaction_time_ms: playerStats.reaction_time ?? null,
       };
 
       const { error: insertStatsErr } = await supabase

@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import Header from "@/app/components/Header";
 import Loader from "@/app/components/Loader";
 import PlayerOverview from "@/app/components/PlayerOverview";
+import PlayerCard from "@/app/components/PlayerCard";
 import PerformanceChart from "@/app/components/PerformanceChart";
 import RecentMatches from "@/app/components/RecentMatches";
 
@@ -86,7 +87,15 @@ export default function PlayerPage() {
         <div className="px-5 md:px-[15%]">
             <Header />
 
-            <PlayerOverview player={player} matches={matches} />
+            <div className="flex flex-col md:flex-row gap-5">
+                <div className="w-80">
+                    <PlayerCard player={player}/>
+                </div>
+                <div className="w-full">
+                    <PlayerOverview player={player} matches={matches} />
+                </div>
+            </div>
+            
 
             <div className="my-10">
                 {/* <PerformanceChart data={dailyStats ?? []} /> */}
