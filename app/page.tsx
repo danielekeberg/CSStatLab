@@ -50,7 +50,7 @@ export default function Home() {
   }
 
   return (
-      <div className="md:px-[15%] px-15 relative">
+      <div className="md:px-[15%] px-5 relative">
         <Header />
         <div className="flex justify-center">
           <div className="w-120 text-center py-50">
