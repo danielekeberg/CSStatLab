@@ -52,45 +52,8 @@ export async function GET(req: NextRequest, context: RouteContext) {
         now: row.rating_avg,
         last: null,
       })) ?? [];
-
-    const { data: statRows, error: statError } = await supabase
-      .from("player_match_stats")
-      .select("match_id")
-      .eq("player_id", id)
-      .order("created_at", { ascending: false })
-      .limit(30);
-
-    if (statError) {
-      console.error("Error loading matches:", statError);
-      return NextResponse.json(
-        { error: "Failed to load matches" },
-        { status: 500 }
-      );
-    }
-
-    const matchIds = (statRows ?? []).map((s) => s.match_id);
-
-    let matches: any[] = [];
-    if (matchIds.length > 0) {
-      const { data: matchRows, error: matchesError } = await supabase
-        .from("matches")
-        .select("*")
-        .in("id", matchIds);
-
-      if (matchesError) {
-        console.error("Error loading matches:", matchesError);
-        return NextResponse.json(
-          { error: "Failed to load matches" },
-          { status: 500 }
-        );
-      }
-      matches = matchRows;
-    }
-
     return NextResponse.json({
-      player: player ?? null,
-      chartData: statRows ?? null,
-      matches: matches ?? null,
+      player: player ?? null
     });
   } catch (err) {
     console.error("Unexpected error fetching data:", err);

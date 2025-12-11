@@ -54,13 +54,6 @@ export default function PlayerPage() {
                 }
                 const data: ApiPlayerData = await res.json();
                 setPlayer(data.player)
-                setDailyStats(
-                    data.chartData.map((row) => ({
-                        date: row.date,
-                        avg_rating: row.now,
-                    }))
-                );
-                setMatches(data.matches);
             }   catch(err) {
                     console.error(err);
             }   finally {
@@ -94,11 +87,6 @@ export default function PlayerPage() {
                 <div className="w-full">
                     <PlayerOverview player={player} matches={matches} />
                 </div>
-            </div>
-            
-
-            <div className="my-10">
-                {/* <PerformanceChart data={dailyStats ?? []} /> */}
             </div>
         </div>
     )

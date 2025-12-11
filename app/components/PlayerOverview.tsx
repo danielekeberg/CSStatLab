@@ -48,19 +48,21 @@ export default function PlayerOverview({ player, matches }: { player: any, match
 
     function getWinrateCheatChance(winrate: number): number {
         if(winrate < 55) return 0;
-        const maxWinrate = 70;
+        const maxWinrate = 80;
         const x = (winrate - 55 ) / (maxWinrate - 55);
         const chance = 100 * ( x * x);
         return Math.min(100, Number(chance.toFixed(1))) 
     }
 
-    function getOverallCheatChance(aim: number, preaim: number, ttd: number): number {
+    function getOverallCheatChance(aim: number, preaim: number, ttd: number, kd: number, winrate: number): number {
         const aimChance = getAimCheatChance(aim)
         const preaimChance = getPreaimCheatChance(preaim)
         const ttdChance = getTTDCheatChance(ttd)
+        const kdChance = getKdCheatChance(kd);
+        const wrChance = getWinrateCheatChance(winrate);
 
-        const total = aimChance + preaimChance + ttdChance;
-        const average = total / 3;
+        const total = aimChance + preaimChance + ttdChance + kdChance + wrChance;
+        const average = total / 5;
         return Number((average).toFixed(1));
     }
 
@@ -74,27 +76,10 @@ export default function PlayerOverview({ player, matches }: { player: any, match
         return "Extremely sus";
     }
 
-    const score = getOverallCheatChance(player.leetify_raw.rating.aim, player.leetify_raw.stats.preaim, player.leetify_raw.stats.reaction_time_ms);
+    const score = getOverallCheatChance(player.leetify_raw.rating.aim, player.stats.preaim, player.stats.ttd, player.stats.kd, player.stats.winrate);
     const riskText = getCheatRiskLabel(score);
     
-    const STEAM_ID = player.id;
-
-    function getAverageKd(matches: Match[], steamId: string) {
-        const kdValues: number[] = [];
-
-        for (const match of matches) {
-            const player = match.raw.stats.find((p:any) => p.steam64_id === steamId);
-
-            if (player && typeof player.kd_ratio === "number") {
-            kdValues.push(player.kd_ratio);
-            }
-        }
-
-        if (kdValues.length === 0) return 0;
-
-        const sum = kdValues.reduce((acc, val) => acc + val, 0);
-        return (sum / kdValues.length).toFixed(1);
-    }
+    console.log(player);
     return(
         <div className="my-10">
             <div className="p-5 rounded">
@@ -113,28 +98,28 @@ export default function PlayerOverview({ player, matches }: { player: any, match
                             <div className="flex flex-col gap-1 text-sm">
                                 <div className="flex justify-between">
                                     <p>K/D Ratio</p>
-                                    <p>{getAverageKd(matches, STEAM_ID)}</p>
+                                    <p>{player.stats.kd.toFixed(1)}</p>
                                 </div>
                                 <div className="h-2 flex items-center border border-neutral-600 rounded-full">
-                                    <div className={`h-2 rounded-full bg-[#eae8e0]`} style={{ width: `${getKdCheatChance(1)}%`}} />
+                                    <div className={`h-2 rounded-full bg-[#eae8e0]`} style={{ width: `${getKdCheatChance(player.stats.kd)}%`}} />
                                 </div>
                             </div>
                             <div className="flex flex-col gap-1 text-sm">
                                 <div className="flex justify-between">
                                     <p>Preaim</p>
-                                    <p>{player.leetify_raw.stats.preaim.toFixed(1)}°</p>
+                                    <p>{player.stats.preaim.toFixed(1)}°</p>
                                 </div>
                                 <div className="h-2 flex items-center border border-neutral-600 rounded-full">
-                                    <div className={`h-2 rounded-full bg-[#eae8e0]`} style={{ width: `${getPreaimCheatChance(player.leetify_raw.stats.preaim)}%`}} />
+                                    <div className={`h-2 rounded-full bg-[#eae8e0]`} style={{ width: `${getPreaimCheatChance(player.stats.preaim.toFixed(1))}%`}} />
                                 </div>
                             </div>
                             <div className="flex flex-col gap-1 text-sm">
                                 <div className="flex justify-between">
                                     <p>Time to Damage</p>
-                                    <p>{player.leetify_raw.stats.reaction_time_ms.toFixed(1)}ms</p>
+                                    <p>{player.stats.ttd.toFixed(1)}ms</p>
                                 </div>
                                 <div className="h-2 flex items-center border border-neutral-600 rounded-full">
-                                    <div className={`h-2 rounded-full bg-[#eae8e0]`} style={{ width: `${getTTDCheatChance(player.leetify_raw.stats.reaction_time_ms)}%`}} />
+                                    <div className={`h-2 rounded-full bg-[#eae8e0]`} style={{ width: `${getTTDCheatChance(player.stats.ttd)}%`}} />
                                 </div>
                             </div>
                         </div>
@@ -151,22 +136,18 @@ export default function PlayerOverview({ player, matches }: { player: any, match
                             <div className="flex flex-col gap-1 text-sm">
                                 <div className="flex justify-between">
                                     <p>Win Rate</p>
-                                    <p>{(() => {
-                                            const recent = player.leetify_raw.recent_matches?.slice(0, 30) ?? [];
-                                            const wins = recent.filter((g:any) => g.outcome === "win").length;
-                                            const winrate = recent.length ? (wins / recent.length) * 100 : 0;
-                                            return `${winrate.toFixed(1)}%`;
-                                        })()}</p>
+                                    <p>{player.stats.winrate.toFixed(1)}%</p>
                                 </div>
                                 <div className="h-2 flex items-center border overflow-hidden border-neutral-600 rounded-full">
-                                    <div className={`h-2 rounded-full bg-[#eae8e0]`} style={{ width: `${getWinrateCheatChance(45)}%`}} />
+                                    <div className={`h-2 rounded-full bg-[#eae8e0]`} style={{ width: `${getWinrateCheatChance(player.stats.winrate)}%`}} />
                                 </div>
                             </div>    
                         </div>           
                     </div>
                 </div>
-                <div className="text-xs border-t border-[#eae8e0]/30 mt-5 pt-5">
+                <div className="text-xs flex gap-10 border-t border-[#eae8e0]/30 mt-5 pt-5">
                     <p className="text-neutral-500"><span className="font-bold text-[#eae8e0]">Disclaimer: </span>FairPlay Insight provides statistical estimates based on gameplay data. Results are not definitive proof of cheating and may vary. Always consider additional context and factors when evaluating a player’s performance.</p>
+                    <img src="../leetify.png" className="h-10" />
                 </div>
             </div>
             {/* <div className="flex my-10 justify-center md:justify-start gap-3 font-bold text-neutral-500 text-sm">

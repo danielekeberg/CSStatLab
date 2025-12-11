@@ -17,7 +17,6 @@ export async function POST(req: NextRequest, context: RouteContext) {
   if (!id) {
     return NextResponse.json({ error: "Missing id" }, { status: 400 });
   }
-
   try {
     const { data: existingPlayer, error: playerErr } = await supabase
       .from("players")
@@ -53,7 +52,6 @@ export async function POST(req: NextRequest, context: RouteContext) {
             console.error("Steam fetch failed:", err)
         }
     }
-
     const profileRes = await fetch(`${LEETIFY_BASE}/v3/profile?steam64_id=${id}`);
     if (!profileRes.ok) {
       console.error(await profileRes.text());
@@ -65,6 +63,8 @@ export async function POST(req: NextRequest, context: RouteContext) {
 
     const leetifyProfile = await profileRes.json();
 
+    const recentMatches = leetifyProfile?.recent_matches ?? [];
+    const matchesToUse = recentMatches.slice(0, 30);
     let faceitData: any = null;
     if (FACEIT_TOKEN) {
       const faceitRes = await fetch(
@@ -81,31 +81,6 @@ export async function POST(req: NextRequest, context: RouteContext) {
         faceitData = await faceitRes.json();
       }
     }
-
-    const playerPayload = {
-        id,
-        name: leetifyProfile?.name ?? null,
-        avatar: leetifyProfile?.avatarFull ??
-                leetifyProfile?.avatar ??
-                steamProfile?.avatarfull ??
-                steamProfile?.avatarmedium ??
-                null,
-        steam_url: steamProfile.profileurl ?? null,
-        country: faceitData?.country.toUpperCase() ?? null,
-        leetify_raw: leetifyProfile,
-        faceit_raw: faceitData,
-        last_synced_at: new Date().toISOString(),
-    };
-
-    const { error: upsertPlayerErr } = await supabase
-      .from("players")
-      .upsert(playerPayload, { onConflict: "id" });
-
-    if (upsertPlayerErr) throw upsertPlayerErr;
-
-    const recentMatches = leetifyProfile?.recent_matches ?? [];
-    const matchesToUse = recentMatches.slice(0, 30);
-
     const matchIds = matchesToUse.map((m: any) => m.id);
 
     const { data: existingMatches, error: existingMatchesErr } = await supabase
@@ -119,7 +94,6 @@ export async function POST(req: NextRequest, context: RouteContext) {
     const newMatchIds = matchesToUse
       .filter((m: any) => !existingIds.has(m.id))
       .map((m: any) => m.id);
-
     const newMatchDetails: any[] = [];
 
     for (const matchId of newMatchIds) {
@@ -132,6 +106,17 @@ export async function POST(req: NextRequest, context: RouteContext) {
       newMatchDetails.push(detail);
     }
 
+    let totalKills = 0;
+  let totalDeaths = 0;
+
+  let matchesPlayed = 0;
+  let matchesWon = 0;
+
+  let preaimSum = 0;
+  let preaimCount = 0;
+
+  let ttdSumMs = 0;
+  let ttdCount = 0;
     for (const match of newMatchDetails) {
       const matchRow = {
         id: match.id,
@@ -145,7 +130,6 @@ export async function POST(req: NextRequest, context: RouteContext) {
         .from("matches")
         .insert(matchRow)
         .single();
-
       if (insertMatchErr && insertMatchErr.code !== "23505") {
         console.error(insertMatchErr);
       }
@@ -155,25 +139,76 @@ export async function POST(req: NextRequest, context: RouteContext) {
       );
       if (!playerStats) continue;
 
-      const statsRow = {
-        match_id: match.id,
-        player_id: id,
-        leetify_rating: playerStats.leetify_rating,
-        kd_ratio: playerStats.kd_ratio,
-        accuracy: playerStats.accuracy,
-        dpr: playerStats.dpr,
-        preaim: playerStats.preaim ?? null,
-        reaction_time_ms: playerStats.reaction_time ?? null,
-      };
+        matchesPlayed++;
 
-      const { error: insertStatsErr } = await supabase
-        .from("player_match_stats")
-        .insert(statsRow);
+      if (typeof playerStats.total_kills === "number") {
+        totalKills += playerStats.total_kills;
+      }
 
-      if (insertStatsErr) {
-        console.error("insertStatsErr", insertStatsErr);
+      if (typeof playerStats.total_deaths === "number") {
+        totalDeaths += playerStats.total_deaths;
+      }
+
+      if (typeof playerStats.preaim === "number") {
+        preaimSum += playerStats.preaim;
+        preaimCount++;
+      }
+
+      if (typeof playerStats.reaction_time === "number") {
+        ttdSumMs += playerStats.reaction_time * 1000;
+        ttdCount++;
+      }
+
+      const playerTeam = playerStats.initial_team_number;
+      const playerTeamScore = match.team_scores?.find(
+        (t: any) => t.team_number === playerTeam
+      );
+      const otherTeamScore = match.team_scores?.find(
+        (t: any) => t.team_number !== playerTeam
+      );
+
+      if (playerTeamScore && otherTeamScore) {
+        if (playerTeamScore.score > otherTeamScore.score) {
+          matchesWon++;
+        }
       }
     }
+
+    const kd = totalDeaths > 0 ? totalKills / totalDeaths : null;
+    const winrate = matchesPlayed > 0 ? (matchesWon / matchesPlayed) * 100 : null;
+    const preaim = preaimCount > 0 ? preaimSum / preaimCount : null;
+    const ttd =ttdCount > 0 ? ttdSumMs / ttdCount : null;
+
+    const statsSummary = {
+        kd,
+        winrate,
+        preaim,
+        ttd,
+        matchesPlayed,
+        matchesWon,
+    };
+
+    const playerPayload = {
+      id,
+      name: leetifyProfile?.name ?? null,
+      avatar: leetifyProfile?.avatarFull ??
+              leetifyProfile?.avatar ??
+              steamProfile?.avatarfull ??
+              steamProfile?.avatarmedium ??
+              null,
+      steam_url: steamProfile.profileurl ?? null,
+      country: faceitData?.country.toUpperCase() ?? null,
+      leetify_raw: leetifyProfile,
+      faceit_raw: faceitData,
+      last_synced_at: new Date().toISOString(),
+      stats: statsSummary
+    };
+
+    const { error: upsertPlayerErr } = await supabase
+      .from("players")
+      .upsert(playerPayload, { onConflict: "id" });
+
+    if (upsertPlayerErr) throw upsertPlayerErr;
 
     return NextResponse.json({ status: "ok", newMatches: newMatchIds.length });
   } catch (err: any) {
