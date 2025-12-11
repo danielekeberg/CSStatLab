@@ -90,9 +90,9 @@ export default function PlayerOverview({ player, matches }: { player: any, match
                     <p>K/D Ratio</p>
                 </div>
                 <h5 className="text-xl font-bold my-2">{getAverageKd(matches, STEAM_ID)}</h5>
-                <p className="text-sm text-neutral-400 my-1">last 30 games</p>
+                <p className="text-sm text-right text-neutral-400 my-1">Normal</p>
                 <div className="border border-[#eae8e0]/20 mt-2 w-full h-2 rounded overflow-hidden">
-                    <div className={`bg-[#eae8e0] w-[72%] h-2 rounded`} />
+                    <div className={`bg-[#eae8e0] w-[0%] h-2 rounded`} />
                 </div>
             </div>
             <div className="bg-neutral-900 p-3 rounded">
@@ -100,7 +100,7 @@ export default function PlayerOverview({ player, matches }: { player: any, match
                     <p>Aim</p>
                 </div>
                 <h5 className="text-xl font-bold my-2">{player.leetify_raw.rating.aim.toFixed(1)}</h5>
-                <p className="text-sm text-neutral-400 my-1">last 30 games</p>
+                <p className="text-sm text-right text-neutral-400 my-1">Normal</p>
                 <div className="border border-[#eae8e0]/20 mt-2 w-full h-2 rounded overflow-hidden">
                     <div className={`bg-[#eae8e0] h-2 rounded`} style={{ width: `${getCheatChance(player.leetify_raw.rating.aim)}%`}} />
                 </div>
@@ -117,9 +117,9 @@ export default function PlayerOverview({ player, matches }: { player: any, match
                         return `${winrate.toFixed(1)}%`;
                     })()}
                 </h5>
-                <p className="text-sm text-neutral-400 my-1">last 30 games</p>
+                <p className="text-sm text-right text-neutral-400 my-1">Normal</p>
                 <div className="border border-[#eae8e0]/20 mt-2 w-full h-2 rounded overflow-hidden">
-                    <div className={`bg-[#eae8e0] w-[72%] h-2 rounded`} />
+                    <div className={`bg-[#eae8e0] w-[0%] h-2 rounded`} />
                 </div>
             </div>
             <div className="bg-neutral-900 p-3 rounded">
@@ -127,9 +127,9 @@ export default function PlayerOverview({ player, matches }: { player: any, match
                     <p>Preaim Degree</p>
                 </div>
                 <h5 className="text-xl font-bold my-2">{player.leetify_raw.stats.preaim.toFixed(1)}°</h5>
-                <p className="text-sm text-neutral-400 my-1">last 30 games</p>
+                <p className="text-sm text-right text-neutral-400 my-1">Normal</p>
                 <div className="border border-[#eae8e0]/20 mt-2 w-full h-2 rounded overflow-hidden">
-                    <div className={`bg-[#eae8e0] w-[72%] h-2 rounded`} />
+                    <div className={`bg-[#eae8e0] w-[0%] h-2 rounded`} />
                 </div>
             </div>
             <div className="bg-neutral-900 p-3 rounded">
@@ -137,9 +137,9 @@ export default function PlayerOverview({ player, matches }: { player: any, match
                     <p>Time To Damage</p>
                 </div>
                 <h5 className="text-xl font-bold my-2">{player.leetify_raw.stats.reaction_time_ms.toFixed(1)}ms</h5>
-                <p className="text-sm text-neutral-400 my-1">last 30 games</p>
+                <p className="text-sm text-right text-neutral-400 my-1">Normal</p>
                 <div className="border border-[#eae8e0]/20 mt-2 w-full h-2 rounded overflow-hidden">
-                    <div className={`bg-[#eae8e0] w-[72%] h-2 rounded`} />
+                    <div className={`bg-[#eae8e0] w-[0%] h-2 rounded`} />
                 </div>
             </div>
         </div>
