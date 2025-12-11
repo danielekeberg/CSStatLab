@@ -52,7 +52,12 @@ export async function POST(req: NextRequest, context: RouteContext) {
             console.error("Steam fetch failed:", err)
         }
     }
-    const profileRes = await fetch(`${LEETIFY_BASE}/v3/profile?steam64_id=${id}`);
+    const profileRes = await fetch(`${LEETIFY_BASE}/v3/profile?steam64_id=${id}`, {
+      headers: {
+        "_leetify_key": process.env.LEETIFY_API_KEY!,
+        "Content-Type": "application/json",
+      }
+    });
     if (!profileRes.ok) {
       console.error(await profileRes.text());
       return NextResponse.json(
@@ -97,7 +102,12 @@ export async function POST(req: NextRequest, context: RouteContext) {
     const newMatchDetails: any[] = [];
 
     for (const matchId of newMatchIds) {
-      const res = await fetch(`${LEETIFY_BASE}/v2/matches/${matchId}`);
+      const res = await fetch(`${LEETIFY_BASE}/v2/matches/${matchId}`, {
+        headers: {
+        "_leetify_key": process.env.LEETIFY_API_KEY!,
+        "Content-Type": "application/json",
+      }
+      });
       if (!res.ok) {
         console.warn("Failed to fetch match", matchId);
         continue;
