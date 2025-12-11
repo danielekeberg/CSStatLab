@@ -1,19 +1,7 @@
 'use client';
 import { CircularProgress } from "@/app/components/CircularProgress";
 
-type PlayerStats = {
-  steam64_id: string;
-  kd_ratio: number;
-};
-
-type Match = {
-  id: string;
-  map_name: string;
-  raw: any;
-  stats: PlayerStats[];
-};
-
-export default function PlayerOverview({ player, matches }: { player: any, matches: any }) {
+export default function PlayerOverview({ player, stats }: { player: any, stats: any }) {
 
     function getAimCheatChance(rating: number): number {
         if(rating < 90) return 0;
@@ -76,14 +64,13 @@ export default function PlayerOverview({ player, matches }: { player: any, match
         return "Extremely sus";
     }
 
-    const score = getOverallCheatChance(player.leetify_raw.rating.aim, player.stats.preaim, player.stats.ttd, player.stats.kd, player.stats.winrate);
+    const score = getOverallCheatChance(player.leetify_raw.rating.aim, stats.preaim, stats.ttd, stats.kd, stats.winrate);
     const riskText = getCheatRiskLabel(score);
     
-    console.log(player);
     return(
         <div className="my-10">
             <div className="p-5 rounded">
-                <h1 className="font-bold text-2xl">CSStatLab - FairPlay Insight</h1>
+                <h1 className="font-bold text-2xl">FairPlay Insight</h1>
                 <div className="flex mt-6 gap-5">
                     <div className="w-60">
                         <div className="flex justify-center mb-2">
@@ -98,28 +85,28 @@ export default function PlayerOverview({ player, matches }: { player: any, match
                             <div className="flex flex-col gap-1 text-sm">
                                 <div className="flex justify-between">
                                     <p>K/D Ratio</p>
-                                    <p>{player.stats.kd.toFixed(1)}</p>
+                                    <p>{stats.kd != null ? stats.kd.toFixed(2) : 'Not enough data'}</p>
                                 </div>
                                 <div className="h-2 flex items-center border border-neutral-600 rounded-full">
-                                    <div className={`h-2 rounded-full bg-[#eae8e0]`} style={{ width: `${getKdCheatChance(player.stats.kd)}%`}} />
+                                    <div className={`h-2 rounded-full bg-[#eae8e0]`} style={{ width: `${getKdCheatChance(stats.kd)}%`}} />
                                 </div>
                             </div>
                             <div className="flex flex-col gap-1 text-sm">
                                 <div className="flex justify-between">
                                     <p>Preaim</p>
-                                    <p>{player.stats.preaim.toFixed(1)}°</p>
+                                    <p>{stats.preaim != null ? `${stats.preaim.toFixed(1)}°` : 'Not enough data'}</p>
                                 </div>
                                 <div className="h-2 flex items-center border border-neutral-600 rounded-full">
-                                    <div className={`h-2 rounded-full bg-[#eae8e0]`} style={{ width: `${getPreaimCheatChance(player.stats.preaim.toFixed(1))}%`}} />
+                                    <div className={`h-2 rounded-full bg-[#eae8e0]`} style={{ width: `${stats.preaim != null ? getPreaimCheatChance(stats.preaim) : 0}%`}} />
                                 </div>
                             </div>
                             <div className="flex flex-col gap-1 text-sm">
                                 <div className="flex justify-between">
                                     <p>Time to Damage</p>
-                                    <p>{player.stats.ttd.toFixed(1)}ms</p>
+                                    <p>{stats.ttd != null ? `${stats.ttd.toFixed(1)}ms` : 'Not enough data'}</p>
                                 </div>
                                 <div className="h-2 flex items-center border border-neutral-600 rounded-full">
-                                    <div className={`h-2 rounded-full bg-[#eae8e0]`} style={{ width: `${getTTDCheatChance(player.stats.ttd)}%`}} />
+                                    <div className={`h-2 rounded-full bg-[#eae8e0]`} style={{ width: `${stats.ttd != null ? getTTDCheatChance(stats.ttd) : 0}%`}} />
                                 </div>
                             </div>
                         </div>
@@ -136,10 +123,10 @@ export default function PlayerOverview({ player, matches }: { player: any, match
                             <div className="flex flex-col gap-1 text-sm">
                                 <div className="flex justify-between">
                                     <p>Win Rate</p>
-                                    <p>{player.stats.winrate.toFixed(1)}%</p>
+                                    <p>{stats.winrate !== null ? `${stats.winrate.toFixed(1)}%` : 'Not enough data'}</p>
                                 </div>
                                 <div className="h-2 flex items-center border overflow-hidden border-neutral-600 rounded-full">
-                                    <div className={`h-2 rounded-full bg-[#eae8e0]`} style={{ width: `${getWinrateCheatChance(player.stats.winrate)}%`}} />
+                                    <div className={`h-2 rounded-full bg-[#eae8e0]`} style={{ width: `${getWinrateCheatChance(stats.winrate)}%`}} />
                                 </div>
                             </div>    
                         </div>           

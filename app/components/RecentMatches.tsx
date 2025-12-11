@@ -1,11 +1,11 @@
 import { createSupabaseServerClient } from "@/lib/supabaseServer"
 
-export default async function RecentMatches({ playerId }: { playerId: string}) {
+export default async function RecentMatches({ player }: { player: string}) {
     const supabase = createSupabaseServerClient();
     const { data: matches } = await supabase
-        .from("player_match_stats")
-        .select("*, matches(*)")
-        .eq("player_id", playerId)
+        .from("matches")
+        .select("*")
+        .eq("player_id", player)
         .order("created_at", {ascending: false })
         .limit(10);
 

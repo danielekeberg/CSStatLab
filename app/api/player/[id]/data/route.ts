@@ -17,11 +17,12 @@ export async function GET(req: NextRequest, context: RouteContext) {
   const supabase = createSupabaseServerClient();
 
   try {
+    // 1) Hent player-row
     const { data: player, error: playerError } = await supabase
       .from("players")
       .select("*")
       .eq("id", id)
-      .single();
+      .maybeSingle(); // .single() ville kastet error hvis ikke finnes, maybeSingle er tryggere
 
     if (playerError && playerError.code !== "PGRST116") {
       console.error("Error loading player:", playerError);
@@ -31,29 +32,128 @@ export async function GET(req: NextRequest, context: RouteContext) {
       );
     }
 
-    const { data: dailyRows, error: dailyError } = await supabase
-      .from("daily_stats")
-      .select("date, rating_avg")
-      .eq("player_id", id)
-      .order("date", { ascending: true })
-      .limit(8);
+    // 2) Beregn stats for siste 30 dager basert på player_match_stats
+    const since = new Date();
+    since.setDate(since.getDate() - 30);
 
-    if (dailyError) {
-      console.error("Error loading daily_stats:", dailyError);
+    const { data: matchStatsRows, error: matchStatsError } = await supabase
+      .from("player_match_stats")
+      .select(
+        `
+        match_id,
+        finished_at,
+        total_kills,
+        total_deaths,
+        preaim,
+        reaction_time_ms,
+        accuracy,
+        rounds_won,
+        rounds_lost,
+        dpr,
+        leetify_rating,
+        team_number,
+        score
+      `
+      )
+      .eq("player_id", id)
+      .gte("finished_at", since.toISOString())
+      .order("finished_at", { ascending: false });
+
+    if (matchStatsError) {
+      console.error("Error loading player_match_stats:", matchStatsError);
       return NextResponse.json(
-        { error: "Failed to load chart data" },
+        { error: "Failed to load player match stats" },
         { status: 500 }
       );
     }
 
-    const chartData =
-      dailyRows?.map((row) => ({
-        date: row.date,
-        now: row.rating_avg,
-        last: null,
-      })) ?? [];
+    // Hvis ingen stats siste 30 dager
+    if (!matchStatsRows || matchStatsRows.length === 0) {
+      return NextResponse.json({
+        player: player ?? null,
+        stats: {
+          kd: 0,
+          winrate: 0,
+          preaim: 0,
+          ttd: 0,
+          accuracy: 0,
+          matchesPlayed: 0,
+          matchesWon: 0,
+        },
+        // kan fortsatt sende tom liste til frontend
+        recentMatchStats: [],
+      });
+    }
+
+    // 3) Aggregér KD, winrate, preaim, ttd, accuracy
+    let totalKills = 0;
+    let totalDeaths = 0;
+    let preaimSum = 0;
+    let preaimCount = 0;
+    let ttdSum = 0;
+    let ttdCount = 0;
+    let accSum = 0;
+    let accCount = 0;
+    let matchesPlayed = 0;
+    let matchesWon = 0;
+
+    for (const row of matchStatsRows) {
+      matchesPlayed++;
+
+      if (typeof row.total_kills === "number") {
+        totalKills += row.total_kills;
+      }
+
+      if (typeof row.total_deaths === "number") {
+        totalDeaths += row.total_deaths;
+      }
+
+      if (typeof row.preaim === "number") {
+        preaimSum += row.preaim;
+        preaimCount++;
+      }
+
+      if (typeof row.reaction_time_ms === "number") {
+        ttdSum += row.reaction_time_ms;
+        ttdCount++;
+      }
+
+      if (typeof row.accuracy === "number") {
+        accSum += row.accuracy;
+        accCount++;
+      }
+
+      if (
+        typeof row.rounds_won === "number" &&
+        typeof row.rounds_lost === "number"
+      ) {
+        if (row.rounds_won > row.rounds_lost) {
+          matchesWon++;
+        }
+      }
+    }
+
+    const kd = totalDeaths > 0 ? totalKills / totalDeaths : 0;
+    const winrate =
+      matchesPlayed > 0 ? (matchesWon / matchesPlayed) * 100 : 0;
+    const preaim = preaimCount > 0 ? preaimSum / preaimCount : 0;
+    const ttd = ttdCount > 0 ? ttdSum / ttdCount : 0; // ms
+    const accuracy = accCount > 0 ? accSum / accCount : 0;
+
+    const stats = {
+      kd: Number(kd.toFixed(2)),
+      winrate: Number(winrate.toFixed(1)),
+      preaim: Number(preaim.toFixed(3)),
+      ttd: Number(ttd.toFixed(1)),
+      accuracy: Number(accuracy.toFixed(4)),
+      matchesPlayed,
+      matchesWon,
+    };
+
     return NextResponse.json({
-      player: player ?? null
+      player: player ?? null,
+      stats,
+      recentMatchStats: matchStatsRows, // full liste per match om du vil vise graf/timeline
     });
   } catch (err) {
     console.error("Unexpected error fetching data:", err);

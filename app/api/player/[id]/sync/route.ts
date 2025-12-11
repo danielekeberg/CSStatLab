@@ -54,7 +54,7 @@ export async function POST(req: NextRequest, context: RouteContext) {
     }
     const profileRes = await fetch(`${LEETIFY_BASE}/v3/profile?steam64_id=${id}`, {
       headers: {
-        "_leetify_key": process.env.LEETIFY_API_KEY!,
+        "_leetify_key": process.env.LEETIFY_API_KEY as string,
         "Content-Type": "application/json",
       }
     });
@@ -90,12 +90,12 @@ export async function POST(req: NextRequest, context: RouteContext) {
 
     const { data: existingMatches, error: existingMatchesErr } = await supabase
       .from("matches")
-      .select("id")
-      .in("id", matchIds);
+      .select("match_id")
+      .in("match_id", matchIds);
 
-    if (existingMatchesErr) throw existingMatchesErr;
+    // if (existingMatchesErr) throw existingMatchesErr;
 
-    const existingIds = new Set(existingMatches?.map((m) => m.id) ?? []);
+    const existingIds = new Set(existingMatches?.map((m) => m.match_id) ?? []);
     const newMatchIds = matchesToUse
       .filter((m: any) => !existingIds.has(m.id))
       .map((m: any) => m.id);
@@ -104,7 +104,7 @@ export async function POST(req: NextRequest, context: RouteContext) {
     for (const matchId of newMatchIds) {
       const res = await fetch(`${LEETIFY_BASE}/v2/matches/${matchId}`, {
         headers: {
-        "_leetify_key": process.env.LEETIFY_API_KEY!,
+        "_leetify_key": process.env.LEETIFY_API_KEY as string,
         "Content-Type": "application/json",
       }
       });
@@ -117,19 +117,19 @@ export async function POST(req: NextRequest, context: RouteContext) {
     }
 
     let totalKills = 0;
-  let totalDeaths = 0;
+    let totalDeaths = 0;
 
-  let matchesPlayed = 0;
-  let matchesWon = 0;
+    let matchesPlayed = 0;
+    let matchesWon = 0;
 
-  let preaimSum = 0;
-  let preaimCount = 0;
+    let preaimSum = 0;
+    let preaimCount = 0;
 
-  let ttdSumMs = 0;
-  let ttdCount = 0;
+    let ttdSumMs = 0;
+    let ttdCount = 0;
     for (const match of newMatchDetails) {
       const matchRow = {
-        id: match.id,
+        match_id: match.id,
         map_name: match.map_name,
         finished_at: match.finished_at,
         team_scores: match.team_scores,
@@ -140,46 +140,69 @@ export async function POST(req: NextRequest, context: RouteContext) {
         .from("matches")
         .insert(matchRow)
         .single();
+
       if (insertMatchErr && insertMatchErr.code !== "23505") {
         console.error(insertMatchErr);
       }
 
-      const playerStats = match.stats?.find(
-        (p: any) => `${p.steam64_id}` === `${id}`
-      );
-      if (!playerStats) continue;
+      for (const p of match.stats ?? []) {
+        const statsRow = {
+          match_id: match.id,
+          player_id: String(p.steam64_id),
 
-        matchesPlayed++;
+          leetify_rating: p.leetify_rating ?? null,
+          kd_ratio: p.kd_ratio ?? null,
+          accuracy: p.accuracy ?? null,
+          dpr: p.dpr ?? null,
+          preaim: p.preaim ?? null,
+          reaction_time_ms: p.reaction_time ? p.reaction_time * 1000 : null,
 
-      if (typeof playerStats.total_kills === "number") {
-        totalKills += playerStats.total_kills;
-      }
+          total_kills: p.total_kills ?? null,
+          total_deaths: p.total_deaths ?? null,
+          team_number: p.initial_team_number ?? null,
+          score: p.score ?? null,
 
-      if (typeof playerStats.total_deaths === "number") {
-        totalDeaths += playerStats.total_deaths;
-      }
+          finished_at: match.finished_at ?? null,
+          rounds_won: p.rounds_won ?? null,
+          rounds_lost: p.rounds_lost ?? null,
 
-      if (typeof playerStats.preaim === "number") {
-        preaimSum += playerStats.preaim;
-        preaimCount++;
-      }
+          raw: p,
+        };
 
-      if (typeof playerStats.reaction_time === "number") {
-        ttdSumMs += playerStats.reaction_time * 1000;
-        ttdCount++;
-      }
+        const { error: insertStatsErr } = await supabase
+          .from("player_match_stats")
+          .upsert(statsRow, { onConflict: "match_id,player_id" });
 
-      const playerTeam = playerStats.initial_team_number;
-      const playerTeamScore = match.team_scores?.find(
-        (t: any) => t.team_number === playerTeam
-      );
-      const otherTeamScore = match.team_scores?.find(
-        (t: any) => t.team_number !== playerTeam
-      );
+        if (insertStatsErr) {
+          console.error("insertStatsErr", insertStatsErr);
+        }
 
-      if (playerTeamScore && otherTeamScore) {
-        if (playerTeamScore.score > otherTeamScore.score) {
-          matchesWon++;
+    
+        if (`${p.steam64_id}` === `${id}`) {
+          matchesPlayed++;
+
+          if (typeof p.total_kills === "number") totalKills += p.total_kills;
+          if (typeof p.total_deaths === "number") totalDeaths += p.total_deaths;
+
+          if (typeof p.preaim === "number") {
+            preaimSum += p.preaim;
+            preaimCount++;
+          }
+
+          if (typeof p.reaction_time === "number") {
+            ttdSumMs += p.reaction_time * 1000;
+            ttdCount++;
+          }
+
+          const playerTeam = p.initial_team_number;
+          const playerTeamScore = match.team_scores?.find((t:any) => t.team_number === playerTeam);
+          const otherTeamScore = match.team_scores?.find((t:any) => t.team_number !== playerTeam);
+
+          if (playerTeamScore && otherTeamScore) {
+            if (playerTeamScore.score > otherTeamScore.score) {
+              matchesWon++;
+            }
+          }
         }
       }
     }
