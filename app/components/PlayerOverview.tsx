@@ -145,7 +145,7 @@ export default function PlayerOverview({ player, matches }: { player: any, match
         </div>
         <div className="flex justify-end">
             <Link className="hover:bg-neutral-900" href="https://leetify.com">
-                <img className="h-10" src="../leetify.png" />
+                <img className="h-12" src="../leetify.png" />
             </Link>
         </div>
         </>
