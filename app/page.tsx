@@ -28,7 +28,6 @@ function extractVanity(input:any) {
 export default function Home() {
   const [input, setInput] = useState("");
   const [steamId, setSteamId] = useState("");
-  const [loggedIn, setLoggedIn] = useState(false);
 
   const handleResolve = async (e:any) => {
     e.preventDefault();
@@ -50,35 +49,9 @@ export default function Home() {
     }
   }
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const res = await fetch("/api/auth/me", { credentials: "include" });
-        const data = await res.json();
-        setLoggedIn(data.loggedIn);
-      } catch(err) {
-        console.error(err),
-        setLoggedIn(false);
-      }
-    }
-    checkAuth();
-  },[])
-
   return (
       <div className="md:px-[15%] px-15 relative">
         <Header />
-        {!loggedIn ?
-        <div className="h-[85vh] flex flex-col gap-10 items-center justify-center">
-          <div>
-            <h1 className="text-5xl font-bold">CSStatLab</h1>
-            <p className="italic text-center">Stats. Performance. Insight.</p>
-          </div>
-          <div className="text-center">
-            <p>We're still in the lab analyzing rounds and refining the metrics.</p>
-          </div>
-        </div>  
-        :
-        <>
         <div className="flex justify-center">
           <div className="w-120 text-center py-50">
             <h1 className="text-5xl mb-2">Player analytics for competitive CS2</h1>
@@ -148,8 +121,6 @@ export default function Home() {
             </div>
           </div>
         </div>
-        </>
-        }
         <Footer />
       </div>
   );
