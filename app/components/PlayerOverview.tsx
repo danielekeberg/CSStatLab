@@ -76,7 +76,7 @@ export default function PlayerOverview({ player, matches }: { player: any, match
             </div>
         </div>
 
-        <div className="flex gap-3 font-bold text-neutral-500 text-sm">
+        <div className="flex justify-center md:justify-start gap-3 font-bold text-neutral-500 text-sm">
                 <p className="text-[#eae8e0] cursor-pointer hover:text-[#eae8e0] transition duration-100">Overview</p>
                 <p className="cursor-pointer hover:text-[#eae8e0] transition duration-100">Matches</p>
                 <p className="cursor-pointer hover:text-[#eae8e0] transition duration-100">Aim</p>

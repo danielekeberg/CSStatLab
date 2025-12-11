@@ -70,7 +70,7 @@ export default function PlayerPage() {
     }, [steam64])
     if(loading || !player) {
         return (
-            <div className="px-15 md:px-[15%]">
+            <div className="px-5 md:px-[15%]">
                 <Header />
                 <div className="h-[70vh] flex items-center justify-center">
                     <div className="flex flex-col gap-5">
