@@ -32,7 +32,7 @@ function getTierColors(tier: PremierTier) {
         innerBg: "bg-[#4f2c7d]",
         accent1: "bg-[#c77dff]",
         accent2: "bg-[#9b5cff]",
-        text: "text-[#f5e9ff]",
+        text: "text-[#eae8e0]",
       };
     case "GRAY":
       return {
@@ -40,7 +40,7 @@ function getTierColors(tier: PremierTier) {
         innerBg: "bg-[#343844]",
         accent1: "bg-[#a5acba]",
         accent2: "bg-[#8f96a5]",
-        text: "text-[#f3f4f6]",
+        text: "text-[#eae8e0]",
       };
     case "CYAN":
       return {
@@ -48,7 +48,7 @@ function getTierColors(tier: PremierTier) {
         innerBg: "bg-[#093044]",
         accent1: "bg-[#5be5ff]",
         accent2: "bg-[#2dccff]",
-        text: "text-[#e6faff]",
+        text: "text-[#eae8e0]",
       };
     case "BLUE":
       return {
@@ -56,7 +56,7 @@ function getTierColors(tier: PremierTier) {
         innerBg: "bg-[#152b55]",
         accent1: "bg-[#6ca5ff]",
         accent2: "bg-[#3b82f6]",
-        text: "text-[#e5edff]",
+        text: "text-[#eae8e0]",
       };
     case "PINK":
       return {
@@ -64,7 +64,7 @@ function getTierColors(tier: PremierTier) {
         innerBg: "bg-[#4e1033]",
         accent1: "bg-[#ff8ad4]",
         accent2: "bg-[#ff4fbf]",
-        text: "text-[#ffe9f6]",
+        text: "text-[#eae8e0]",
       };
     case "RED":
       return {
@@ -72,7 +72,7 @@ function getTierColors(tier: PremierTier) {
         innerBg: "bg-[#4b1417]",
         accent1: "bg-[#ff8a8a]",
         accent2: "bg-[#ff4b4b]",
-        text: "text-[#ffecec]",
+        text: "text-[#eae8e0]",
       };
     case "GOLD":
       return {
@@ -80,7 +80,7 @@ function getTierColors(tier: PremierTier) {
         innerBg: "bg-[#5a4310]",
         accent1: "bg-[#ffe88a]",
         accent2: "bg-[#ffd84a]",
-        text: "text-[#fff9e6]",
+        text: "text-[#eae8e0]",
       };
     default:
       return {
@@ -88,7 +88,7 @@ function getTierColors(tier: PremierTier) {
         innerBg: "bg-[#343844]",
         accent1: "bg-[#a5acba]",
         accent2: "bg-[#8f96a5]",
-        text: "text-[#f3f4f6]",
+        text: "text-[#eae8e0]",
       };
   }
 }

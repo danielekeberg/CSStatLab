@@ -52,7 +52,6 @@ export default function PlayerPage() {
                     return;
                 }
                 const data: ApiPlayerData = await res.json();
-                console.log(data);
                 setPlayer(data.player)
                 setDailyStats(
                     data.chartData.map((row) => ({
