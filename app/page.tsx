@@ -6,6 +6,11 @@ import Link from "next/link";
 
 function extractVanity(input:any) {
   try {
+    if(input.startsWith("https://steamcommunity.com/profiles/")) {
+      const p = new URL(input);
+      const parts = p.pathname.split("/").filter(Boolean);
+      window.location.href = `../player/${parts[1]}`;
+    }
     if(!input.startsWith("https")) {
       return input.trim();
     }
@@ -39,18 +44,15 @@ export default function Home() {
       if(!res.ok) {
         console.error(data.error || "Something went wrong")
       } else {
-        setSteamId(data.steam64id);
+        window.location.href = `../player/${data.steam64id}`
       }
     } catch(err) {
       console.error(err);
-    } finally {
-      // window.location.href = `../player/${steamId}`
-      console.log(steamId)
     }
   }
 
   return (
-      <div className="md:px-[15%] px-15 relative">
+      <div className="md:px-[15%] px-5 relative">
         <Header />
         <div className="flex justify-center">
           <div className="w-120 text-center py-50">
@@ -75,7 +77,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-4 gap-10">
+        <div className="grid grid-cols1 md:grid-cols-4 gap-10">
           <div className="flex flex-col gap-2">
             <img />
             <h5 className="font-bold">Performance Trends</h5>
@@ -101,7 +103,7 @@ export default function Home() {
           <div className="w-200 text-center py-50">
             <h1 className="text-3xl mb-2">Trusted by analysts worldwide</h1>
             <p>Comprehensive data from official sources</p>
-            <div className="grid grid-cols-4 mt-10">
+            <div className="grid grid-cols-1 md:grid-cols-4 mt-10">
               <div>
                 <h4 className="text-2xl font-bold">2M+</h4>
                 <p>Players tracked</p>

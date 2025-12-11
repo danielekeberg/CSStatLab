@@ -3,7 +3,7 @@ export default function Footer() {
         <div className="py-5 flex justify-between">
             <div>
                 <img />
-                <p>CS2 Analytics</p>
+                <p className="italic font-bold">CSSTATLAB</p>
             </div>
             <div className="grid grid-cols-2 gap-5 text-neutral-400 text-sm">
                 <p>Privacy</p>
