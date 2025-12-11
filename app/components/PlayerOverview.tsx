@@ -43,7 +43,7 @@ export default function PlayerOverview({ player, matches }: { player: any, match
 
     return(
         <>
-        <div className="flex justify-between my-10">
+        <div className="grid grid-cols-1 md:flex gap-8 justify-between my-10">
             <div className="flex gap-5">
                 <img src={player.avatar} className="h-20 w-20 rounded border border-neutral-200" />
                 <div>
@@ -52,7 +52,7 @@ export default function PlayerOverview({ player, matches }: { player: any, match
                         <h3 className="text-xl font-bold">{player.name}</h3>
                     </div>
                     <p className="text-neutral-400 text-sm mb-1">{player.id}</p>
-                    <div className="flex gap-2">
+                    <div className="gap-2 hidden md:flex">
                         <Link target="_blank" href={player.steam_url}><img className="h-6" src="../steam.svg" /></Link>
                         <Link target="_blank" href={`https://www.csstats.gg/player/${player.id}`}>CSStats</Link>
                         <Link target="_blank" href={`https://leetify.com/app/profile/${player.id}`}>Leetify</Link>
@@ -60,12 +60,12 @@ export default function PlayerOverview({ player, matches }: { player: any, match
                 </div>
             </div>
 
-            <div className="flex gap-6 items-center">
+            <div className="flex justify-between gap-6 items-center">
                 {player.faceit_raw && (
                     <div className="flex items-center gap-4">
                         <img className="h-8" src={`https://leetify.com/assets/images/rank-icons/faceit${player.faceit_raw.games.cs2.skill_level}.svg`} />
                         <div className="flex gap-4 items-center font-bold">
-                            <Link target="_blank" href={`https://www.faceit.com/en/players/${player.faceit_raw.nickname}`}>{player.faceit_raw.nickname}</Link>
+                            <Link target="_blank" className="hidden md:block" href={`https://www.faceit.com/en/players/${player.faceit_raw.nickname}`}>{player.faceit_raw.nickname}</Link>
                             <p>{player.faceit_raw.games.cs2.faceit_elo}</p>
                         </div>
                     </div>
@@ -84,7 +84,7 @@ export default function PlayerOverview({ player, matches }: { player: any, match
                 <p className="cursor-pointer hover:text-[#eae8e0] transition duration-100">Integrity</p>
             </div>
 
-        <div className="grid grid-cols-5 gap-5 my-10">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-5 my-10">
             <div className="bg-neutral-900 p-3 rounded">
                 <div className="flex justify-between text-sm">
                     <p>K/D Ratio</p>

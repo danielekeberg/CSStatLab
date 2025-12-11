@@ -63,7 +63,7 @@ export default function Home() {
             </form>
             <div className="flex gap-2 mt-10">
               <p>Try:</p>
-              <div className="grid grid-cols-7">
+              <div className="grid grid-cols-3 text-left md:text-center gap-3 md:gap-0 md:grid-cols-7">
                 <Link href="../player/76561198369432059" className="hover:underline cursor-pointer font-bold">danir</Link>
                 <Link href="../player/76561198054218088" className="hover:underline cursor-pointer font-bold">conedre</Link>
                 <Link href="../player/76561198107958587" className="hover:underline cursor-pointer font-bold">edoba</Link>
