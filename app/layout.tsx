@@ -21,8 +21,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CSStatLab",
-  description: "Under construction...",
+  title: "CSStatLab.com",
+  description: "Analyze any CS2 player with real match data. View KD, win rate, pre-aim, reaction time, accuracy and more. Fast syncing, clean stats and smart cheat-risk detection.",
 };
 
 export default function RootLayout({
