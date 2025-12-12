@@ -8,8 +8,9 @@ export default function Footer() {
             <div className="flex gap-2 text-sm font-bold text-neutral-500 text-center justify-center md:justify-start">
                 <p>CSSTATLAB &copy; {year}</p>
             </div>
-            <div className="text-center text-sm">
-                <p className="text-neutral-500 font-bold">Data powered by Leetify, Steam & FACEIT. Not affiliated with Valve, Leetify or FACEIT.</p>
+            <div className="text-center text-sm text-neutral-500">
+                <p>Enjoying <strong>CSStatLab</strong>?</p>
+                    <Link target="_blank" className="hover:underline" href="https://buymeacoffee.com/daneke7516y">Buy me a coffee ☕</Link>
             </div>
             <div className="flex justify-center md:justify-end gap-5 text-neutral-400 text-sm">
                 <Link className="hover:underline" href="../privacy/">Privacy</Link>
