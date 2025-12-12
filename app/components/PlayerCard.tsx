@@ -25,10 +25,9 @@ export default function PlayerCard({ player }: { player: any }) {
                             <h3 className="text-xl font-bold">{player.name}</h3>
                         </div>
                         <p className="text-neutral-400 text-sm text-center mb-3">{player.id}</p>
-                        <div className="gap-2 hidden md:flex">
-                            <Link target="_blank" href={player.steam_url}><img className="h-6" src="../steam.svg" /></Link>
-                            <Link target="_blank" href={`https://www.csstats.gg/player/${player.id}`}>CSStats</Link>
-                            <Link target="_blank" href={`https://leetify.com/app/profile/${player.id}`}>Leetify</Link>
+                        <div className="gap-2 hidden md:flex justify-center items-center">
+                            <Link className="hover:bg-neutral-900 p-1 transition rounded" target="_blank" href={player.steam_url}><img className="h-7" src="../steam.svg" /></Link>
+                            <Link className="hover:bg-neutral-900 p-1 transition rounded" target="_blank" href={`https://leetify.com/app/profile/${player.id}`}><img className="h-8" src="../leetify_logo.png" /></Link>
                         </div>
                     </div>
                 </div>

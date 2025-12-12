@@ -17,12 +17,11 @@ export async function GET(req: NextRequest, context: RouteContext) {
   const supabase = createSupabaseServerClient();
 
   try {
-    // 1) Hent player-row
     const { data: player, error: playerError } = await supabase
       .from("players")
       .select("*")
       .eq("id", id)
-      .maybeSingle(); // .single() ville kastet error hvis ikke finnes, maybeSingle er tryggere
+      .maybeSingle();
 
     if (playerError && playerError.code !== "PGRST116") {
       console.error("Error loading player:", playerError);
@@ -32,7 +31,6 @@ export async function GET(req: NextRequest, context: RouteContext) {
       );
     }
 
-    // 2) Beregn stats for siste 30 dager basert på player_match_stats
     const since = new Date();
     since.setDate(since.getDate() - 30);
 
@@ -67,7 +65,6 @@ export async function GET(req: NextRequest, context: RouteContext) {
       );
     }
 
-    // Hvis ingen stats siste 30 dager
     if (!matchStatsRows || matchStatsRows.length === 0) {
       return NextResponse.json({
         player: player ?? null,
@@ -80,12 +77,10 @@ export async function GET(req: NextRequest, context: RouteContext) {
           matchesPlayed: 0,
           matchesWon: 0,
         },
-        // kan fortsatt sende tom liste til frontend
         recentMatchStats: [],
       });
     }
 
-    // 3) Aggregér KD, winrate, preaim, ttd, accuracy
     let totalKills = 0;
     let totalDeaths = 0;
     let preaimSum = 0;
@@ -153,7 +148,7 @@ export async function GET(req: NextRequest, context: RouteContext) {
     return NextResponse.json({
       player: player ?? null,
       stats,
-      recentMatchStats: matchStatsRows, // full liste per match om du vil vise graf/timeline
+      recentMatchStats: matchStatsRows,
     });
   } catch (err) {
     console.error("Unexpected error fetching data:", err);
