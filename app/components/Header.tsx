@@ -2,12 +2,55 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 
+function extractVanity(input:any) {
+    try {
+        if(input.startsWith("https://steamcommunity.com/profiles/")) {
+        const p = new URL(input);
+        const parts = p.pathname.split("/").filter(Boolean);
+        window.location.href = `../player/${parts[1]}`;
+        }
+        if(!input.startsWith("https")) {
+        return input.trim();
+        }
+        const u = new URL(input);
+        const parts = u.pathname.split("/").filter(Boolean);
+        if(parts[0] === "id" && parts[1]) {
+        return parts[1];
+        }
+        if(parts[0] === "profiles" && parts[1]) {
+        return parts[1];
+        }
+        return input.trim();
+    } catch(err) {
+        return input.trim();
+    }
+}
+
 export default function Header({ status }: { status: boolean }) {
     const [isActive, setIsActive] = useState(status);
+    const [input, setInput] = useState("");
+    const [steamId, setSteamId] = useState("");
     useEffect(() => {
         setIsActive(status);
     }, [status])
-    console.log(status)
+
+    const handleResolve = async (e:any) => {
+        e.preventDefault();
+        setSteamId("");
+        try {
+            const vanity = extractVanity(input);
+            const res = await fetch(`/api/steam/resolve?vanityurl=${encodeURIComponent(vanity)}`);
+            const data = await res.json();
+            if(!res.ok) {
+                console.error(data.error || "Something went wrong")
+            } else {
+                window.location.href = `../player/${data.steam64id}`
+            }
+        } catch(err) {
+            console.error(err);
+        }
+    }
+
     return(
         <div className="py-5 flex justify-between items-center">
             <div>
@@ -20,8 +63,8 @@ export default function Header({ status }: { status: boolean }) {
             </div>
             {isActive && (
                 <div className="hidden md:flex w-1/2 justify-center">
-                    <form  className="relative w-full">
-                        <input type="text" className="w-full border border-neutral-700 rounded p-2 pl-11 outline-hidden" placeholder="Search by Steam ID or nickname..." />
+                    <form onSubmit={handleResolve} className="relative w-full">
+                        <input type="text" onChange={(e) => setInput(e.target.value)} className="w-full border border-neutral-700 rounded p-2 pl-11 outline-hidden" placeholder="Search by Steam ID or nickname..." />
                         <img src="../search.svg" className="h-6 w-6 absolute top-2 left-3" />
                     </form>
                 </div>
