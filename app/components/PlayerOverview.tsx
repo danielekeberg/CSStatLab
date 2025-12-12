@@ -1,5 +1,6 @@
 'use client';
 import { CircularProgress } from "@/app/components/CircularProgress";
+import Link from "next/link";
 
 export default function PlayerOverview({ player, stats }: { player: any, stats: any }) {
 
@@ -140,7 +141,7 @@ export default function PlayerOverview({ player, stats }: { player: any, stats: 
                 </div>
                 <div className="text-xs flex gap-10 border-t border-[#eae8e0]/30 mt-5 pt-5">
                     <p className="text-neutral-500"><span className="font-bold text-[#eae8e0]">Disclaimer: </span>FairPlay Insight provides statistical estimates based on gameplay data. Results are not definitive proof of cheating and may vary. Always consider additional context and factors when evaluating a player’s performance.</p>
-                    <img src="../leetify.png" className="h-10" />
+                    <Link href="https://leetify.com" target="_blank" ><img src="../leetify.png" className="min-w-20 w-36" /></Link>
                 </div>
             </div>
             {/* <div className="flex my-10 justify-center md:justify-start gap-3 font-bold text-neutral-500 text-sm">

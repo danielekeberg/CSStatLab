@@ -41,9 +41,7 @@ export default function PlayerPage() {
     const [loading, setLoading] = useState(true);
     const [player, setPlayer] = useState<Player | null>(null);
     const [stats, setStats] = useState<Stats | null>(null);
-    const [input, setInput] = useState("");
     const [recentMatchStats, setRecentMatchStats] = useState<any[]>([]);
-    const [steamId, setSteamId] = useState("");
 
     useEffect(() => {
         if(!steam64) return;
@@ -61,6 +59,7 @@ export default function PlayerPage() {
                     return;
                 }
                 const data: ApiPlayerData = await res.json();
+                console.log(data);
                 setRecentMatchStats(data.recentMatchStats);
                 setPlayer(data.player)
                 setStats(data.stats)
@@ -72,49 +71,6 @@ export default function PlayerPage() {
         }
         load()
     }, [steam64])
-
-    function extractVanity(input:any) {
-        try {
-            if(input.startsWith("https://steamcommunity.com/profiles/")) {
-            const p = new URL(input);
-            const parts = p.pathname.split("/").filter(Boolean);
-            window.location.href = `../player/${parts[1]}`;
-            }
-            if(!input.startsWith("https")) {
-            return input.trim();
-            }
-            const u = new URL(input);
-            const parts = u.pathname.split("/").filter(Boolean);
-            if(parts[0] === "id" && parts[1]) {
-            return parts[1];
-            }
-
-            if(parts[0] === "profiles" && parts[1]) {
-            return parts[1];
-            }
-
-            return input.trim();
-        } catch(err) {
-            return input.trim();
-        }
-    }
-
-    const handleResolve = async (e:any) => {
-        e.preventDefault();
-        setSteamId("");
-        try {
-        const vanity = extractVanity(input);
-        const res = await fetch(`/api/steam/resolve?vanityurl=${encodeURIComponent(vanity)}`);
-        const data = await res.json();
-        if(!res.ok) {
-            console.error(data.error || "Something went wrong")
-        } else {
-            window.location.href = `../player/${data.steam64id}`
-        }
-        } catch(err) {
-        console.error(err);
-        }
-    }
 
     if(loading || !player) {
         return (

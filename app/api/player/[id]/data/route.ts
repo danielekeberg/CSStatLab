@@ -49,6 +49,9 @@ export async function GET(req: NextRequest, context: RouteContext) {
         rounds_lost,
         dpr,
         leetify_rating,
+        map_name,
+        has_banned_player,
+        mode,
         team_number,
         score
       `

@@ -148,6 +148,9 @@ export async function POST(req: NextRequest, context: RouteContext) {
       for (const p of match.stats ?? []) {
         const statsRow = {
           match_id: match.id,
+          map_name: match.map_name,
+          mode: match.data_source,
+          has_banned_player: match.has_banned_player,
           player_id: String(p.steam64_id),
 
           leetify_rating: p.leetify_rating ?? null,
