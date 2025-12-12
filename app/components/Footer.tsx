@@ -1,15 +1,19 @@
 import Link from "next/link";
 
 export default function Footer() {
+    const now = new Date();
+    const year = now.getFullYear();
     return(
-        <div className="py-5 flex justify-between">
-            <div>
-                <img />
-                <p className="italic font-bold">CSSTATLAB</p>
+        <div className="grid grid-cols-1 md:grid-cols-3 py-15">
+            <div className="flex gap-2 text-sm font-bold text-neutral-500 text-center justify-center md:justify-start">
+                <p>CSSTATLAB &copy; {year}</p>
             </div>
-            <div className="grid grid-cols-2 gap-5 text-neutral-400 text-sm">
-                <Link href="../privacy/">Privacy</Link>
-                <Link href="../tos/">Terms</Link>
+            <div className="text-center text-sm">
+                <p className="text-neutral-500 font-bold">Data powered by Leetify, Steam & FACEIT. Not affiliated with Valve, Leetify or FACEIT.</p>
+            </div>
+            <div className="flex justify-end gap-5 text-neutral-400 text-sm">
+                <Link className="hover:underline" href="../privacy/">Privacy</Link>
+                <Link className="hover:underline" href="../tos/">Terms</Link>
             </div>
         </div>
     )

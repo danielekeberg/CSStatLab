@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 
 import Header from "@/app/components/Header";
+import Footer from "@/app/components/Footer";
 import Loader from "@/app/components/Loader";
 import PlayerOverview from "@/app/components/PlayerOverview";
 import PlayerCard from "@/app/components/PlayerCard";
@@ -145,6 +146,7 @@ export default function PlayerPage() {
                     <PlayerOverview player={player} stats={stats} />
                 </div>
             </div>
+            <Footer />
         </div>
     )
 }
