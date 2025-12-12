@@ -55,7 +55,7 @@ export default function Home() {
       <div className="md:px-[15%] px-5 relative">
         <Header status={false} />
         <div className="flex justify-center">
-          <div className="w-120 text-center pt-10 pb-20 md:py-40">
+          <div className="w-120 text-center pt-10 pb-20 md:py-30">
             <div className="mb-10 rounded-xs p-5">
               <p className="bg-neutral-900/30 py-1 rounded mb-2 border border-[#eae8e0] text-xl">https://steam<span className="text-yellow-500 font-bold text-2xl">w</span>community.com/id/danir2x/</p>
               <p className="text-sm">Simply add a “W” between <span className="bg-neutral-900/30 px-1 rounded border border-yellow-500/70">steam</span> and <span className="bg-neutral-900/30 px-1 rounded border border-yellow-500/70">community</span> in the URL to view your own or other players’ CS stats.</p>
