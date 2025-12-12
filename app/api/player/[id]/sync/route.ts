@@ -133,6 +133,7 @@ export async function POST(req: NextRequest, context: RouteContext) {
         map_name: match.map_name,
         finished_at: match.finished_at,
         team_scores: match.team_scores,
+        raw: match,
       };
 
       const { error: insertMatchErr } = await supabase
