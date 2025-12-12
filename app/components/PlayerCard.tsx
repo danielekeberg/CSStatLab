@@ -22,7 +22,7 @@ export default function PlayerCard({ player }: { player: any }) {
                     <div>
                         <div className="flex items-center justify-center gap-2">
                             {player.country && <img src={`https://flagsapi.com/${player.country}/flat/64.png`} className="h-6" />}
-                            <h3 className="text-xl font-bold">{player.name}</h3>
+                            <h3 className="text-xl font-bold text-center">{player.name}</h3>
                         </div>
                         <p className="text-neutral-400 text-sm text-center mb-3">{player.id}</p>
                         <div className="gap-2 hidden md:flex justify-center items-center">

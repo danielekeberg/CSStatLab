@@ -96,6 +96,7 @@ export default function PlayerPage() {
                 <div className="w-full">
                     <PlayerOverview player={player} stats={stats} />
                     <PerformanceChart rows={recentMatchStats} />
+                    <RecentMatches matches={recentMatchStats} />
                 </div>
             </div>
             <Footer />
