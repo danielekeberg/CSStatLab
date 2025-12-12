@@ -53,7 +53,7 @@ export default function Home() {
 
   return (
       <div className="md:px-[15%] px-5 relative">
-        <Header />
+        <Header status={false} />
         <div className="flex justify-center">
           <div className="w-120 text-center pt-10 pb-20 md:py-50">
             <h1 className="text-5xl mb-2">Player analytics for competitive CS2</h1>
@@ -61,7 +61,7 @@ export default function Home() {
             <p className="text-[#eae8e0] mb-10">Built for serious players, coaches, and analysts.</p>
             <form onSubmit={handleResolve} className="relative">
               <input type="text" onChange={(e) => setInput(e.target.value)} className="w-full border border-[#eae8e0] rounded-xl p-3 pl-11 outline-hidden" placeholder="Search by Steam ID or nickname..." />
-              <img src="./search.svg" className="h-6 w-6 absolute top-3 left-3" />
+              <img src="../search.svg" className="h-6 w-6 absolute top-3 left-3" />
             </form>
             <div className="flex gap-2 mt-10 justify-center">
               <p>Try:</p>

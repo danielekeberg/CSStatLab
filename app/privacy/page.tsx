@@ -1,10 +1,11 @@
 import Header from "@/app/components/Header";
+import Footer from "@/app/components/Footer";
 import Link from "next/link";
 
 export default function Home() {
     return(
         <div className="px-5 md:px-[15%]">
-            <Header />
+            <Header status={false} />
             <div className="md:px-[15%] mt-10 mb-50">
                 <h1 className="text-3xl font-bold">Privacy Policy for CSStatLab</h1>
                 <p className="italic text-xs">Last updated: 12.12.2025</p>
@@ -110,6 +111,7 @@ export default function Home() {
                     </div>
                 </div>
             </div>
+            <Footer />
         </div>
     )
 }
