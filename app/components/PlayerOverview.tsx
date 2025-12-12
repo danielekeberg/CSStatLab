@@ -70,7 +70,13 @@ export default function PlayerOverview({ player, stats }: { player: any, stats: 
     return(
         <div className="my-10">
             <div className="p-5 rounded">
-                <h1 className="font-bold text-xl">FairPlay Insight</h1>
+                <div className="flex justify-between">
+                    <h1 className="font-bold text-xl">FairPlay Insight</h1>
+                    <div className="bg-yellow-600/20 py-1 px-2 rounded border border-yellow-600 text-xs flex gap-2 items-center font-bold">
+                        <img src="../warning.svg" className="h-5" />
+                        <p>Stats may be inaccurate for new players. Accuracy improves as more matches are collected.</p>
+                    </div>
+                </div>
                 <div className="flex flex-col md:flex-row mt-6 gap-5">
                     <div className="md:w-60">
                         <div className="flex justify-center mb-2">

@@ -31,7 +31,7 @@ type Stats = {
 type ApiPlayerData = {
     player: Player | null;
     stats: Stats | null;
-    matches: any[];
+    recentMatchStats: any[];
 };
 
 export default function PlayerPage() {
@@ -40,9 +40,9 @@ export default function PlayerPage() {
 
     const [loading, setLoading] = useState(true);
     const [player, setPlayer] = useState<Player | null>(null);
-    const [matches, setMatches] = useState<any[]>([]);
     const [stats, setStats] = useState<Stats | null>(null);
     const [input, setInput] = useState("");
+    const [recentMatchStats, setRecentMatchStats] = useState<any[]>([]);
     const [steamId, setSteamId] = useState("");
 
     useEffect(() => {
@@ -61,6 +61,7 @@ export default function PlayerPage() {
                     return;
                 }
                 const data: ApiPlayerData = await res.json();
+                setRecentMatchStats(data.recentMatchStats);
                 setPlayer(data.player)
                 setStats(data.stats)
             }   catch(err) {
@@ -144,6 +145,7 @@ export default function PlayerPage() {
                 </div>
                 <div className="w-full">
                     <PlayerOverview player={player} stats={stats} />
+                    <PerformanceChart rows={recentMatchStats} />
                 </div>
             </div>
             <Footer />
