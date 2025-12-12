@@ -2,7 +2,7 @@
 import { CircularProgress } from "@/app/components/CircularProgress";
 import Link from "next/link";
 
-export default function PlayerOverview({ player, stats }: { player: any, stats: any }) {
+export default function PlayerOverview({ player, stats, matches }: { player: any, stats: any, matches: number }) {
 
     function getAimCheatChance(rating: number): number {
         if(rating < 90) return 0;
@@ -64,7 +64,6 @@ export default function PlayerOverview({ player, stats }: { player: any, stats: 
         }
         return "Extremely sus";
     }
-
     const score = getOverallCheatChance(player.leetify_raw.rating.aim, stats.preaim, stats.ttd, stats.kd, stats.winrate);
     const riskText = getCheatRiskLabel(score);
     
@@ -73,10 +72,12 @@ export default function PlayerOverview({ player, stats }: { player: any, stats: 
             <div className="p-4 rounded">
                 <div className="flex justify-between">
                     <h1 className="font-bold text-xl">FairPlay Insight</h1>
-                    <div className="bg-yellow-600/20 py-1 px-2 rounded border border-yellow-600 text-xs flex gap-2 items-center font-bold">
-                        <img src="../warning.svg" className="h-5" />
-                        <p>Stats may be inaccurate for new players. Accuracy improves as more matches are collected.</p>
-                    </div>
+                    {matches < 15 && (
+                        <div className="bg-yellow-600/20 py-1 px-2 rounded border border-yellow-600 text-xs flex gap-2 items-center font-bold">
+                            <img src="../warning.svg" className="h-5" />
+                            <p>Stats may be inaccurate for new players. Accuracy improves as more matches are collected.</p>
+                        </div>
+                    )}
                 </div>
                 <div className="flex flex-col md:flex-row mt-6 gap-5">
                     <div className="md:w-60">

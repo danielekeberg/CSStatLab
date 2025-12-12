@@ -41,6 +41,7 @@ export default function PlayerPage() {
     const [loading, setLoading] = useState(true);
     const [player, setPlayer] = useState<Player | null>(null);
     const [stats, setStats] = useState<Stats | null>(null);
+    const [matchesLength, setMatchesLength] = useState(0)
     const [recentMatchStats, setRecentMatchStats] = useState<any[]>([]);
 
     useEffect(() => {
@@ -63,6 +64,7 @@ export default function PlayerPage() {
                 setRecentMatchStats(data.recentMatchStats);
                 setPlayer(data.player)
                 setStats(data.stats)
+                setMatchesLength(data.recentMatchStats.length)
             }   catch(err) {
                     console.error(err);
             }   finally {
@@ -94,7 +96,7 @@ export default function PlayerPage() {
                     <PlayerCard player={player}/>
                 </div>
                 <div className="w-full">
-                    <PlayerOverview player={player} stats={stats} />
+                    <PlayerOverview player={player} stats={stats} matches={matchesLength} />
                     <PerformanceChart rows={recentMatchStats} />
                     <RecentMatches matches={recentMatchStats} />
                 </div>
