@@ -131,7 +131,7 @@ export default function PlayerPage() {
     return (
         <div className="px-5 md:px-[15%]">
             <Header />
-            <div className="flex justify-center">
+            <div className="hidden md:flex justify-center">
                 <form onSubmit={handleResolve} className="relative w-1/2">
                     <input type="text" onChange={(e) => setInput(e.target.value)} className="w-full border border-neutral-700 rounded-xl p-3 pl-11 outline-hidden" placeholder="Search by Steam ID or nickname..." />
                     <img src="../search.svg" className="h-6 w-6 absolute top-3 left-3" />

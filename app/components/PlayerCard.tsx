@@ -16,7 +16,7 @@ type Match = {
 export default function PlayerCard({ player }: { player: any }) {
     return(
         <div className="flex justify-center">
-            <div className="flex flex-col w-45 gap-10 justify-between my-10">
+            <div className="flex flex-col w-[80%] md:w-45 gap-10 justify-between my-10">
                 <div className="flex flex-col items-center gap-2">
                     <img src={player.avatar} className="h-25 w-25 rounded border border-neutral-200" />
                     <div>
@@ -33,7 +33,7 @@ export default function PlayerCard({ player }: { player: any }) {
                 </div>
 
                 {player.faceit_raw && (
-                    <div className="flex justify-center items-center gap-4">
+                    <div className="flex justify-center items-center gap-8 md:gap-4">
                         <img className="h-7" src={`https://leetify.com/assets/images/rank-icons/faceit${player.faceit_raw.games.cs2.skill_level}.svg`} />
                         <div className="flex gap-4 items-center font-bold">
                             <Link target="_blank" className="hidden md:block" href={`https://www.faceit.com/en/players/${player.faceit_raw.nickname}`}>{player.faceit_raw.nickname}</Link>

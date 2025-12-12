@@ -71,8 +71,8 @@ export default function PlayerOverview({ player, stats }: { player: any, stats: 
         <div className="my-10">
             <div className="p-5 rounded">
                 <h1 className="font-bold text-xl">FairPlay Insight</h1>
-                <div className="flex mt-6 gap-5">
-                    <div className="w-60">
+                <div className="flex flex-col md:flex-row mt-6 gap-5">
+                    <div className="md:w-60">
                         <div className="flex justify-center mb-2">
                             <CircularProgress value={score} />
                         </div>
@@ -80,8 +80,8 @@ export default function PlayerOverview({ player, stats }: { player: any, stats: 
                             <p className="text-sm">{riskText}</p>
                         </div>
                     </div>
-                    <div className="flex w-[60%] gap-10">
-                        <div className="flex flex-col gap-5 w-1/2">
+                    <div className="grid md:flex md:w-[60%] gap-5 md:gap-10">
+                        <div className="flex flex-col gap-5 md:w-1/2">
                             <div className="flex flex-col gap-1 text-sm">
                                 <div className="flex justify-between">
                                     <p>K/D Ratio</p>
@@ -110,7 +110,7 @@ export default function PlayerOverview({ player, stats }: { player: any, stats: 
                                 </div>
                             </div>
                         </div>
-                        <div className="flex flex-col gap-5 w-1/2">
+                        <div className="flex flex-col gap-5 md:w-1/2">
                             <div className="flex flex-col gap-1 text-sm">
                                 <div className="flex justify-between">
                                     <p>Aim Rating</p>
