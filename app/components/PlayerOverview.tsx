@@ -68,8 +68,8 @@ export default function PlayerOverview({ player, stats }: { player: any, stats: 
     const riskText = getCheatRiskLabel(score);
     
     return(
-        <div className="my-10">
-            <div className="p-5 rounded">
+        <div className="mt-5">
+            <div className="p-4 rounded">
                 <div className="flex justify-between">
                     <h1 className="font-bold text-xl">FairPlay Insight</h1>
                     <div className="bg-yellow-600/20 py-1 px-2 rounded border border-yellow-600 text-xs flex gap-2 items-center font-bold">
