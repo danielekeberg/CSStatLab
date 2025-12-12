@@ -65,14 +65,13 @@ export default function Home() {
             </form>
             <div className="flex gap-2 mt-10 justify-center">
               <p>Try:</p>
-              <div className="grid grid-cols-4 text-left md:text-center gap-3 md:gap-0 md:grid-cols-7">
-                <Link href="../player/76561198369432059" className="hover:underline cursor-pointer font-bold">danir</Link>
-                <Link href="../player/76561198054218088" className="hover:underline cursor-pointer font-bold">conedre</Link>
-                <Link href="../player/76561198107958587" className="hover:underline cursor-pointer font-bold">edoba</Link>
-                <Link href="../player/76561198082787961" className="hover:underline cursor-pointer font-bold">gilbert</Link>
-                <Link href="../player/76561198073603563" className="hover:underline cursor-pointer font-bold">pondus</Link>
-                <Link href="../player/76561198091732016" className="hover:underline cursor-pointer font-bold">rappen</Link>
+              <div className="grid grid-cols-4 text-left md:text-center gap-3 md:gap-3 md:grid-cols-6">
                 <Link href="../player/76561198386265483" className="hover:underline cursor-pointer font-bold">donk</Link>
+                <Link href="../player/76561198074762801" className="hover:underline cursor-pointer font-bold">m0NESY</Link>
+                <Link href="../player/76561198113666193" className="hover:underline cursor-pointer font-bold">ZywOo</Link>
+                <Link href="../player/76561198041683378" className="hover:underline cursor-pointer font-bold">NiKo</Link>
+                <Link href="../player/76561197991272318" className="hover:underline cursor-pointer font-bold">ropz</Link>
+                <Link href="../player/76561198176878303" className="hover:underline cursor-pointer font-bold">jL</Link>
               </div>
             </div>
           </div>

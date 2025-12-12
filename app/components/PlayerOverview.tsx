@@ -70,7 +70,7 @@ export default function PlayerOverview({ player, stats }: { player: any, stats: 
     return(
         <div className="my-10">
             <div className="p-5 rounded">
-                <h1 className="font-bold text-2xl">FairPlay Insight</h1>
+                <h1 className="font-bold text-xl">FairPlay Insight</h1>
                 <div className="flex mt-6 gap-5">
                     <div className="w-60">
                         <div className="flex justify-center mb-2">
