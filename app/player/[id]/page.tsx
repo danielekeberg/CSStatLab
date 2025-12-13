@@ -43,20 +43,31 @@ export default function PlayerPage() {
     const [stats, setStats] = useState<Stats | null>(null);
     const [matchesLength, setMatchesLength] = useState(0)
     const [recentMatchStats, setRecentMatchStats] = useState<any[]>([]);
+    const [error, setError] = useState(false);
+    const [message, setMessage] = useState("");
 
     useEffect(() => {
         if(!steam64) return;
         async function load() {
             try {
                 setLoading(true);
-                await fetch(`/api/player/${steam64}/sync`, {
+                const sync = await fetch(`/api/player/${steam64}/sync`, {
                     method: "POST",
                 });
+                const syncRes = await sync.json();
+                console.log(syncRes);
+                if(!syncRes.ok) {
+                    console.warn(syncRes);
+                    setMessage(syncRes.message);
+                    setError(true);
+                }
                 const res = await fetch(`/api/player/${steam64}/data`, {
                     method: "GET",
                 });
                 if(!res.ok) {
                     console.error("Failed to load player data", await res.text());
+                    console.log(res);
+                    setError(true);
                     return;
                 }
                 const data: ApiPlayerData = await res.json();
@@ -80,7 +91,7 @@ export default function PlayerPage() {
                 <div className="h-[70vh] flex items-center justify-center">
                     <div className="flex flex-col gap-5">
                         <Loader />
-                        <p className="text-sm">Fetching player data...</p>
+                        {error ? message : <p className="text-sm">Fetching player data...</p>}
                     </div>
                 </div>
             </div>
