@@ -159,6 +159,12 @@ export async function POST(req: NextRequest, context: RouteContext) {
           dpr: p.dpr ?? null,
           preaim: p.preaim ?? null,
           reaction_time_ms: p.reaction_time ? p.reaction_time * 1000 : null,
+          accuracy_enemy_spotted: p.accuracy_enemy_spotted ?? null,
+          accuracy_head: p.accuracy_head ?? null,
+          shots_fired: p.shots_fired ?? null,
+          shots_hit_foe: p.shots_hit_foe ?? null,
+          spray_accuracy: p.spray_accuracy ?? null,
+          counter_strafing_shots_good_ratio: p.counter_strafing_shots_good_ratio ?? null,
 
           total_kills: p.total_kills ?? null,
           total_deaths: p.total_deaths ?? null,
