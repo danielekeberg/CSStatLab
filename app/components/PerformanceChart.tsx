@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis } from "recharts";
+import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from "recharts";
 import { calcAimScore  } from "./AimScore";
 
     type MatchRow = {
@@ -96,6 +96,48 @@ import { calcAimScore  } from "./AimScore";
         [data, metric]
     );
 
+    function CustomTooltip({
+        active,
+        payload,
+        label,
+        metricLabel,
+        unit,
+        }: {
+        active?: boolean;
+        payload?: any[];
+        label?: any;
+        metricLabel: string;
+        unit?: string;
+        }) {
+        if (!active || !payload?.length) return null;
+
+        const value = payload[0]?.value;
+        const pretty =
+            typeof value === "number"
+            ? unit === "%"
+                ? value.toFixed(1)
+                : Number.isInteger(value)
+                ? value
+                : value.toFixed(2)
+            : value;
+
+        return (
+            <div className="rounded-xl border border-white/10 bg-neutral-950/90 px-3 py-2 text-sm text-[#eae8e0] shadow-lg backdrop-blur">
+            <div className="mb-1 text-xs text-white/60">
+                Match <span className="text-white/80 font-semibold">{label}</span>
+            </div>
+
+            <div className="flex items-baseline justify-between gap-6">
+                <span className="text-white/70">{metricLabel}</span>
+                <span className="font-semibold text-[#eae8e0]">
+                {pretty}
+                {unit ? <span className="text-white/60"> {unit}</span> : null}
+                </span>
+            </div>
+            </div>
+        );
+    }
+
     return (
         <div className="w-full rounded-2xl p-4">
             <div className="mb-3 flex items-center justify-between gap-3">
@@ -124,6 +166,15 @@ import { calcAimScore  } from "./AimScore";
                     <LineChart data={filtered} margin={{ top: 10, right: 12, left: 0, bottom: 0 }}>
                         <CartesianGrid strokeDasharray="3 3" stroke="#eae8e040" />
                         <XAxis dataKey="match" interval={0} tickFormatter={(v) => `${v}`} tickMargin={10} fontSize={12} />
+                            <Tooltip 
+                                cursor={{ stroke: "rgba(234,232,224,0.18)", strokeWidth: 1 }}
+                                content={
+                                    <CustomTooltip
+                                    metricLabel={metricMeta[metric].label}
+                                    unit={metricMeta[metric].unit}
+                                    />
+                                }
+                            />
                         <YAxis
                         tickMargin={1}
                         width={50}
@@ -134,7 +185,7 @@ import { calcAimScore  } from "./AimScore";
                         type="monotone"
                         dataKey={metric}
                         strokeWidth={2}
-                        dot={false}
+                        dot={true}
                         activeDot={false}
                         isAnimationActive={false}
                         stroke="#eae8e0"
