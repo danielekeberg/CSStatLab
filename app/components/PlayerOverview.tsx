@@ -1,8 +1,9 @@
 'use client';
 import { CircularProgress } from "@/app/components/CircularProgress";
 import Link from "next/link";
+import { calcAvgAimLast30 } from "./AimScore";
 
-export default function PlayerOverview({ player, stats, matches }: { player: any, stats: any, matches: number }) {
+export default function PlayerOverview({ player, stats, matches, matchRows}: { player: any, stats: any, matches: number, matchRows: any[] }) {
 
     function getAimCheatChance(rating: number): number {
         if(rating < 90) return 0;
@@ -64,9 +65,10 @@ export default function PlayerOverview({ player, stats, matches }: { player: any
         }
         return "Extremely sus";
     }
-    const score = getOverallCheatChance(player.leetify_raw.rating.aim, stats.preaim, stats.ttd, stats.kd, stats.winrate);
+    const avgAim = calcAvgAimLast30(matchRows) ?? player.leetify_raw.rating.aim;
+    const score = getOverallCheatChance(avgAim, stats.preaim, stats.ttd, stats.kd, stats.winrate);
     const riskText = getCheatRiskLabel(score);
-    
+
     return(
         <div className="mt-5">
             <div className="p-4 rounded">
