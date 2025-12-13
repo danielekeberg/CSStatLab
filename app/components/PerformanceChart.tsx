@@ -25,6 +25,7 @@ import { calcAimScore  } from "./AimScore";
     return rows
         .filter((r) => r.finished_at)
         .sort((a, b) => new Date(b.finished_at!).getTime() - new Date(a.finished_at!).getTime())
+        .slice(0,30)
         .reverse()
         .map((r, idx) => {
         const kd =
