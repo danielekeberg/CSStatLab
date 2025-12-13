@@ -93,7 +93,7 @@ export async function POST(req: NextRequest, context: RouteContext) {
       .select("match_id")
       .in("match_id", matchIds);
 
-    // if (existingMatchesErr) throw existingMatchesErr;
+    if (existingMatchesErr) throw existingMatchesErr;
 
     const existingIds = new Set(existingMatches?.map((m) => m.match_id) ?? []);
     const newMatchIds = matchesToUse
