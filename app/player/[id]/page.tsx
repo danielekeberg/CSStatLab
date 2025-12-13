@@ -60,7 +60,6 @@ export default function PlayerPage() {
                     return;
                 }
                 const data: ApiPlayerData = await res.json();
-                console.log(data);
                 setRecentMatchStats(data.recentMatchStats);
                 setPlayer(data.player)
                 setStats(data.stats)
@@ -96,7 +95,7 @@ export default function PlayerPage() {
                     <PlayerCard player={player}/>
                 </div>
                 <div className="w-full">
-                    <PlayerOverview player={player} stats={stats} matches={matchesLength} />
+                    <PlayerOverview player={player} stats={stats} matches={matchesLength} matchRows={recentMatchStats} />
                     <PerformanceChart rows={recentMatchStats} />
                     <RecentMatches matches={recentMatchStats} />
                 </div>
