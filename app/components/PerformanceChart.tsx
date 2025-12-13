@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis } from "recharts";
+import { calcAimScore  } from "./AimScore";
 
     type MatchRow = {
         finished_at: string | null;
@@ -23,7 +24,9 @@ import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis } fro
     function mapMatchStatsToChart(rows: MatchRow[]) {
     return rows
         .filter((r) => r.finished_at)
-        .map((r) => {
+        .sort((a, b) => new Date(b.finished_at!).getTime() - new Date(a.finished_at!).getTime())
+        .reverse()
+        .map((r, idx) => {
         const kd =
             typeof r.kd_ratio === "number"
             ? r.kd_ratio
@@ -40,8 +43,20 @@ import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis } fro
                 : 0
             : null;
 
+        const aim = calcAimScore({
+            accuracy: r.accuracy,
+            accuracyEnemySpotted: (r as any).accuracy_enemy_spotted ?? null,
+            accuracyHead: (r as any).accuracy_head ?? null,
+            reactionTimeMs: r.reaction_time_ms,
+            preaim: r.preaim,
+            sprayAccuracy: (r as any).spray_accuracy ?? null,
+            shotsFired: (r as any).shots_fired ?? null,
+            counterStrafeRatio: (r as any).counter_strafing_shots_good_ratio ?? null,
+        });
+
         return {
-            date: formatDateLabel(r.finished_at!),
+            match: idx + 1,
+            aim: typeof aim === "number" ? aim : null,
             ts: new Date(r.finished_at!).getTime(),
             kd: kd !== null ? Number(kd.toFixed(2)) : null,
             preaim: typeof r.preaim === "number" ? Number(r.preaim.toFixed(2)) : null,
@@ -59,12 +74,13 @@ import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis } fro
         .sort((a, b) => a.ts - b.ts);
     }
 
-    type MetricKey = "kd" | "preaim" | "ttd" | "accuracy";
+    type MetricKey = "aim" | "kd" | "preaim" | "ttd" | "accuracy";
 
     const metricMeta: Record<
         MetricKey,
         { label: string; unit?: string; domain?: [number, number] }
         > = {
+        aim: { label: "Aim", unit: "" },
         kd: { label: "KD", unit: "" },
         preaim: { label: "Pre-aim", unit: "" },
         ttd: { label: "Time to Damage", unit: "ms" },
@@ -72,7 +88,7 @@ import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis } fro
     };
 
     export default function PerformanceChart({rows,}: { rows: MatchRow[]; }) {
-    const [metric, setMetric] = useState<MetricKey>("kd");
+    const [metric, setMetric] = useState<MetricKey>("aim");
 
     const data = useMemo(() => mapMatchStatsToChart(rows), [rows]);
     const filtered = useMemo(
@@ -84,7 +100,7 @@ import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis } fro
         <div className="w-full rounded-2xl p-4">
             <div className="mb-3 flex items-center justify-between gap-3">
                 <div>
-                    <div className="text-sm text-white/60">Performance chart (30 days)</div>
+                    <div className="text-sm text-white/60">Performance chart (last 30 matches)</div>
                         <div className="text-lg font-semibold text-white">
                             {metricMeta[metric].label}
                         </div>
@@ -95,6 +111,7 @@ import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis } fro
                         value={metric}
                         onChange={(e) => setMetric(e.target.value as MetricKey)}
                         >
+                        <option value="aim">Aim</option>
                         <option value="kd">KD</option>
                         <option value="preaim">Pre-aim</option>
                         <option value="ttd">Time to Damage (ms)</option>
@@ -106,11 +123,12 @@ import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis } fro
                     <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={filtered} margin={{ top: 10, right: 12, left: 0, bottom: 0 }}>
                         <CartesianGrid strokeDasharray="3 3" stroke="#eae8e040" />
-                        <XAxis dataKey="date" tickMargin={10} fontSize={15} />
+                        <XAxis dataKey="match" interval={0} tickFormatter={(v) => `${v}`} tickMargin={10} fontSize={12} />
                         <YAxis
                         tickMargin={1}
                         width={50}
                         fontSize={15}
+                        domain={metric === "aim" ? [0,100] : ["auto", "auto"]}
                         />
                         <Line
                         type="monotone"
@@ -120,7 +138,6 @@ import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis } fro
                         activeDot={false}
                         isAnimationActive={false}
                         stroke="#eae8e0"
-                        filter="drop-shadow(0 0 6px #eae8e059)"
                         />
                     </LineChart>
                     </ResponsiveContainer>
