@@ -1,4 +1,5 @@
 import AimScore from "@/app/components/AimScore";
+import { formatMatchTime } from "@/app/components/FormatMatchTime";
 
 export default function RecentMatches({ matches }: { matches: any[]}) {
     return(
@@ -40,7 +41,7 @@ export default function RecentMatches({ matches }: { matches: any[]}) {
                                     counterStrafeRatio={m.counter_strafing_shots_good_ratio}
                                     />
                                 </td>
-                                <td className="hidden md:block">{m.finished_at.slice(0,10)}</td>
+                                <td className="hidden md:block text-right">{formatMatchTime(m.finished_at)}</td>
                             </tr>
                         ))}
                     </tbody>
