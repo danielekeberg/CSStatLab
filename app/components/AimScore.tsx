@@ -42,6 +42,13 @@ function scoreLowBetter(x: number | null, { low, mid, high }: Bench) {
     return 50 - (50 * (x - mid)) / (high - mid);
 }
 
+function calibrateAimBoost(calibrated: number) {
+    if (calibrated <= 70) return calibrated;
+    const extraSlope = 1.25;
+    return calibrated + (calibrated - 70) * (extraSlope - 1);
+}
+
+
 export type AimScoreProps = {
     accuracy: number | null;
     accuracyEnemySpotted: number | null;
@@ -67,7 +74,7 @@ function computeAimScore(
     ) {
     const {
         applyReliability = false,
-        reliabilityShots = 200,
+        reliabilityShots = 100,
         applyCalibration = true,
         calSlope = 1.38,
         calOffset = -18.25,
@@ -108,6 +115,7 @@ function computeAimScore(
 
     if (applyCalibration) {
         score = calSlope * score + calOffset;
+        score = calibrateAimBoost(score);
     }
 
     score = clamp(score, 0, 100);
@@ -138,7 +146,60 @@ export function calcAimScore(props: AimScoreProps): number | null {
 export function calcAimScoreTrend(props: AimScoreProps): number | null {
     return computeAimScore(props, {
         applyReliability: true,
-        reliabilityShots: 300,
+        reliabilityShots: 100,
         applyCalibration: true,
     }).score;
+}
+
+export type AimMatchRow = {
+    finished_at: string | null;
+
+    accuracy: number | null;
+    accuracy_enemy_spotted: number | null;
+    accuracy_head: number | null;
+    reaction_time_ms: number | null;
+    preaim: number | null;
+    spray_accuracy: number | null;
+    shots_fired: number | null;
+    counter_strafing_shots_good_ratio: number | null;
+};
+
+export function calcAvgAimLast30( rows: AimMatchRow[], maxMatches = 30, trim = 2 ): number | null {
+    if (!rows || rows.length === 0) return null;
+
+    const recent = rows
+        .filter((r) => r.finished_at)
+        .slice()
+        .sort(
+        (a, b) =>
+            new Date(b.finished_at as string).getTime() -
+            new Date(a.finished_at as string).getTime()
+        )
+        .slice(0, maxMatches);
+
+    const aims = recent
+        .map((r) =>
+        calcAimScore({
+            accuracy: r.accuracy,
+            accuracyEnemySpotted: r.accuracy_enemy_spotted,
+            accuracyHead: r.accuracy_head,
+            reactionTimeMs: r.reaction_time_ms,
+            preaim: r.preaim,
+            sprayAccuracy: r.spray_accuracy,
+            shotsFired: r.shots_fired,
+            counterStrafeRatio: r.counter_strafing_shots_good_ratio,
+        })
+        )
+        .filter((v): v is number => typeof v === "number" && Number.isFinite(v));
+
+    if (aims.length < 5) return null;
+
+    const sorted = [...aims].sort((a, b) => a - b);
+    const trimmed =
+        sorted.length > trim * 2 ? sorted.slice(trim, sorted.length - trim) : sorted;
+
+    if (trimmed.length === 0) return null;
+
+    const avg = trimmed.reduce((sum, v) => sum + v, 0) / trimmed.length;
+    return Math.round(avg);
 }
