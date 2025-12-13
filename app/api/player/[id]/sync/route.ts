@@ -217,7 +217,7 @@ export async function POST(req: NextRequest, context: RouteContext) {
     const kd = totalDeaths > 0 ? totalKills / totalDeaths : null;
     const winrate = matchesPlayed > 0 ? (matchesWon / matchesPlayed) * 100 : null;
     const preaim = preaimCount > 0 ? preaimSum / preaimCount : null;
-    const ttd =ttdCount > 0 ? ttdSumMs / ttdCount : null;
+    const ttd = ttdCount > 0 ? ttdSumMs / ttdCount : null;
 
     const statsSummary = {
         kd,
