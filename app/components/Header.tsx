@@ -56,9 +56,7 @@ export default function Header({ status }: { status: boolean }) {
             <div>
                 <img />
                 <Link href="../" className="flex italic text-2xl font-bold">
-                    <p>CS</p>
-                    <p className="text-blue-500">STAT</p>
-                    <p>LAB</p>
+                    <img src="../csstatlab-logo.png" className="h-12" />
                 </Link>
             </div>
             {isActive && (
