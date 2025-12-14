@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { PremierRankBadge } from "@/app/components/PremierRankBadge";
+import { formatMatchTime } from "./FormatMatchTime";
+import { Info } from "lucide-react";
 
 type PlayerStats = {
   steam64_id: string;
@@ -60,6 +62,12 @@ export default function PlayerCard({ player }: { player: any }) {
                                 <img src={`https://leetify.com/assets/images/rank-icons/matchmaking${m.rank}.png`} className="h-5" />
                             </div>
                         ))}
+                    </div>
+                )}
+                {player.last_synced_at && (
+                    <div title="To keep things running smoothly, you can sync new data every 10 minutes." className="flex gap-2 items-center text-neutral-500 text-xs text-center">
+                        <p>Last synced: <span className="underline">{formatMatchTime(player.last_synced_at)}</span></p>
+                        <div className="cursor-pointer"><Info size={14} /></div>
                     </div>
                 )}
             </div>
