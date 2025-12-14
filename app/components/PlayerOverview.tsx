@@ -100,7 +100,7 @@ export default function PlayerOverview({ player, stats, matches, matchRows}: { p
                                 <CircularProgress value={score} color={getCheatRiskColor(score)} />
                             </div>
                             <div className="flex justify-center">
-                                <p className="text-sm" style={{ color: getCheatRiskColor(score)}}>{riskText}</p>
+                                <p className={`text-xs ${riskText === "Extremely suspicious" ? 'font-bold' : ''} ${riskText === "Somewhat suspicious" ? 'font-[500]' : ''}`} style={{ color: getCheatRiskColor(score)}}>{riskText.toUpperCase()}</p>
                             </div>
                         </div>
                         <div className="grid md:flex md:w-[60%] gap-5 md:gap-10">
