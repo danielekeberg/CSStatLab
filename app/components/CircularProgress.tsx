@@ -2,10 +2,12 @@ type CircularProgressProps = {
   value: number;
   size?: number;
   strokeWidth?: number;
+  color?: string;
 };
 
 export function CircularProgress({
   value,
+  color = "#eae8e0",
   size = 120,
   strokeWidth = 10,
 }: CircularProgressProps) {
@@ -14,6 +16,7 @@ export function CircularProgress({
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (clamped / 100) * circumference;
+  console.log(color)
 
   return (
     <div className="flex items-center justify-center">
@@ -40,7 +43,7 @@ export function CircularProgress({
                 cx={size / 2}
                 cy={size / 2}
                 r={radius}
-                stroke="#eae8e0"
+                stroke={color}
                 strokeWidth={strokeWidth}
                 fill="none"
                 strokeDasharray={circumference}
@@ -49,7 +52,7 @@ export function CircularProgress({
                 className="transition-[stroke-dashoffset] duration-300 ease-out transform -rotate-90 origin-center"
             />
             </svg>
-            <span className="absolute text-xl font-semibold text-slate-100">
+            <span className="absolute text-xl font-semibold" style={{ color: color }}>
             {clamped.toFixed(0)}%
             </span>
         </div>

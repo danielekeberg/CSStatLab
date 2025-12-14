@@ -3,6 +3,7 @@ import { CircularProgress } from "@/app/components/CircularProgress";
 import Link from "next/link";
 import { calcAvgAimLast30 } from "./AimScore";
 import { Info } from "lucide-react";
+import { useState } from "react";
 
 export default function PlayerOverview({ player, stats, matches, matchRows}: { player: any, stats: any, matches: number, matchRows: any[] }) {
 
@@ -62,9 +63,18 @@ export default function PlayerOverview({ player, stats, matches, matchRows}: { p
             return "Very low risk";
         }
         if(score <= 50) {
-            return "Somewhat risky";
+            return "Somewhat suspicious";
         }
-        return "Extremely sus";
+        return "Extremely suspicious";
+    }
+    function getCheatRiskColor(score: number): string {
+        if(score <= 10) {
+            return "#eae8e0";
+        }
+        if(score <= 50) {
+            return "#f97316";
+        }
+        return "#ef4444"
     }
     const avgAim = calcAvgAimLast30(matchRows) ?? player.leetify_raw?.rating.aim;
     const score = getOverallCheatChance(avgAim, stats.preaim, stats.ttd, stats.kd, stats.winrate);
@@ -74,10 +84,9 @@ export default function PlayerOverview({ player, stats, matches, matchRows}: { p
         <div className="mt-5">
             <div className="p-4 rounded">
                 <div className="flex justify-between">
-                    <h1 className="font-bold text-xl">FairPlay Insight</h1>
+                    <h1 className="font-bold text-xl">FairPlay <span className="text-[#07a4f1]">Insight</span></h1>
                     {matches < 15 && (
                         <div className="bg-yellow-600/20 py-1 px-2 rounded border border-yellow-600 text-xs flex gap-2 items-center font-bold">
-                            {/* <img src="../warning.svg" className="h-5" /> */}
                             <Info color={"#CA8A04"} />
                             <p>Stats may be inaccurate for new players. Accuracy improves as more matches are collected.</p>
                         </div>
@@ -88,10 +97,10 @@ export default function PlayerOverview({ player, stats, matches, matchRows}: { p
                     <>
                         <div className="md:w-60">
                             <div className="flex justify-center mb-2">
-                                <CircularProgress value={score} />
+                                <CircularProgress value={score} color={getCheatRiskColor(score)} />
                             </div>
                             <div className="flex justify-center">
-                                <p className="text-sm">{riskText}</p>
+                                <p className="text-sm" style={{ color: getCheatRiskColor(score)}}>{riskText}</p>
                             </div>
                         </div>
                         <div className="grid md:flex md:w-[60%] gap-5 md:gap-10">
@@ -102,7 +111,7 @@ export default function PlayerOverview({ player, stats, matches, matchRows}: { p
                                         <p>{stats.kd != null ? stats.kd.toFixed(2) : 'Not enough data'}</p>
                                     </div>
                                     <div className="h-2 flex items-center border border-neutral-600 rounded-full">
-                                        <div className={`h-2 rounded-full bg-[#eae8e0]`} style={{ width: `${getKdCheatChance(stats.kd)}%`}} />
+                                        <div className={`h-2 rounded-full bg-[#eae8e0]`} style={{ backgroundColor: getCheatRiskColor(getKdCheatChance(stats.kd)), width: `${getKdCheatChance(stats.kd)}%`}} />
                                     </div>
                                 </div>
                                 <div className="flex flex-col gap-1 text-sm">
@@ -111,7 +120,7 @@ export default function PlayerOverview({ player, stats, matches, matchRows}: { p
                                         <p>{stats.preaim != null ? `${stats.preaim.toFixed(1)}°` : 'Not enough data'}</p>
                                     </div>
                                     <div className="h-2 flex items-center border border-neutral-600 rounded-full">
-                                        <div className={`h-2 rounded-full bg-[#eae8e0]`} style={{ width: `${stats.preaim != null ? getPreaimCheatChance(stats.preaim) : 0}%`}} />
+                                        <div className={`h-2 rounded-full bg-[#eae8e0]`} style={{ backgroundColor: getCheatRiskColor(getPreaimCheatChance(stats.preaim)), width: `${stats.preaim != null ? getPreaimCheatChance(stats.preaim) : 0}%`}} />
                                     </div>
                                 </div>
                                 <div className="flex flex-col gap-1 text-sm">
@@ -120,7 +129,7 @@ export default function PlayerOverview({ player, stats, matches, matchRows}: { p
                                         <p>{stats.ttd != null ? `${stats.ttd.toFixed(1)}ms` : 'Not enough data'}</p>
                                     </div>
                                     <div className="h-2 flex items-center border border-neutral-600 rounded-full">
-                                        <div className={`h-2 rounded-full bg-[#eae8e0]`} style={{ width: `${stats.ttd != null ? getTTDCheatChance(stats.ttd) : 0}%`}} />
+                                        <div className={`h-2 rounded-full bg-[#eae8e0]`} style={{ backgroundColor: getCheatRiskColor(getTTDCheatChance(stats.ttd)), width: `${stats.ttd != null ? getTTDCheatChance(stats.ttd) : 0}%`}} />
                                     </div>
                                 </div>
                             </div>
@@ -131,7 +140,7 @@ export default function PlayerOverview({ player, stats, matches, matchRows}: { p
                                         <p>{player.leetify_raw.rating.aim.toFixed(1)}</p>
                                     </div>
                                     <div className="h-2 flex items-center border overflow-hidden border-neutral-600 rounded-full">
-                                        <div className={`h-2 rounded-full bg-[#eae8e0]`} style={{ width: `${getAimCheatChance(player.leetify_raw.rating.aim)}%`}} />
+                                        <div className={`h-2 rounded-full bg-[#eae8e0]`} style={{ backgroundColor: getCheatRiskColor(getAimCheatChance(player.leetify_raw.rating.aim)), width: `${getAimCheatChance(player.leetify_raw.rating.aim)}%`}} />
                                     </div>
                                 </div>    
                                 <div className="flex flex-col gap-1 text-sm">
@@ -140,7 +149,7 @@ export default function PlayerOverview({ player, stats, matches, matchRows}: { p
                                         <p>{stats.winrate !== null ? `${stats.winrate.toFixed(1)}%` : 'Not enough data'}</p>
                                     </div>
                                     <div className="h-2 flex items-center border overflow-hidden border-neutral-600 rounded-full">
-                                        <div className={`h-2 rounded-full bg-[#eae8e0]`} style={{ width: `${getWinrateCheatChance(stats.winrate)}%`}} />
+                                        <div className={`h-2 rounded-full bg-[#eae8e0]`} style={{ backgroundColor: getCheatRiskColor(getWinrateCheatChance(stats.winrate)), width: `${getWinrateCheatChance(stats.winrate)}%`}} />
                                     </div>
                                 </div>    
                             </div>           
