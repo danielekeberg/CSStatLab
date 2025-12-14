@@ -38,7 +38,7 @@ export default function PlayerOverview({ player, stats, matches, matchRows}: { p
 
     function getWinrateCheatChance(winrate: number): number {
         if(winrate < 55) return 0;
-        const maxWinrate = 80;
+        const maxWinrate = 90;
         const x = (winrate - 55 ) / (maxWinrate - 55);
         const chance = 100 * ( x * x);
         return Math.min(100, Number(chance.toFixed(1))) 
@@ -65,7 +65,7 @@ export default function PlayerOverview({ player, stats, matches, matchRows}: { p
         }
         return "Extremely sus";
     }
-    const avgAim = calcAvgAimLast30(matchRows) ?? player.leetify_raw.rating.aim;
+    const avgAim = calcAvgAimLast30(matchRows) ?? player.leetify_raw?.rating.aim;
     const score = getOverallCheatChance(avgAim, stats.preaim, stats.ttd, stats.kd, stats.winrate);
     const riskText = getCheatRiskLabel(score);
 
@@ -81,66 +81,71 @@ export default function PlayerOverview({ player, stats, matches, matchRows}: { p
                         </div>
                     )}
                 </div>
-                <div className="flex flex-col md:flex-row mt-6 gap-5">
-                    <div className="md:w-60">
-                        <div className="flex justify-center mb-2">
-                            <CircularProgress value={score} />
-                        </div>
-                        <div className="flex justify-center">
-                            <p className="text-sm">{riskText}</p>
-                        </div>
-                    </div>
-                    <div className="grid md:flex md:w-[60%] gap-5 md:gap-10">
-                        <div className="flex flex-col gap-5 md:w-1/2">
-                            <div className="flex flex-col gap-1 text-sm">
-                                <div className="flex justify-between">
-                                    <p>K/D Ratio</p>
-                                    <p>{stats.kd != null ? stats.kd.toFixed(2) : 'Not enough data'}</p>
-                                </div>
-                                <div className="h-2 flex items-center border border-neutral-600 rounded-full">
-                                    <div className={`h-2 rounded-full bg-[#eae8e0]`} style={{ width: `${getKdCheatChance(stats.kd)}%`}} />
-                                </div>
+                <div className="flex flex-col md:flex-row mt-6 min-h-40 gap-5">
+                    {player.leetify_raw ? 
+                    <>
+                        <div className="md:w-60">
+                            <div className="flex justify-center mb-2">
+                                <CircularProgress value={score} />
                             </div>
-                            <div className="flex flex-col gap-1 text-sm">
-                                <div className="flex justify-between">
-                                    <p>Preaim</p>
-                                    <p>{stats.preaim != null ? `${stats.preaim.toFixed(1)}°` : 'Not enough data'}</p>
-                                </div>
-                                <div className="h-2 flex items-center border border-neutral-600 rounded-full">
-                                    <div className={`h-2 rounded-full bg-[#eae8e0]`} style={{ width: `${stats.preaim != null ? getPreaimCheatChance(stats.preaim) : 0}%`}} />
-                                </div>
-                            </div>
-                            <div className="flex flex-col gap-1 text-sm">
-                                <div className="flex justify-between">
-                                    <p>Time to Damage</p>
-                                    <p>{stats.ttd != null ? `${stats.ttd.toFixed(1)}ms` : 'Not enough data'}</p>
-                                </div>
-                                <div className="h-2 flex items-center border border-neutral-600 rounded-full">
-                                    <div className={`h-2 rounded-full bg-[#eae8e0]`} style={{ width: `${stats.ttd != null ? getTTDCheatChance(stats.ttd) : 0}%`}} />
-                                </div>
+                            <div className="flex justify-center">
+                                <p className="text-sm">{riskText}</p>
                             </div>
                         </div>
-                        <div className="flex flex-col gap-5 md:w-1/2">
-                            <div className="flex flex-col gap-1 text-sm">
-                                <div className="flex justify-between">
-                                    <p>Aim Rating</p>
-                                    <p>{player.leetify_raw.rating.aim.toFixed(1)}</p>
+                        <div className="grid md:flex md:w-[60%] gap-5 md:gap-10">
+                            <div className="flex flex-col gap-5 md:w-1/2">
+                                <div className="flex flex-col gap-1 text-sm">
+                                    <div className="flex justify-between">
+                                        <p>K/D Ratio</p>
+                                        <p>{stats.kd != null ? stats.kd.toFixed(2) : 'Not enough data'}</p>
+                                    </div>
+                                    <div className="h-2 flex items-center border border-neutral-600 rounded-full">
+                                        <div className={`h-2 rounded-full bg-[#eae8e0]`} style={{ width: `${getKdCheatChance(stats.kd)}%`}} />
+                                    </div>
                                 </div>
-                                <div className="h-2 flex items-center border overflow-hidden border-neutral-600 rounded-full">
-                                    <div className={`h-2 rounded-full bg-[#eae8e0]`} style={{ width: `${getAimCheatChance(player.leetify_raw.rating.aim)}%`}} />
+                                <div className="flex flex-col gap-1 text-sm">
+                                    <div className="flex justify-between">
+                                        <p>Preaim</p>
+                                        <p>{stats.preaim != null ? `${stats.preaim.toFixed(1)}°` : 'Not enough data'}</p>
+                                    </div>
+                                    <div className="h-2 flex items-center border border-neutral-600 rounded-full">
+                                        <div className={`h-2 rounded-full bg-[#eae8e0]`} style={{ width: `${stats.preaim != null ? getPreaimCheatChance(stats.preaim) : 0}%`}} />
+                                    </div>
                                 </div>
-                            </div>    
-                            <div className="flex flex-col gap-1 text-sm">
-                                <div className="flex justify-between">
-                                    <p>Win Rate</p>
-                                    <p>{stats.winrate !== null ? `${stats.winrate.toFixed(1)}%` : 'Not enough data'}</p>
+                                <div className="flex flex-col gap-1 text-sm">
+                                    <div className="flex justify-between">
+                                        <p>Time to Damage</p>
+                                        <p>{stats.ttd != null ? `${stats.ttd.toFixed(1)}ms` : 'Not enough data'}</p>
+                                    </div>
+                                    <div className="h-2 flex items-center border border-neutral-600 rounded-full">
+                                        <div className={`h-2 rounded-full bg-[#eae8e0]`} style={{ width: `${stats.ttd != null ? getTTDCheatChance(stats.ttd) : 0}%`}} />
+                                    </div>
                                 </div>
-                                <div className="h-2 flex items-center border overflow-hidden border-neutral-600 rounded-full">
-                                    <div className={`h-2 rounded-full bg-[#eae8e0]`} style={{ width: `${getWinrateCheatChance(stats.winrate)}%`}} />
-                                </div>
-                            </div>    
-                        </div>           
-                    </div>
+                            </div>
+                            <div className="flex flex-col gap-5 md:w-1/2">
+                                <div className="flex flex-col gap-1 text-sm">
+                                    <div className="flex justify-between">
+                                        <p>Aim Rating</p>
+                                        <p>{player.leetify_raw.rating.aim.toFixed(1)}</p>
+                                    </div>
+                                    <div className="h-2 flex items-center border overflow-hidden border-neutral-600 rounded-full">
+                                        <div className={`h-2 rounded-full bg-[#eae8e0]`} style={{ width: `${getAimCheatChance(player.leetify_raw.rating.aim)}%`}} />
+                                    </div>
+                                </div>    
+                                <div className="flex flex-col gap-1 text-sm">
+                                    <div className="flex justify-between">
+                                        <p>Win Rate</p>
+                                        <p>{stats.winrate !== null ? `${stats.winrate.toFixed(1)}%` : 'Not enough data'}</p>
+                                    </div>
+                                    <div className="h-2 flex items-center border overflow-hidden border-neutral-600 rounded-full">
+                                        <div className={`h-2 rounded-full bg-[#eae8e0]`} style={{ width: `${getWinrateCheatChance(stats.winrate)}%`}} />
+                                    </div>
+                                </div>    
+                            </div>           
+                        </div>
+                    </>
+                    :
+                    <p>We couldn’t find this player on Leetify. Showing available Steam data instead.</p>}
                 </div>
                 <div className="text-xs flex gap-10 border-t border-[#eae8e0]/30 mt-5 pt-5">
                     <p className="text-neutral-500"><span className="font-bold text-[#eae8e0]">Disclaimer: </span>FairPlay Insight provides statistical estimates based on gameplay data. Results are not definitive proof of cheating and may vary. Always consider additional context and factors when evaluating a player’s performance.</p>
