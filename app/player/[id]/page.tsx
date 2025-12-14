@@ -98,17 +98,6 @@ export default function PlayerPage() {
   );
 }
 
-if (error) {
-  return (
-    <div className="px-5 md:px-[15%]">
-      <Header status={false} />
-      <div className="h-[70vh] flex items-center justify-center">
-        <p className="text-sm text-red-400">{message || "Something went wrong."}</p>
-      </div>
-    </div>
-  );
-}
-
 if (!player) {
   return (
     <div className="px-5 md:px-[15%]">
