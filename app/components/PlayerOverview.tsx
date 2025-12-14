@@ -147,13 +147,6 @@ export default function PlayerOverview({ player, stats, matches, matchRows}: { p
                     <Link href="https://leetify.com" target="_blank" ><img src="../leetify.png" className="min-w-20 w-36" /></Link>
                 </div>
             </div>
-            {/* <div className="flex my-10 justify-center md:justify-start gap-3 font-bold text-neutral-500 text-sm">
-                <p className="text-[#eae8e0] cursor-pointer hover:text-[#eae8e0] transition duration-100">Overview</p>
-                <p className="cursor-pointer hover:text-[#eae8e0] transition duration-100">Matches</p>
-                <p className="cursor-pointer hover:text-[#eae8e0] transition duration-100">Aim</p>
-                <p className="cursor-pointer hover:text-[#eae8e0] transition duration-100">Maps</p>
-                <p className="cursor-pointer hover:text-[#eae8e0] transition duration-100">Integrity</p>
-            </div> */}
         </div>
     )
 }
