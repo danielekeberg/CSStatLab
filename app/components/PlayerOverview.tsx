@@ -2,6 +2,7 @@
 import { CircularProgress } from "@/app/components/CircularProgress";
 import Link from "next/link";
 import { calcAvgAimLast30 } from "./AimScore";
+import { Info } from "lucide-react";
 
 export default function PlayerOverview({ player, stats, matches, matchRows}: { player: any, stats: any, matches: number, matchRows: any[] }) {
 
@@ -76,7 +77,8 @@ export default function PlayerOverview({ player, stats, matches, matchRows}: { p
                     <h1 className="font-bold text-xl">FairPlay Insight</h1>
                     {matches < 15 && (
                         <div className="bg-yellow-600/20 py-1 px-2 rounded border border-yellow-600 text-xs flex gap-2 items-center font-bold">
-                            <img src="../warning.svg" className="h-5" />
+                            {/* <img src="../warning.svg" className="h-5" /> */}
+                            <Info color={"#CA8A04"} />
                             <p>Stats may be inaccurate for new players. Accuracy improves as more matches are collected.</p>
                         </div>
                     )}

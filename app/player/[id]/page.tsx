@@ -35,12 +35,6 @@ type ApiPlayerData = {
     recentMatchStats: any[];
 };
 
-type Synced = {
-    status: string;
-    message: string;
-    stage: string;
-}
-
 export default function PlayerPage() {
     const params = useParams<{ id: string }>()
     const steam64 = params.id;
@@ -52,7 +46,6 @@ export default function PlayerPage() {
     const [recentMatchStats, setRecentMatchStats] = useState<any[]>([]);
     const [error, setError] = useState(false);
     const [message, setMessage] = useState("");
-    const [synced, setSynced] = useState("")
 
     useEffect(() => {
         if(!steam64) return;
@@ -64,12 +57,10 @@ export default function PlayerPage() {
                 });
                 const syncRes = await sync.json();
                 if(syncRes.error === "Failed to fetch Leetify profile") {
-                    console.warn(syncRes.error)
-                    setMessage(syncRes.message);
+                    setMessage(syncRes.details);
                     setError(true);
                     setLoading(false);
                 }
-                setSynced(syncRes.message)
                 const res = await fetch(`/api/player/${steam64}/data`, {
                     method: "GET",
                 });
@@ -80,9 +71,6 @@ export default function PlayerPage() {
                     return;
                 }
                 const data: ApiPlayerData = await res.json();
-                console.log(data);
-                console.log(syncRes)
-                console.log(res)
                 setRecentMatchStats(data.recentMatchStats);
                 setPlayer(data.player)
                 setStats(data.stats)
