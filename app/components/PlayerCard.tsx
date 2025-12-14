@@ -24,7 +24,7 @@ export default function PlayerCard({ player }: { player: any }) {
                                 <div className="flex flex-col items-center">
                                     <Link className="hover:bg-neutral-900 p-1 transition rounded" target="_blank" href={`https://www.faceit.com/en/players/${player?.faceit_raw?.nickname}`}><img src="/faceitlogo.png" className="h-8" /></Link>
                                     {player?.leetify_raw?.bans?.[0]?.platform === "faceit" && (
-                                        <p className="text-center bg-red-900/40 rounded-b w-full">Ban</p>
+                                        <div className="text-center bg-red-900/40 text-xs font-bold rounded-b w-full" title={`Banned: ${formatMatchTime(player?.leetify_raw?.bans?.[0]?.banned_since)}`}>Ban</div>
                                     )}
                                 </div>
                             }

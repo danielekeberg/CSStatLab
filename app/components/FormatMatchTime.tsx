@@ -2,6 +2,10 @@ export function formatMatchTime(iso: string): string {
     const now = new Date();
     const date = new Date(iso);
 
+    const day = String(date.getDay()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = String(date.getFullYear()).padStart(4, '0');
+
     const diffMs = now.getTime() - date.getTime();
     const diffSec = Math.floor(diffMs / 1000);
     const diffMin = Math.floor(diffSec / 60);
@@ -20,5 +24,7 @@ export function formatMatchTime(iso: string): string {
         return `${diffDays} day${diffDays !== 1 ? "s" : ""} ago`;
     }
 
-    return date.toLocaleDateString("no-NO")
+    const formatted = `${day}/${month}/${year}`;
+
+    return formatted;
 }
