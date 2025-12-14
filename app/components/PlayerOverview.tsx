@@ -3,7 +3,6 @@ import { CircularProgress } from "@/app/components/CircularProgress";
 import Link from "next/link";
 import { calcAvgAimLast30 } from "./AimScore";
 import { Info } from "lucide-react";
-import { useState } from "react";
 
 export default function PlayerOverview({ player, stats, matches, matchRows}: { player: any, stats: any, matches: number, matchRows: any[] }) {
 
@@ -108,7 +107,7 @@ export default function PlayerOverview({ player, stats, matches, matchRows}: { p
                                 <div className="flex flex-col gap-1 text-sm">
                                     <div className="flex justify-between">
                                         <p>K/D Ratio</p>
-                                        <p>{stats.kd != null ? stats.kd.toFixed(2) : 'Not enough data'}</p>
+                                        <p>{stats.kd != 0 ? stats.kd.toFixed(2) : 'Not enough data'}</p>
                                     </div>
                                     <div className="h-2 flex items-center border border-neutral-600 rounded-full">
                                         <div className={`h-2 rounded-full bg-[#eae8e0]`} style={{ backgroundColor: getCheatRiskColor(getKdCheatChance(stats.kd)), width: `${getKdCheatChance(stats.kd)}%`}} />
@@ -117,19 +116,19 @@ export default function PlayerOverview({ player, stats, matches, matchRows}: { p
                                 <div className="flex flex-col gap-1 text-sm">
                                     <div className="flex justify-between">
                                         <p>Preaim</p>
-                                        <p>{stats.preaim != null ? `${stats.preaim.toFixed(1)}°` : 'Not enough data'}</p>
+                                        <p>{stats.preaim != 0 ? `${stats.preaim.toFixed(1)}°` : 'Not enough data'}</p>
                                     </div>
                                     <div className="h-2 flex items-center border border-neutral-600 rounded-full">
-                                        <div className={`h-2 rounded-full bg-[#eae8e0]`} style={{ backgroundColor: getCheatRiskColor(getPreaimCheatChance(stats.preaim)), width: `${stats.preaim != null ? getPreaimCheatChance(stats.preaim) : 0}%`}} />
+                                        <div className={`h-2 rounded-full bg-[#eae8e0]`} style={{ backgroundColor: getCheatRiskColor(getPreaimCheatChance(stats.preaim)), width: `${stats.preaim != 0 ? getPreaimCheatChance(stats.preaim) : 0}%`}} />
                                     </div>
                                 </div>
                                 <div className="flex flex-col gap-1 text-sm">
                                     <div className="flex justify-between">
                                         <p>Time to Damage</p>
-                                        <p>{stats.ttd != null ? `${stats.ttd.toFixed(1)}ms` : 'Not enough data'}</p>
+                                        <p>{stats.ttd != 0 ? `${stats.ttd.toFixed(1)}ms` : 'Not enough data'}</p>
                                     </div>
                                     <div className="h-2 flex items-center border border-neutral-600 rounded-full">
-                                        <div className={`h-2 rounded-full bg-[#eae8e0]`} style={{ backgroundColor: getCheatRiskColor(getTTDCheatChance(stats.ttd)), width: `${stats.ttd != null ? getTTDCheatChance(stats.ttd) : 0}%`}} />
+                                        <div className={`h-2 rounded-full bg-[#eae8e0]`} style={{ backgroundColor: getCheatRiskColor(getTTDCheatChance(stats.ttd)), width: `${stats.ttd != 0 ? getTTDCheatChance(stats.ttd) : 0}%`}} />
                                     </div>
                                 </div>
                             </div>
@@ -146,7 +145,7 @@ export default function PlayerOverview({ player, stats, matches, matchRows}: { p
                                 <div className="flex flex-col gap-1 text-sm">
                                     <div className="flex justify-between">
                                         <p>Win Rate</p>
-                                        <p>{stats.winrate !== null ? `${stats.winrate.toFixed(1)}%` : 'Not enough data'}</p>
+                                        <p>{stats.winrate !== 0 ? `${stats.winrate.toFixed(1)}%` : 'Not enough data'}</p>
                                     </div>
                                     <div className="h-2 flex items-center border overflow-hidden border-neutral-600 rounded-full">
                                         <div className={`h-2 rounded-full bg-[#eae8e0]`} style={{ backgroundColor: getCheatRiskColor(getWinrateCheatChance(stats.winrate)), width: `${getWinrateCheatChance(stats.winrate)}%`}} />

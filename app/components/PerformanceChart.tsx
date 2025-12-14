@@ -141,10 +141,9 @@ import { calcAimScore  } from "./AimScore";
         <div className="w-full rounded-2xl p-4">
             <div className="mb-3 flex items-center justify-between gap-3">
                 <div>
-                    <div className="text-sm text-white/60">Performance chart (last 30 matches)</div>
-                        <div className="text-lg font-semibold text-white">
-                            {metricMeta[metric].label}
-                        </div>
+                    <div className="text-lg font-semibold text-white">
+                        {metricMeta[metric].label}
+                    </div>
                     </div>
 
                     <select

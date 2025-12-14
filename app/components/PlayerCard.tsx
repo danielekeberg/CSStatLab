@@ -3,18 +3,6 @@ import { PremierRankBadge } from "@/app/components/PremierRankBadge";
 import { formatMatchTime } from "./FormatMatchTime";
 import { Info } from "lucide-react";
 
-type PlayerStats = {
-  steam64_id: string;
-  kd_ratio: number;
-};
-
-type Match = {
-  id: string;
-  map_name: string;
-  raw: any;
-  stats: PlayerStats[];
-};
-
 export default function PlayerCard({ player }: { player: any }) {
     return(
         <div className="flex justify-center">

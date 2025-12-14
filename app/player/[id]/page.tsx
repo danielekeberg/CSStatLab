@@ -9,6 +9,7 @@ import PlayerOverview from "@/app/components/PlayerOverview";
 import PlayerCard from "@/app/components/PlayerCard";
 import PerformanceChart from "@/app/components/PerformanceChart";
 import RecentMatches from "@/app/components/RecentMatches";
+import RecentWins from "@/app/components/RecentWins";
 
 type Player = {
     id: string;
@@ -33,6 +34,7 @@ type ApiPlayerData = {
     player: Player | null;
     stats: Stats | null;
     recentMatchStats: any[];
+    notification: any[];
 };
 
 export default function PlayerPage() {
@@ -120,6 +122,8 @@ if (!player) {
                     <PlayerOverview player={player} stats={stats} matches={matchesLength} matchRows={recentMatchStats} />
                     {player.leetify_raw ? 
                     <>
+                        <div className="px-4 text-xl font-bold">Performance <span className="text-sm text-white/60 font-normal">(last 30 matches)</span></div>
+                        <RecentWins matches={recentMatchStats} />
                         <PerformanceChart rows={recentMatchStats} />
                         <RecentMatches matches={recentMatchStats} />
                     </>
