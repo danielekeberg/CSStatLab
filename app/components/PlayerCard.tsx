@@ -75,7 +75,7 @@ export default function PlayerCard({ player }: { player: any }) {
                     </div>
                 )}
                 {player.last_synced_at && (
-                    <div title="To keep things running smoothly, you can sync new data every 10 minutes." className="flex gap-2 items-center text-neutral-500 text-xs text-center">
+                    <div title="To keep things running smoothly, you can sync new data every 30 minutes." className="flex gap-2 items-center text-neutral-500 text-xs text-center">
                         <p>Last synced: <span className="underline">{formatMatchTime(player.last_synced_at)}</span></p>
                         <div className="cursor-pointer"><Info size={14} /></div>
                     </div>
