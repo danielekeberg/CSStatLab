@@ -57,7 +57,6 @@ import { calcAimScore  } from "./AimScore";
 
         return {
             match: idx + 1,
-            aim: typeof aim === "number" ? aim : null,
             ts: new Date(r.finished_at!).getTime(),
             kd: kd !== null ? Number(kd.toFixed(2)) : null,
             preaim: typeof r.preaim === "number" ? Number(r.preaim.toFixed(2)) : null,
@@ -75,13 +74,12 @@ import { calcAimScore  } from "./AimScore";
         .sort((a, b) => a.ts - b.ts);
     }
 
-    type MetricKey = "aim" | "kd" | "preaim" | "ttd" | "accuracy";
+    type MetricKey = "kd" | "preaim" | "ttd" | "accuracy";
 
     const metricMeta: Record<
         MetricKey,
         { label: string; unit?: string; domain?: [number, number] }
         > = {
-        aim: { label: "Aim", unit: "" },
         kd: { label: "KD", unit: "" },
         preaim: { label: "Pre-aim", unit: "" },
         ttd: { label: "Time to Damage", unit: "ms" },
@@ -89,7 +87,7 @@ import { calcAimScore  } from "./AimScore";
     };
 
     export default function PerformanceChart({rows,}: { rows: MatchRow[]; }) {
-    const [metric, setMetric] = useState<MetricKey>("aim");
+    const [metric, setMetric] = useState<MetricKey>("kd");
 
     const data = useMemo(() => mapMatchStatsToChart(rows), [rows]);
     const filtered = useMemo(
@@ -154,7 +152,6 @@ import { calcAimScore  } from "./AimScore";
                         value={metric}
                         onChange={(e) => setMetric(e.target.value as MetricKey)}
                         >
-                        <option value="aim">Aim</option>
                         <option value="kd">KD</option>
                         <option value="preaim">Pre-aim</option>
                         <option value="ttd">Time to Damage (ms)</option>
@@ -180,7 +177,6 @@ import { calcAimScore  } from "./AimScore";
                         tickMargin={1}
                         width={50}
                         fontSize={15}
-                        domain={metric === "aim" ? [0,100] : ["auto", "auto"]}
                         />
                         <Line
                         type="monotone"
