@@ -27,19 +27,29 @@ export default function PlayerCard({ player }: { player: any }) {
                             <h3 className="text-xl font-bold text-center">{player.name}</h3>
                         </div>
                         <p className="text-neutral-400 text-sm text-center mb-3">{player.id}</p>
-                        <div className="gap-2 hidden md:flex justify-center items-center">
+                        <div className="gap-2 hidden md:flex justify-center items-top">
                             <Link className="hover:bg-neutral-900 p-1 transition rounded" target="_blank" href={player.steam_url}><img className="h-7" src="../steam.svg" /></Link>
                             <Link className="hover:bg-neutral-900 p-1 transition rounded" target="_blank" href={`https://leetify.com/app/profile/${player.id}`}><img className="h-8" src="../leetify_logo.png" /></Link>
+                            {player?.faceit_raw.length === 0 ? 
+                                ''
+                            :
+                                <div className="flex flex-col items-center">
+                                    <Link className="hover:bg-neutral-900 p-1 transition rounded" target="_blank" href={`https://www.faceit.com/en/players/${player?.faceit_raw?.nickname}`}><img src="/faceitlogo.png" className="h-8" /></Link>
+                                    {player?.leetify_raw?.bans?.[0]?.platform === "faceit" && (
+                                        <p className="text-center bg-red-900/40 rounded-b w-full">Ban</p>
+                                    )}
+                                </div>
+                            }
                         </div>
                     </div>
                 </div>
 
-                {player.faceit_raw && (
+                {player.faceit_raw?.length > 0 && (
                     <div className="flex justify-center items-center gap-8 md:gap-4">
-                        <img className="h-7" src={`https://leetify.com/assets/images/rank-icons/faceit${player.faceit_raw.games.cs2.skill_level}.svg`} />
+                        <img className="h-7" src={`https://leetify.com/assets/images/rank-icons/faceit${player.faceit_raw?.games?.cs2?.skill_level}.svg`} />
                         <div className="flex gap-4 items-center font-bold">
-                            <Link target="_blank" className="hidden md:block" href={`https://www.faceit.com/en/players/${player.faceit_raw.nickname}`}>{player.faceit_raw.nickname}</Link>
-                            <p>{player.faceit_raw.games.cs2.faceit_elo}</p>
+                            <Link target="_blank" className="hidden md:block" href={`https://www.faceit.com/en/players/${player.faceit_raw?.nickname}`}>{player.faceit_raw.nickname}</Link>
+                            <p>{player.faceit_raw?.games?.cs2?.faceit_elo}</p>
                         </div>
                     </div>
                 )}
@@ -47,13 +57,13 @@ export default function PlayerCard({ player }: { player: any }) {
                     {player.leetify_raw?.ranks?.premier && (
                         <div className="flex justify-between items-center">
                             <p className="text-sm font-bold">Premier</p>
-                            <PremierRankBadge rating={player.leetify_raw.ranks.premier} />
+                            <PremierRankBadge rating={player.leetify_raw?.ranks?.premier} />
                         </div>
                     )}
 
                 {player.leetify_raw?.ranks?.competitive && (
                     <div className="flex flex-col gap-2">
-                        {player.leetify_raw.ranks.competitive.filter((m:any) => m.rank > 0).sort((a:any, b:any) => b.rank - a.rank).map((m:any, i:any) => (
+                        {player.leetify_raw?.ranks?.competitive.filter((m:any) => m.rank > 0).sort((a:any, b:any) => b.rank - a.rank).map((m:any, i:any) => (
                             <div key={i} className="flex justify-between">
                                 <div className="flex items-center gap-2">
                                     <img src={`https://leetify.com/assets/images/map-icons/${m.map_name}.svg`} className="h-7" />
