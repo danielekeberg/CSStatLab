@@ -1,7 +1,6 @@
 import { formatMatchTime } from "@/app/components/FormatMatchTime";
 
 export default function RecentMatches({ matches }: { matches: any[]}) {
-    console.log(matches);
     return(
         <div className="mt-10 p-5">
             <h5 className="font-bold mb-3">Recent Games</h5>

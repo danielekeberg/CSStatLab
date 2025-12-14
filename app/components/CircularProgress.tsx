@@ -16,7 +16,6 @@ export function CircularProgress({
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (clamped / 100) * circumference;
-  console.log(color)
 
   return (
     <div className="flex items-center justify-center">
