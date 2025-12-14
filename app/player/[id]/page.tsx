@@ -16,6 +16,7 @@ type Player = {
     avatar: string | null;
     country: string | null;
     last_synced_at: string | null;
+    leetify_raw: any[] | null;
 };
 
 type Stats = {
@@ -34,6 +35,12 @@ type ApiPlayerData = {
     recentMatchStats: any[];
 };
 
+type Synced = {
+    status: string;
+    message: string;
+    stage: string;
+}
+
 export default function PlayerPage() {
     const params = useParams<{ id: string }>()
     const steam64 = params.id;
@@ -45,6 +52,7 @@ export default function PlayerPage() {
     const [recentMatchStats, setRecentMatchStats] = useState<any[]>([]);
     const [error, setError] = useState(false);
     const [message, setMessage] = useState("");
+    const [synced, setSynced] = useState("")
 
     useEffect(() => {
         if(!steam64) return;
@@ -55,22 +63,26 @@ export default function PlayerPage() {
                     method: "POST",
                 });
                 const syncRes = await sync.json();
-                console.log(syncRes);
-                if(!syncRes.ok) {
-                    console.warn(syncRes);
+                if(syncRes.error === "Failed to fetch Leetify profile") {
+                    console.warn(syncRes.error)
                     setMessage(syncRes.message);
                     setError(true);
+                    setLoading(false);
                 }
+                setSynced(syncRes.message)
                 const res = await fetch(`/api/player/${steam64}/data`, {
                     method: "GET",
                 });
                 if(!res.ok) {
                     console.error("Failed to load player data", await res.text());
-                    console.log(res);
                     setError(true);
+                    setLoading(false);
                     return;
                 }
                 const data: ApiPlayerData = await res.json();
+                console.log(data);
+                console.log(syncRes)
+                console.log(res)
                 setRecentMatchStats(data.recentMatchStats);
                 setPlayer(data.player)
                 setStats(data.stats)
@@ -84,31 +96,58 @@ export default function PlayerPage() {
         load()
     }, [steam64])
 
-    if(loading || !player) {
-        return (
-            <div className="px-5 md:px-[15%]">
-                <Header status={false} />
-                <div className="h-[70vh] flex items-center justify-center">
-                    <div className="flex flex-col gap-5">
-                        <Loader />
-                        {error ? message : <p className="text-sm">Fetching player data...</p>}
-                    </div>
-                </div>
-            </div>
-        )
-    }
+    if (loading) {
+  return (
+    <div className="px-5 md:px-[15%]">
+      <Header status={false} />
+      <div className="h-[70vh] flex items-center justify-center">
+        <div className="flex flex-col gap-5">
+          <Loader />
+          <p className="text-sm">{message || "Fetching player data..."}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+if (error) {
+  return (
+    <div className="px-5 md:px-[15%]">
+      <Header status={false} />
+      <div className="h-[70vh] flex items-center justify-center">
+        <p className="text-sm text-red-400">{message || "Something went wrong."}</p>
+      </div>
+    </div>
+  );
+}
+
+if (!player) {
+  return (
+    <div className="px-5 md:px-[15%]">
+      <Header status={false} />
+      <div className="h-[70vh] flex items-center justify-center">
+        <p className="text-sm text-white/60">No player data available.</p>
+      </div>
+    </div>
+  );
+}
 
     return (
         <div className="px-5 md:px-[15%]">
             <Header status={true} />
-            <div className="flex flex-col md:flex-row gap-5">
+            <div className="flex flex-col min-h-[73vh] md:flex-row gap-5">
                 <div className="w-80">
                     <PlayerCard player={player}/>
                 </div>
                 <div className="w-full">
                     <PlayerOverview player={player} stats={stats} matches={matchesLength} matchRows={recentMatchStats} />
-                    <PerformanceChart rows={recentMatchStats} />
-                    <RecentMatches matches={recentMatchStats} />
+                    {player.leetify_raw ? 
+                    <>
+                        <PerformanceChart rows={recentMatchStats} />
+                        <RecentMatches matches={recentMatchStats} />
+                    </>
+                    :
+                    null}
                 </div>
             </div>
             <Footer />

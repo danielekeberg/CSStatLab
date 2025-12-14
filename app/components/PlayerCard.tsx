@@ -44,14 +44,14 @@ export default function PlayerCard({ player }: { player: any }) {
                     </div>
                 )}
 
-                    {player.leetify_raw.ranks.premier && (
+                    {player.leetify_raw?.ranks?.premier && (
                         <div className="flex justify-between items-center">
                             <p className="text-sm font-bold">Premier</p>
                             <PremierRankBadge rating={player.leetify_raw.ranks.premier} />
                         </div>
                     )}
 
-                {player.leetify_raw.ranks.competitive && (
+                {player.leetify_raw?.ranks?.competitive && (
                     <div className="flex flex-col gap-2">
                         {player.leetify_raw.ranks.competitive.filter((m:any) => m.rank > 0).sort((a:any, b:any) => b.rank - a.rank).map((m:any, i:any) => (
                             <div key={i} className="flex justify-between">

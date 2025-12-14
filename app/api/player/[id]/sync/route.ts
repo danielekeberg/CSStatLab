@@ -51,24 +51,6 @@ export async function POST(req: NextRequest, context: RouteContext) {
             console.error("Steam fetch failed:", err)
         }
     }
-    const profileRes = await fetch(`${LEETIFY_BASE}/v3/profile?steam64_id=${id}`, {
-      headers: {
-        "_leetify_key": process.env.LEETIFY_API_KEY as string,
-        "Content-Type": "application/json",
-      }
-    });
-    if (!profileRes.ok) {
-      console.error(await profileRes.text());
-      return NextResponse.json(
-        { error: "Failed to fetch Leetify profile" },
-        { status: 500 }
-      );
-    }
-
-    const leetifyProfile = await profileRes.json();
-
-    const recentMatches = leetifyProfile?.recent_matches ?? [];
-    const matchesToUse = recentMatches.slice(0, 30);
     let faceitData: any = null;
     if (FACEIT_TOKEN) {
       const faceitRes = await fetch(
@@ -85,6 +67,44 @@ export async function POST(req: NextRequest, context: RouteContext) {
         faceitData = await faceitRes.json();
       }
     }
+    const profileRes = await fetch(`${LEETIFY_BASE}/v3/profile?steam64_id=${id}`, {
+      headers: {
+        "_leetify_key": process.env.LEETIFY_API_KEY as string,
+        "Content-Type": "application/json",
+      }
+    });
+    if (!profileRes.ok) {
+      console.error(await profileRes.text());
+      const playerPayload = {
+      id,
+      name: steamProfile?.personaname ?? null,
+      avatar: steamProfile?.avatarfull ??
+              steamProfile?.avatarmedium ??
+              null,
+      steam_url: steamProfile.profileurl ?? null,
+      country: faceitData?.country.toUpperCase() ?? null,
+      leetify_raw: null,
+      faceit_raw: faceitData,
+      last_synced_at: new Date().toISOString(),
+      stats: null
+    };
+
+    const { error: upsertPlayerErr } = await supabase
+      .from("players")
+      .upsert(playerPayload, { onConflict: "id" });
+
+    if (upsertPlayerErr) throw upsertPlayerErr;
+      return NextResponse.json(
+        { error: "Failed to fetch Leetify profile" },
+        { status: 500 }
+      );
+    }
+
+    const leetifyProfile = await profileRes.json();
+
+    const recentMatches = leetifyProfile?.recent_matches ?? [];
+    const matchesToUse = recentMatches.slice(0, 30);
+    
     const matchIds = matchesToUse.map((m: any) => m.id);
 
     const { data: existingMatches, error: existingMatchesErr } = await supabase
@@ -229,16 +249,14 @@ export async function POST(req: NextRequest, context: RouteContext) {
 
     const playerPayload = {
       id,
-      name: leetifyProfile?.name ?? null,
-      avatar: leetifyProfile?.avatarFull ??
-              leetifyProfile?.avatar ??
-              steamProfile?.avatarfull ??
+      name: steamProfile?.personaname ?? null,
+      avatar: steamProfile?.avatarfull ??
               steamProfile?.avatarmedium ??
               null,
       steam_url: steamProfile.profileurl ?? null,
       country: faceitData?.country.toUpperCase() ?? null,
-      leetify_raw: leetifyProfile,
-      faceit_raw: faceitData,
+      leetify_raw: leetifyProfile ?? [],
+      faceit_raw: faceitData ?? [],
       last_synced_at: new Date().toISOString(),
       stats: statsSummary
     };
