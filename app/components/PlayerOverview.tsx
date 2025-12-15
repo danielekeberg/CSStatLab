@@ -5,7 +5,7 @@ import { calcAvgAimLast30 } from "./AimScore";
 import { Info } from "lucide-react";
 
 export default function PlayerOverview({ player, stats, matches, matchRows}: { player: any, stats: any, matches: number, matchRows: any[] }) {
-
+    console.log(player);
     function getAimCheatChance(rating: number): number {
         if(rating < 90) return 0;
         const x = (rating - 90) / 10;
@@ -76,7 +76,7 @@ export default function PlayerOverview({ player, stats, matches, matchRows}: { p
         return "#ef4444"
     }
     const avgAim = calcAvgAimLast30(matchRows) ?? player.leetify_raw?.rating.aim;
-    const score = getOverallCheatChance(avgAim, stats.preaim, stats.ttd, stats.kd, stats.winrate);
+    const score = getOverallCheatChance(player?.leetify_raw?.rating?.aim, player?.leetify_raw?.stats?.preaim, player?.leetify_raw?.stats?.reaction_time_ms, stats.kd, player?.leetify_raw?.winrate);
     const riskText = getCheatRiskLabel(score);
 
     return(
@@ -107,7 +107,7 @@ export default function PlayerOverview({ player, stats, matches, matchRows}: { p
                                 <div className="flex flex-col gap-1 text-sm">
                                     <div className="flex justify-between">
                                         <p>K/D Ratio</p>
-                                        <p>{stats.kd != 0 ? stats.kd.toFixed(2) : 'Not enough data'}</p>
+                                        <p>{stats.kd != null ? stats.kd.toFixed(2) : 'Not enough data'}</p>
                                     </div>
                                     <div className="h-2 flex items-center border border-neutral-600 rounded-full">
                                         <div className={`h-2 rounded-full bg-[#eae8e0]`} style={{ backgroundColor: getCheatRiskColor(getKdCheatChance(stats.kd)), width: `${getKdCheatChance(stats.kd)}%`}} />
@@ -115,20 +115,11 @@ export default function PlayerOverview({ player, stats, matches, matchRows}: { p
                                 </div>
                                 <div className="flex flex-col gap-1 text-sm">
                                     <div className="flex justify-between">
-                                        <p>Preaim</p>
-                                        <p>{stats.preaim != 0 ? `${stats.preaim.toFixed(1)}°` : 'Not enough data'}</p>
+                                        <p>Win Rate</p>
+                                        <p>{player?.leetify_raw?.winrate ? `${(player?.leetify_raw?.winrate * 100).toFixed(1)}%` : 'Not enough data'}</p>
                                     </div>
-                                    <div className="h-2 flex items-center border border-neutral-600 rounded-full">
-                                        <div className={`h-2 rounded-full bg-[#eae8e0]`} style={{ backgroundColor: getCheatRiskColor(getPreaimCheatChance(stats.preaim)), width: `${stats.preaim != 0 ? getPreaimCheatChance(stats.preaim) : 0}%`}} />
-                                    </div>
-                                </div>
-                                <div className="flex flex-col gap-1 text-sm">
-                                    <div className="flex justify-between">
-                                        <p>Time to Damage</p>
-                                        <p>{stats.ttd != 0 ? `${stats.ttd.toFixed(1)}ms` : 'Not enough data'}</p>
-                                    </div>
-                                    <div className="h-2 flex items-center border border-neutral-600 rounded-full">
-                                        <div className={`h-2 rounded-full bg-[#eae8e0]`} style={{ backgroundColor: getCheatRiskColor(getTTDCheatChance(stats.ttd)), width: `${stats.ttd != 0 ? getTTDCheatChance(stats.ttd) : 0}%`}} />
+                                    <div className="h-2 flex items-center border overflow-hidden border-neutral-600 rounded-full">
+                                        <div className={`h-2 rounded-full bg-[#eae8e0]`} style={{ backgroundColor: getCheatRiskColor(getWinrateCheatChance(player?.leetify_raw?.winrate)), width: `${getWinrateCheatChance(player?.leetify_raw?.winrate)}%`}} />
                                     </div>
                                 </div>
                             </div>
@@ -144,13 +135,22 @@ export default function PlayerOverview({ player, stats, matches, matchRows}: { p
                                 </div>    
                                 <div className="flex flex-col gap-1 text-sm">
                                     <div className="flex justify-between">
-                                        <p>Win Rate</p>
-                                        <p>{stats.winrate !== 0 ? `${stats.winrate.toFixed(1)}%` : 'Not enough data'}</p>
+                                        <p>Preaim</p>
+                                        <p>{player?.leetify_raw?.stats?.preaim ? `${player?.leetify_raw?.stats?.preaim.toFixed(1)}°` : 'Not enough data'}</p>
                                     </div>
-                                    <div className="h-2 flex items-center border overflow-hidden border-neutral-600 rounded-full">
-                                        <div className={`h-2 rounded-full bg-[#eae8e0]`} style={{ backgroundColor: getCheatRiskColor(getWinrateCheatChance(stats.winrate)), width: `${getWinrateCheatChance(stats.winrate)}%`}} />
+                                    <div className="h-2 flex items-center border border-neutral-600 rounded-full">
+                                        <div className={`h-2 rounded-full bg-[#eae8e0]`} style={{ backgroundColor: getCheatRiskColor(getPreaimCheatChance(player?.leetify_raw?.stats?.preaim)), width: `${player?.leetify_raw?.stats?.preaim ? getPreaimCheatChance(player?.leetify_raw?.stats?.preaim) : 0}%`}} />
                                     </div>
-                                </div>    
+                                </div>
+                                <div className="flex flex-col gap-1 text-sm">
+                                    <div className="flex justify-between">
+                                        <p>Time to Damage</p>
+                                        <p>{player?.leetify_raw?.stats?.reaction_time_ms ? `${player?.leetify_raw?.stats?.reaction_time_ms.toFixed(1)}ms` : 'Not enough data'}</p>
+                                    </div>
+                                    <div className="h-2 flex items-center border border-neutral-600 rounded-full">
+                                        <div className={`h-2 rounded-full bg-[#eae8e0]`} style={{ backgroundColor: getCheatRiskColor(getTTDCheatChance(player?.leetify_raw?.stats?.reaction_time_ms)), width: `${player?.leetify_raw?.stats?.reaction_time_ms ? getTTDCheatChance(player?.leetify_raw?.stats?.reaction_time_ms) : 0}%`}} />
+                                    </div>
+                                </div>
                             </div>           
                         </div>
                     </>

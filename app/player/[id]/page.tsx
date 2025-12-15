@@ -123,7 +123,7 @@ if (!player) {
                     {player.leetify_raw ? 
                     <>
                         <div className="px-4 text-xl font-bold">Performance <span className="text-sm text-white/60 font-normal">(last 30 matches)</span></div>
-                        <RecentWins matches={recentMatchStats} />
+                        {/* <RecentWins matches={recentMatchStats} /> */}
                         <PerformanceChart rows={recentMatchStats} />
                         <RecentMatches matches={recentMatchStats} />
                     </>

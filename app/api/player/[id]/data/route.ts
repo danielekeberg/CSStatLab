@@ -77,13 +77,13 @@ export async function GET(req: NextRequest, context: RouteContext) {
       return NextResponse.json({
         player: player ?? null,
         stats: {
-          kd: 0,
-          winrate: 0,
-          preaim: 0,
-          ttd: 0,
-          accuracy: 0,
-          matchesPlayed: 0,
-          matchesWon: 0,
+          kd: null,
+          winrate: null,
+          preaim: null,
+          ttd: null,
+          accuracy: null,
+          matchesPlayed: null,
+          matchesWon: null,
         },
         recentMatchStats: [],
       });

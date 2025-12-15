@@ -13,7 +13,7 @@ export default function RecentWins({ matches }: { matches: Match[]}) {
         <div className="flex gap-5 mt-5 px-4">
             <div className="border border-neutral-500/20 p-2 rounded bg-neutral-900/50">
                 <h1 className="text-xl text-neutral-400">Winrate</h1>
-                <p className="text-2xl font-bold">{Math.round((wins / totalMatches) * 100)}%</p>
+                <p className="text-2xl font-bold">{Math.round((wins / totalMatches) * 100) ? Math.round((wins / totalMatches) * 100) : '0'}%</p>
             </div>
             <div className="border border-neutral-500/20 p-2 rounded bg-neutral-900/50">
                 <h1 className="text-xl text-neutral-400">Total wins</h1>
