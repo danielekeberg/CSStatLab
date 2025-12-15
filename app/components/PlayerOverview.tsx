@@ -61,7 +61,7 @@ export default function PlayerOverview({ player, stats, matches, matchRows}: { p
         if(score <= 10) {
             return "Very low risk";
         }
-        if(score <= 50) {
+        if(score <= 60) {
             return "Somewhat suspicious";
         }
         return "Extremely suspicious";
@@ -70,7 +70,7 @@ export default function PlayerOverview({ player, stats, matches, matchRows}: { p
         if(score <= 10) {
             return "#eae8e0";
         }
-        if(score <= 50) {
+        if(score <= 60) {
             return "#f97316";
         }
         return "#ef4444"
