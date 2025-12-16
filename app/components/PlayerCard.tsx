@@ -32,7 +32,7 @@ export default function PlayerCard({ player }: { player: any }) {
                     </div>
                 </div>
 
-                {player.faceit_raw?.length > 0 && (
+                {player.faceit_raw && (
                     <div className="flex justify-center items-center gap-8 md:gap-4">
                         <img className="h-7" src={`https://leetify.com/assets/images/rank-icons/faceit${player.faceit_raw?.games?.cs2?.skill_level}.svg`} />
                         <div className="flex gap-4 items-center font-bold">
