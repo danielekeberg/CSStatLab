@@ -53,17 +53,24 @@ export default function Header({ status }: { status: boolean }) {
 
     return(
         <div className="py-5 flex justify-between items-center">
-            <div>
-                <img />
+            {!isActive ? 
+            <div className="flex justify-center w-full">
                 <Link href="../" className="flex italic text-2xl font-bold">
                     <img src="../csstatlab-logo.png" className="h-12" />
                 </Link>
             </div>
+            :
+            <div>
+                <Link href="../" className="flex italic text-2xl font-bold">
+                    <img src="../csstatlab-logo.png" className="h-12" />
+                </Link>
+            </div>
+            }
             {isActive && (
-                <div className="hidden md:flex w-1/2 justify-center">
+                <div className="hidden md:flex w-1/3 justify-center">
                     <form onSubmit={handleResolve} className="relative w-full">
-                        <input type="text" onChange={(e) => setInput(e.target.value)} className="w-full border border-neutral-700 rounded p-2 pl-11 outline-hidden" placeholder="Search by Steam ID or nickname..." />
-                        <img src="../search.svg" className="h-6 w-6 absolute top-2 left-3" />
+                        <input type="text" onChange={(e) => setInput(e.target.value)} className="w-full border border-neutral-700 bg-[#383838]/20 border border-[#383838] rounded-full p-3 pl-11 outline-hidden" placeholder="Search by Steam ID or nickname..." />
+                        <img src="../search.svg" className="h-8 w-6 absolute top-2 left-3" />
                     </form>
                 </div>
             )}

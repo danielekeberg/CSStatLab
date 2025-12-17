@@ -138,16 +138,17 @@ import { calcAimScore  } from "./AimScore";
     }
 
     return (
-        <div className="w-full rounded-2xl p-4">
+        <div className="w-full rounded-2xl p-4 bg-[#383838]/20 border border-[#383838] rounded-xl p-5">
             <div className="mb-3 flex items-center justify-between gap-3">
                 <div>
+                    <div className="text-[#b3c0d3]">Performance (last 30 matches)</div>
                     <div className="text-lg font-semibold text-white">
                         {metricMeta[metric].label}
                     </div>
                     </div>
 
                     <select
-                        className="rounded border border-white/10 bg-neutral-950 px-3 py-2 text-sm text-white outline-none"
+                        className="rounded border border-white/10 bg-neutral-950 px-3 py-2 text-sm text-[#eae8e0] outline-none"
                         value={metric}
                         onChange={(e) => setMetric(e.target.value as MetricKey)}
                         >
@@ -161,10 +162,10 @@ import { calcAimScore  } from "./AimScore";
                 <div className="h-64 w-full">
                     <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={filtered} margin={{ top: 10, right: 12, left: 0, bottom: 0 }}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#eae8e040" />
+                        <CartesianGrid strokeDasharray="3 3" stroke="#b3c0d340" />
                         <XAxis dataKey="match" interval={0} tickFormatter={(v) => `${v}`} tickMargin={10} fontSize={12} />
                             <Tooltip 
-                                cursor={{ stroke: "rgba(234,232,224,0.18)", strokeWidth: 1 }}
+                                cursor={{ stroke: "#b3c0d3", strokeWidth: 1 }}
                                 content={
                                     <CustomTooltip
                                     metricLabel={metricMeta[metric].label}
@@ -184,7 +185,7 @@ import { calcAimScore  } from "./AimScore";
                         dot={true}
                         activeDot={false}
                         isAnimationActive={false}
-                        stroke="#eae8e0"
+                        stroke="#b3c0d3"
                         />
                     </LineChart>
                     </ResponsiveContainer>
