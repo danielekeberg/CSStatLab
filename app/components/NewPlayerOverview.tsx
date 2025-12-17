@@ -78,7 +78,6 @@ export default function PlayerOverview({ player, stats, matches, matchRows}: { p
     const avgAim = calcAvgAimLast30(matchRows) ?? player.leetify_raw?.rating.aim;
     const score = getOverallCheatChance(player?.leetify_raw?.rating?.aim, player?.leetify_raw?.stats?.preaim, player?.leetify_raw?.stats?.reaction_time_ms, stats.kd, player?.leetify_raw?.winrate);
     const riskText = getCheatRiskLabel(score);
-    console.log(player);
     return(
         <div className="mt-5">
             {player.leetify_raw ? 
@@ -123,18 +122,6 @@ export default function PlayerOverview({ player, stats, matches, matchRows}: { p
                     <div className="bg-[#383838]/20 border border-[#383838] rounded-xl p-5 flex flex-col gap-3">
                         <div className="bg-[#07a4f1]/15 p-2 rounded-md w-fit">
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M15.8334 4.16663L4.16675 15.8333" stroke="#07A4F1" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
-                                <path d="M5.41659 7.50004C6.56718 7.50004 7.49992 6.5673 7.49992 5.41671C7.49992 4.26611 6.56718 3.33337 5.41659 3.33337C4.26599 3.33337 3.33325 4.26611 3.33325 5.41671C3.33325 6.5673 4.26599 7.50004 5.41659 7.50004Z" stroke="#07A4F1" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
-                                <path d="M14.5833 16.6667C15.7339 16.6667 16.6667 15.7339 16.6667 14.5833C16.6667 13.4327 15.7339 12.5 14.5833 12.5C13.4327 12.5 12.5 13.4327 12.5 14.5833C12.5 15.7339 13.4327 16.6667 14.5833 16.6667Z" stroke="#07A4F1" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
-                            </svg>
-
-                        </div>
-                        <p className="text-[#b3c0d3] text-sm">WIN RATE</p>
-                        <h1 className="text-[#eae8e0] font-bold text-2xl">{player?.leetify_raw?.winrate ? `${(player?.leetify_raw?.winrate * 100).toFixed(1)}%` : 'Not enough data'}</h1>
-                    </div>
-                    <div className="bg-[#383838]/20 border border-[#383838] rounded-xl p-5 flex flex-col gap-3">
-                        <div className="bg-[#07a4f1]/15 p-2 rounded-md w-fit">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M8.33325 1.66663H11.6666" stroke="#07A4F1" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
                                 <path d="M10 11.6666L12.5 9.16663" stroke="#07A4F1" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
                                 <path d="M9.99992 18.3333C13.6818 18.3333 16.6666 15.3486 16.6666 11.6667C16.6666 7.98477 13.6818 5 9.99992 5C6.31802 5 3.33325 7.98477 3.33325 11.6667C3.33325 15.3486 6.31802 18.3333 9.99992 18.3333Z" stroke="#07A4F1" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
@@ -155,7 +142,18 @@ export default function PlayerOverview({ player, stats, matches, matchRows}: { p
                         <p className="text-[#b3c0d3] text-sm">HEADSHOT ACCURACY</p>
                         <h1 className="text-[#eae8e0] font-bold text-2xl">{player?.leetify_raw?.stats?.accuracy_head ? `${player?.leetify_raw?.stats?.accuracy_head.toFixed(1)}%` : 'Not enough data'}</h1>
                     </div>
-                    
+                    <div className="bg-[#383838]/20 border border-[#383838] rounded-xl p-5 flex flex-col gap-3">
+                        <div className="bg-[#07a4f1]/15 p-2 rounded-md w-fit">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M15.8334 4.16663L4.16675 15.8333" stroke="#07A4F1" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
+                                <path d="M5.41659 7.50004C6.56718 7.50004 7.49992 6.5673 7.49992 5.41671C7.49992 4.26611 6.56718 3.33337 5.41659 3.33337C4.26599 3.33337 3.33325 4.26611 3.33325 5.41671C3.33325 6.5673 4.26599 7.50004 5.41659 7.50004Z" stroke="#07A4F1" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
+                                <path d="M14.5833 16.6667C15.7339 16.6667 16.6667 15.7339 16.6667 14.5833C16.6667 13.4327 15.7339 12.5 14.5833 12.5C13.4327 12.5 12.5 13.4327 12.5 14.5833C12.5 15.7339 13.4327 16.6667 14.5833 16.6667Z" stroke="#07A4F1" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
+                            </svg>
+
+                        </div>
+                        <p className="text-[#b3c0d3] text-sm">WIN RATE</p>
+                        <h1 className="text-[#eae8e0] font-bold text-2xl">{player?.leetify_raw?.winrate ? `${(player?.leetify_raw?.winrate * 100).toFixed(1)}%` : 'Not enough data'}</h1>
+                    </div>
                 </div>
             </>
             :

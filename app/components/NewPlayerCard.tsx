@@ -1,23 +1,22 @@
 import Link from "next/link";
 import { PremierRankBadge } from "@/app/components/PremierRankBadge";
 import { formatMatchTime } from "./FormatMatchTime";
-import { Info } from "lucide-react";
 
 export default function PlayerCard({ player }: { player: any }) {
     console.log(player)
     return(
         <div className="flex justify-center p-5 bg-[#383838]/20 border border-[#383838] rounded-xl mt-10">
-            <div className="flex gap-10 w-full justify-between">
-                <div className="flex items-center gap-4">
+            <div className="flex flex-col md:flex-row gap-10 w-full justify-between">
+                <div className="flex flex-col md:flex-row items-center gap-4">
                     <img src={player.avatar} className="h-25 w-25 rounded border border-neutral-200" />
                     <div>
-                        <div className="flex items-center gap-2">
+                        <div className="flex justify-center md:justify-start items-center gap-2">
                             {player.country && <img src={`https://flagsapi.com/${player.country}/flat/64.png`} className="h-6" />}
                             <h3 className="text-xl font-bold text-center">{player.name}</h3>
                         </div>
                         <p className="text-neutral-400 text-sm text-center mb-3">{player.id}</p>
                         <div className="gap-2 hidden md:flex justify-center items-top">
-                            {player?.faceit_raw.length === 0 ? 
+                            {player?.faceit_raw?.length === 0 ? 
                                 ''
                             :
                                 <div className="flex flex-col items-center">
@@ -34,13 +33,13 @@ export default function PlayerCard({ player }: { player: any }) {
                 </div>
                 <div className="grid grid-cols-1 items-center">
                     {player.leetify_raw?.ranks?.premier && (
-                        <div className="flex justify-end w-full">
+                        <div className="flex justify-center md:justify-end w-full mb-5">
                             <PremierRankBadge rating={player.leetify_raw?.ranks?.premier} />
                         </div>
                     )}
-                    {player.faceit_raw.length !== 0 && (
+                    {player.faceit_raw?.length !== 0 && (
                         <div className="flex justify-center items-center gap-8 md:gap-4">
-                            <Link target="_blank" className="hidden md:block" href={`https://www.faceit.com/en/players/${player.faceit_raw?.nickname}`}>{player.faceit_raw.nickname}</Link>
+                            <Link target="_blank" className="hidden md:block" href={`https://www.faceit.com/en/players/${player.faceit_raw?.nickname}`}>{player.faceit_raw?.nickname}</Link>
                             <div className="flex gap-4 items-center font-bold">
                                 <img className="h-7" src={`https://leetify.com/assets/images/rank-icons/faceit${player.faceit_raw?.games?.cs2?.skill_level}.svg`} />
                                 <p>{player.faceit_raw?.games?.cs2?.faceit_elo}</p>
