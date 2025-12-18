@@ -158,7 +158,7 @@ if (!player) {
                 {player.leetify_raw ? 
                 <>
                   <PerformanceChart rows={recentMatchStats} />
-                  <Ranks player={player} />
+                  <Ranks player={player} matches={recentMatchStats} />
                   <RecentMatches matches={recentMatchStats} />
                 </>
                 :

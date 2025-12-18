@@ -28,7 +28,7 @@ export default function RecentMatches({ matches }: { matches: any[]}) {
                     <table className="w-full">
                         <tbody className="text-center">
                             {matches.map((m) => (
-                                <tr key={m.match_id} className={`p-2 grid grid-cols-3 border-b border-neutral-500/20 w-full ${m.has_banned_player && 'bg-red-900/40'}`}>
+                                <tr key={m.match_id} className={`p-2 cursor-pointer hover:bg-neutral-100/10 grid grid-cols-3 border-b border-neutral-500/20 w-full ${m.has_banned_player && 'bg-red-900/40'}`}>
                                     <td className="flex items-center gap-3">
                                         <div className={`font-bold w-8 text-left ${m.rounds_won > m.rounds_lost && 'text-green-500'} ${m.rounds_won < m.rounds_lost && 'text-red-500'} ${m.rounds_won === m.rounds_lost && 'text-{#eae8e0]'}}`}><p>{m.rounds_won}:{m.rounds_lost}</p></div>
                                         <div>{m.map_name ? <div className="flex w-25 items-center gap-2"><img className="h-5" src={`https://leetify.com/assets/images/map-icons/${m.map_name}.svg`}/><p>{m.map_name.slice(3,4).toUpperCase()}{m.map_name.slice(4)}</p></div> : <p>{m.map_name ? m.map_name : 'No data'}</p>}</div>

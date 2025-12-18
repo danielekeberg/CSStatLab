@@ -1,4 +1,4 @@
-export default function Ranks({ player }: { player: any }) {
+export default function Ranks({ player, matches }: { player: any, matches: any }) {
     const label = [
         "Silver 1",
         "Silver 2",
@@ -19,7 +19,6 @@ export default function Ranks({ player }: { player: any }) {
         "Supreme",
         "The Global Elite"
     ]
-    console.log(player)
     return(
         <>
             {player.leetify_raw?.ranks?.competitive && (
