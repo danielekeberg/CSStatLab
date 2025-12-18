@@ -29,7 +29,7 @@ export async function POST(req: NextRequest, context: RouteContext) {
       const last = new Date(existingPlayer.last_synced_at);
       const now = new Date();
       const diffMinutes = (now.getTime() - last.getTime()) / 1000 / 60;
-      if (diffMinutes < 1) {
+      if (diffMinutes < 30) {
         return NextResponse.json({
           status: "ok",
           message: "Recently synced, skipping heavy fetch",
