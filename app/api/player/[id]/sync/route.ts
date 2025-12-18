@@ -29,7 +29,7 @@ export async function POST(req: NextRequest, context: RouteContext) {
       const last = new Date(existingPlayer.last_synced_at);
       const now = new Date();
       const diffMinutes = (now.getTime() - last.getTime()) / 1000 / 60;
-      if (diffMinutes < 30) {
+      if (diffMinutes < 1) {
         return NextResponse.json({
           status: "ok",
           message: "Recently synced, skipping heavy fetch",
@@ -83,10 +83,8 @@ export async function POST(req: NextRequest, context: RouteContext) {
               null,
       steam_url: steamProfile.profileurl ?? null,
       country: faceitData?.country.toUpperCase() ?? null,
-      leetify_raw: null,
       faceit_raw: faceitData,
       last_synced_at: new Date().toISOString(),
-      stats: null
     };
 
     const { error: upsertPlayerErr } = await supabase
