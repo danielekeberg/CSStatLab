@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { PremierRankBadge } from "@/app/components/PremierRankBadge";
 import { formatMatchTime } from "./FormatMatchTime";
+import { Info } from "lucide-react";
 
 export default function PlayerCard({ player }: { player: any }) {
     console.log(player)
@@ -31,9 +32,9 @@ export default function PlayerCard({ player }: { player: any }) {
                         </div>
                     </div>
                 </div>
-                <div className="grid grid-cols-1 items-center">
+                <div className="flex flex-col items-center justify-between">
                     {player.leetify_raw?.ranks?.premier && (
-                        <div className="flex justify-center md:justify-end w-full mb-5">
+                        <div className="flex justify-center md:justify-end w-full">
                             <PremierRankBadge rating={player.leetify_raw?.ranks?.premier} />
                         </div>
                     )}
@@ -44,6 +45,12 @@ export default function PlayerCard({ player }: { player: any }) {
                                 <img className="h-7" src={`https://leetify.com/assets/images/rank-icons/faceit${player.faceit_raw?.games?.cs2?.skill_level}.svg`} />
                                 <p>{player.faceit_raw?.games?.cs2?.faceit_elo}</p>
                             </div>
+                        </div>
+                    )}
+                    {player.last_synced_at && (
+                        <div title="To keep things running smoothly, you can sync new data every 60 minutes." className="flex gap-2 items-center justify-end text-neutral-500 text-xs text-center">
+                            <p>Last synced: <span className="underline">{formatMatchTime(player.last_synced_at)}</span></p>
+                            <div className="cursor-pointer"><Info size={14} /></div>
                         </div>
                     )}
                 </div>
