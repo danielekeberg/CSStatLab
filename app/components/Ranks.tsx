@@ -1,24 +1,15 @@
 export default function Ranks({ player, matches }: { player: any, matches: any }) {
-    const label = [
-        "Silver 1",
-        "Silver 2",
-        "Silver 3",
-        "Silver 4",
-        "Silver Elite",
-        "Silver Elite Master",
-        "Gold Nova 1",
-        "Gold Nova 2",
-        "Gold Nova 3",
-        "Gold Nova Master",
-        "Master Guardian",
-        "Master Guardian 2",
-        "MGE",
-        "DMG",
-        "Legendary Eagle",
-        "Legendary Eagle Master",
-        "Supreme",
-        "The Global Elite"
-    ]
+    function result(wins:any, loss:any) {
+        if(wins === loss) {
+            return "T"
+        }
+        if(wins > loss) {
+            return "W"
+        }
+        if(wins < loss) {
+            return "L"
+        }
+    }
     return(
         <>
             {player.leetify_raw?.ranks?.competitive && (
@@ -37,8 +28,12 @@ export default function Ranks({ player, matches }: { player: any, matches: any }
                             <div className="flex justify-center pb-5">
                                 <img src={`https://leetify.com/assets/images/rank-icons/matchmaking${m.rank}.png`} className="h-8" />
                             </div>
-                            <div className="flex justify-center">
-                                <p className="text-[#b3c0d3] text-sm">{label[m.rank - 1]}</p>
+                            <div className="flex justify-center gap-1">
+                                {matches.filter((ma:any) => ma.map_name === m.map_name).slice(0,5).map((m:any) => (
+                                    <div key={m.match_id} className="text-sm">
+                                        <p className={`font-bold ${m.rounds_won > m.rounds_lost ? "text-green-500" : ''} ${m.rounds_won < m.rounds_lost ? "text-red-500" : ""}`}>{result(m.rounds_won, m.rounds_lost)}</p>
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     ))}
