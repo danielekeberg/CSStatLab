@@ -1,8 +1,5 @@
 'use client';
-import { CircularProgress } from "@/app/components/CircularProgress";
-import Link from "next/link";
 import { calcAvgAimLast30 } from "./AimScore";
-import { Info } from "lucide-react";
 
 export default function PlayerOverview({ player, stats, matches, matchRows}: { player: any, stats: any, matches: number, matchRows: any[] }) {
     console.log(player);
@@ -78,23 +75,26 @@ export default function PlayerOverview({ player, stats, matches, matchRows}: { p
     const avgAim = calcAvgAimLast30(matchRows) ?? player.leetify_raw?.rating.aim;
     const score = getOverallCheatChance(player?.leetify_raw?.rating?.aim, player?.leetify_raw?.stats?.preaim, player?.leetify_raw?.stats?.reaction_time_ms, stats.kd, player?.leetify_raw?.winrate);
     const riskText = getCheatRiskLabel(score);
+    console.log(stats);
     return(
         <div className="mt-5">
             {player.leetify_raw ? 
             <>
                 <div className="grid grid-cols-1 md:grid-cols-6 gap-5 mb-10">
-                    <div className="bg-[#383838]/20 border border-[#383838] rounded-xl p-5 flex flex-col gap-3">
-                        <div className="bg-[#07a4f1]/15 p-2 rounded-md w-fit">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M10.4167 14.1667L10 13.3334L9.58337 14.1667H10.4167Z" stroke="#07A4F1" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
-                                <path d="M12.5 18.3334C12.7211 18.3334 12.933 18.2456 13.0893 18.0893C13.2456 17.933 13.3334 17.721 13.3334 17.5V16.6667C13.6473 16.6665 13.9548 16.5776 14.2204 16.4104C14.486 16.2431 14.699 16.0042 14.8349 15.7212C14.9707 15.4382 15.0239 15.1226 14.9882 14.8108C14.9526 14.4989 14.8296 14.2034 14.6334 13.9584C15.5884 13.0353 16.2458 11.848 16.5215 10.5487C16.7972 9.24945 16.6785 7.89746 16.1807 6.66611C15.6828 5.43476 14.8285 4.38018 13.7273 3.6376C12.6261 2.89502 11.3282 2.49829 10 2.49829C8.67186 2.49829 7.37395 2.89502 6.27275 3.6376C5.17154 4.38018 4.31725 5.43476 3.81941 6.66611C3.32157 7.89746 3.20288 9.24945 3.47857 10.5487C3.75425 11.848 4.41173 13.0353 5.36671 13.9584C5.17052 14.2034 5.04751 14.4989 5.01187 14.8108C4.97622 15.1226 5.02937 15.4382 5.16521 15.7212C5.30105 16.0042 5.51405 16.2431 5.77969 16.4104C6.04532 16.5776 6.3528 16.6665 6.66671 16.6667V17.5C6.66671 17.721 6.75451 17.933 6.91079 18.0893C7.06707 18.2456 7.27903 18.3334 7.50004 18.3334H12.5Z" stroke="#07A4F1" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
-                                <path d="M12.5 10.8333C12.9602 10.8333 13.3333 10.4602 13.3333 9.99996C13.3333 9.53972 12.9602 9.16663 12.5 9.16663C12.0397 9.16663 11.6666 9.53972 11.6666 9.99996C11.6666 10.4602 12.0397 10.8333 12.5 10.8333Z" stroke="#07A4F1" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
-                                <path d="M7.49996 10.8333C7.9602 10.8333 8.33329 10.4602 8.33329 9.99996C8.33329 9.53972 7.9602 9.16663 7.49996 9.16663C7.03972 9.16663 6.66663 9.53972 6.66663 9.99996C6.66663 10.4602 7.03972 10.8333 7.49996 10.8333Z" stroke="#07A4F1" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
-                            </svg>
+                    {stats?.kd !== null && (
+                        <div className="bg-[#383838]/20 border border-[#383838] rounded-xl p-5 flex flex-col gap-3">
+                            <div className="bg-[#07a4f1]/15 p-2 rounded-md w-fit">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M10.4167 14.1667L10 13.3334L9.58337 14.1667H10.4167Z" stroke="#07A4F1" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
+                                    <path d="M12.5 18.3334C12.7211 18.3334 12.933 18.2456 13.0893 18.0893C13.2456 17.933 13.3334 17.721 13.3334 17.5V16.6667C13.6473 16.6665 13.9548 16.5776 14.2204 16.4104C14.486 16.2431 14.699 16.0042 14.8349 15.7212C14.9707 15.4382 15.0239 15.1226 14.9882 14.8108C14.9526 14.4989 14.8296 14.2034 14.6334 13.9584C15.5884 13.0353 16.2458 11.848 16.5215 10.5487C16.7972 9.24945 16.6785 7.89746 16.1807 6.66611C15.6828 5.43476 14.8285 4.38018 13.7273 3.6376C12.6261 2.89502 11.3282 2.49829 10 2.49829C8.67186 2.49829 7.37395 2.89502 6.27275 3.6376C5.17154 4.38018 4.31725 5.43476 3.81941 6.66611C3.32157 7.89746 3.20288 9.24945 3.47857 10.5487C3.75425 11.848 4.41173 13.0353 5.36671 13.9584C5.17052 14.2034 5.04751 14.4989 5.01187 14.8108C4.97622 15.1226 5.02937 15.4382 5.16521 15.7212C5.30105 16.0042 5.51405 16.2431 5.77969 16.4104C6.04532 16.5776 6.3528 16.6665 6.66671 16.6667V17.5C6.66671 17.721 6.75451 17.933 6.91079 18.0893C7.06707 18.2456 7.27903 18.3334 7.50004 18.3334H12.5Z" stroke="#07A4F1" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
+                                    <path d="M12.5 10.8333C12.9602 10.8333 13.3333 10.4602 13.3333 9.99996C13.3333 9.53972 12.9602 9.16663 12.5 9.16663C12.0397 9.16663 11.6666 9.53972 11.6666 9.99996C11.6666 10.4602 12.0397 10.8333 12.5 10.8333Z" stroke="#07A4F1" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
+                                    <path d="M7.49996 10.8333C7.9602 10.8333 8.33329 10.4602 8.33329 9.99996C8.33329 9.53972 7.9602 9.16663 7.49996 9.16663C7.03972 9.16663 6.66663 9.53972 6.66663 9.99996C6.66663 10.4602 7.03972 10.8333 7.49996 10.8333Z" stroke="#07A4F1" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
+                                </svg>
+                            </div>
+                            <p className="text-[#b3c0d3] text-sm">K/D RATIO</p>
+                            <h1 className="text-[#eae8e0] font-bold text-2xl">{stats.kd != null ? stats.kd.toFixed(2) : 'Not enough data'}</h1>
                         </div>
-                        <p className="text-[#b3c0d3] text-sm">K/D RATIO</p>
-                        <h1 className="text-[#eae8e0] font-bold text-2xl">{stats.kd != null ? stats.kd.toFixed(2) : 'Not enough data'}</h1>
-                    </div>
+                    )}
                     <div className="bg-[#383838]/20 border border-[#383838] rounded-xl p-5 flex flex-col gap-3">
                         <div className="bg-[#07a4f1]/15 p-2 rounded-md w-fit">
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -149,7 +149,6 @@ export default function PlayerOverview({ player, stats, matches, matchRows}: { p
                                 <path d="M5.41659 7.50004C6.56718 7.50004 7.49992 6.5673 7.49992 5.41671C7.49992 4.26611 6.56718 3.33337 5.41659 3.33337C4.26599 3.33337 3.33325 4.26611 3.33325 5.41671C3.33325 6.5673 4.26599 7.50004 5.41659 7.50004Z" stroke="#07A4F1" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
                                 <path d="M14.5833 16.6667C15.7339 16.6667 16.6667 15.7339 16.6667 14.5833C16.6667 13.4327 15.7339 12.5 14.5833 12.5C13.4327 12.5 12.5 13.4327 12.5 14.5833C12.5 15.7339 13.4327 16.6667 14.5833 16.6667Z" stroke="#07A4F1" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
                             </svg>
-
                         </div>
                         <p className="text-[#b3c0d3] text-sm">WIN RATE</p>
                         <h1 className="text-[#eae8e0] font-bold text-2xl">{player?.leetify_raw?.winrate ? `${(player?.leetify_raw?.winrate * 100).toFixed(1)}%` : 'Not enough data'}</h1>
