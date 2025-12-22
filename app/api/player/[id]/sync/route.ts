@@ -34,16 +34,44 @@ async function mapWithConcurrency<T, R>(
   const results: R[] = new Array(items.length) as any;
   let i = 0;
 
-  const runners = Array.from({ length: Math.min(limit, items.length) }, async () => {
-    while (true) {
-      const idx = i++;
-      if (idx >= items.length) break;
-      results[idx] = await worker(items[idx]);
+  const runners = Array.from(
+    { length: Math.min(limit, items.length) },
+    async () => {
+      while (true) {
+        const idx = i++;
+        if (idx >= items.length) break;
+        results[idx] = await worker(items[idx]);
+      }
     }
-  });
+  );
 
   await Promise.all(runners);
   return results;
+}
+
+function applySteamFields(payload: any, steamProfile: any) {
+  if (!steamProfile) return payload;
+
+  payload.name = steamProfile.personaname ?? payload.name ?? null;
+  payload.avatar =
+    steamProfile.avatarfull ??
+    steamProfile.avatarmedium ??
+    payload.avatar ??
+    null;
+  payload.steam_url = steamProfile.profileurl ?? payload.steam_url ?? null;
+
+  return payload;
+}
+
+function applyFaceitFields(payload: any, faceitData: any) {
+  if (!faceitData) return payload;
+
+  payload.country = faceitData.country
+    ? String(faceitData.country).toUpperCase()
+    : payload.country ?? null;
+  payload.faceit_raw = faceitData;
+
+  return payload;
 }
 
 export async function POST(req: NextRequest, context: RouteContext) {
@@ -57,7 +85,9 @@ export async function POST(req: NextRequest, context: RouteContext) {
   try {
     const { data: existingPlayer, error: playerErr } = await supabase
       .from("players")
-      .select("id, last_synced_at, last_match_id, last_light_checked_at, last_profile_refreshed_at")
+      .select(
+        "id, last_synced_at, last_match_id, last_light_checked_at, last_profile_refreshed_at"
+      )
       .eq("id", id)
       .maybeSingle();
 
@@ -93,7 +123,11 @@ export async function POST(req: NextRequest, context: RouteContext) {
     ) {
       await supabase
         .from("players")
-        .update({ last_synced_at: new Date().toISOString(), leetify_raw: leetifyProfile })
+        .update({
+          last_synced_at: new Date().toISOString(),
+          leetify_raw: leetifyProfile,
+          last_match_id: latestMatch?.id ?? null,
+        })
         .eq("id", id);
 
       return NextResponse.json({
@@ -105,8 +139,11 @@ export async function POST(req: NextRequest, context: RouteContext) {
     }
 
     const diffMinutes = minutesSince(existingPlayer?.last_synced_at ?? null);
-    const profileRefreshMinutes = minutesSince(existingPlayer?.last_profile_refreshed_at ?? null);
-    const shouldRefreshExternalProfiles = !existingPlayer || profileRefreshMinutes > 24 * 60;
+    const profileRefreshMinutes = minutesSince(
+      existingPlayer?.last_profile_refreshed_at ?? null
+    );
+    const shouldRefreshExternalProfiles =
+      !existingPlayer || profileRefreshMinutes > 24 * 60;
 
     let steamProfile: any = null;
     let faceitData: any = null;
@@ -140,22 +177,25 @@ export async function POST(req: NextRequest, context: RouteContext) {
       }
     }
 
+    const didRefreshExternal = Boolean(steamProfile || faceitData);
+
     const matchesToUse = recentMatches.slice(0, 30);
     const matchIds = matchesToUse.map((m: any) => m.id).filter(Boolean);
 
     if (!matchIds.length) {
-      const playerPayload = {
+      let playerPayload: any = {
         id,
-        name: steamProfile?.personaname ?? null,
-        avatar: steamProfile?.avatarfull ?? steamProfile?.avatarmedium ?? null,
-        steam_url: steamProfile?.profileurl ?? null,
-        country: faceitData?.country ? String(faceitData.country).toUpperCase() : null,
         leetify_raw: leetifyProfile ?? null,
-        faceit_raw: faceitData ?? null,
         last_synced_at: new Date().toISOString(),
-        last_profile_refreshed_at: shouldRefreshExternalProfiles ? new Date().toISOString() : existingPlayer?.last_profile_refreshed_at ?? null,
         last_match_id: latestMatch?.id ?? null,
       };
+
+      if (shouldRefreshExternalProfiles && didRefreshExternal) {
+        playerPayload.last_profile_refreshed_at = new Date().toISOString();
+      }
+
+      applySteamFields(playerPayload, steamProfile);
+      applyFaceitFields(playerPayload, faceitData);
 
       const { error: upsertPlayerErr } = await supabase
         .from("players")
@@ -173,26 +213,25 @@ export async function POST(req: NextRequest, context: RouteContext) {
 
     if (existingMatchesErr) throw existingMatchesErr;
 
-    const existingIds = new Set(existingMatches?.map((m: any) => m.match_id) ?? []);
+    const existingIds = new Set(
+      existingMatches?.map((m: any) => m.match_id) ?? []
+    );
     const newMatchIds = matchIds.filter((mid: string) => !existingIds.has(mid));
 
     if (newMatchIds.length === 0) {
-      const playerPayload = {
+      let playerPayload: any = {
         id,
-        ...(shouldRefreshExternalProfiles
-          ? {
-              name: steamProfile?.personaname ?? null,
-              avatar: steamProfile?.avatarfull ?? steamProfile?.avatarmedium ?? null,
-              steam_url: steamProfile?.profileurl ?? null,
-              country: faceitData?.country ? String(faceitData.country).toUpperCase() : null,
-              faceit_raw: faceitData ?? null,
-              last_profile_refreshed_at: new Date().toISOString(),
-            }
-          : {}),
         leetify_raw: leetifyProfile ?? null,
         last_synced_at: new Date().toISOString(),
         last_match_id: latestMatch?.id ?? null,
       };
+
+      if (shouldRefreshExternalProfiles && didRefreshExternal) {
+        playerPayload.last_profile_refreshed_at = new Date().toISOString();
+      }
+
+      applySteamFields(playerPayload, steamProfile);
+      applyFaceitFields(playerPayload, faceitData);
 
       const { error: upsertPlayerErr } = await supabase
         .from("players")
@@ -212,12 +251,15 @@ export async function POST(req: NextRequest, context: RouteContext) {
       4,
       async (matchId: string) => {
         try {
-          const detail = await fetchJson(`${LEETIFY_BASE}/v2/matches/${matchId}`, {
-            headers: {
-              _leetify_key: LEETIFY_API_KEY,
-              "Content-Type": "application/json",
-            },
-          });
+          const detail = await fetchJson(
+            `${LEETIFY_BASE}/v2/matches/${matchId}`,
+            {
+              headers: {
+                _leetify_key: LEETIFY_API_KEY,
+                "Content-Type": "application/json",
+              },
+            }
+          );
           return detail;
         } catch (err) {
           console.warn("Failed to fetch match", matchId, err);
@@ -240,6 +282,7 @@ export async function POST(req: NextRequest, context: RouteContext) {
       const { error: upsertMatchesErr } = await supabase
         .from("matches")
         .upsert(matchRows, { onConflict: "match_id" });
+
       if (upsertMatchesErr) {
         console.error("upsertMatchesErr", upsertMatchesErr);
       }
@@ -272,13 +315,15 @@ export async function POST(req: NextRequest, context: RouteContext) {
           accuracy: p.accuracy ?? null,
           dpr: p.dpr ?? null,
           preaim: p.preaim ?? null,
-          reaction_time_ms: typeof p.reaction_time === "number" ? p.reaction_time * 1000 : null,
+          reaction_time_ms:
+            typeof p.reaction_time === "number" ? p.reaction_time * 1000 : null,
           accuracy_enemy_spotted: p.accuracy_enemy_spotted ?? null,
           accuracy_head: p.accuracy_head ?? null,
           shots_fired: p.shots_fired ?? null,
           shots_hit_foe: p.shots_hit_foe ?? null,
           spray_accuracy: p.spray_accuracy ?? null,
-          counter_strafing_shots_good_ratio: p.counter_strafing_shots_good_ratio ?? null,
+          counter_strafing_shots_good_ratio:
+            p.counter_strafing_shots_good_ratio ?? null,
 
           total_kills: p.total_kills ?? null,
           total_deaths: p.total_deaths ?? null,
@@ -357,14 +402,12 @@ export async function POST(req: NextRequest, context: RouteContext) {
       stats: statsSummary,
     };
 
-    if (shouldRefreshExternalProfiles) {
-      playerPayload.name = steamProfile?.personaname ?? null;
-      playerPayload.avatar = steamProfile?.avatarfull ?? steamProfile?.avatarmedium ?? null;
-      playerPayload.steam_url = steamProfile?.profileurl ?? null;
-      playerPayload.country = faceitData?.country ? String(faceitData.country).toUpperCase() : null;
-      playerPayload.faceit_raw = faceitData ?? null;
+    if (shouldRefreshExternalProfiles && didRefreshExternal) {
       playerPayload.last_profile_refreshed_at = new Date().toISOString();
     }
+
+    applySteamFields(playerPayload, steamProfile);
+    applyFaceitFields(playerPayload, faceitData);
 
     const { error: upsertPlayerErr } = await supabase
       .from("players")
