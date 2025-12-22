@@ -4,7 +4,6 @@ import { formatMatchTime } from "./FormatMatchTime";
 import { Info } from "lucide-react";
 
 export default function PlayerCard({ player }: { player: any }) {
-    console.log(player)
     return(
         <div className="flex justify-center p-5 bg-[#383838]/20 border border-[#383838] rounded-xl mt-10">
             <div className="flex flex-col md:flex-row gap-10 w-full justify-between">
@@ -48,7 +47,7 @@ export default function PlayerCard({ player }: { player: any }) {
                         </div>
                     )}
                     {player.last_synced_at && (
-                        <div title="To keep things running smoothly, you can sync new data every 60 minutes." className="flex gap-2 items-center justify-end text-neutral-500 text-xs text-center">
+                        <div title="To keep things running smoothly, you can sync new data every 30 minutes." className="flex gap-2 items-center justify-end text-neutral-500 text-xs text-center">
                             <p>Last synced: <span className="underline">{formatMatchTime(player.last_synced_at)}</span></p>
                             <div className="cursor-pointer"><Info size={14} /></div>
                         </div>

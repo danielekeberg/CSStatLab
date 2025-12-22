@@ -5,7 +5,6 @@ import { calcAvgAimLast30 } from "./AimScore";
 import { Info } from "lucide-react";
 
 export default function PlayerOverview({ player, stats, matches, matchRows}: { player: any, stats: any, matches: number, matchRows: any[] }) {
-    console.log(player);
     function getAimCheatChance(rating: number): number {
         if(rating < 90) return 0;
         const x = (rating - 90) / 10;

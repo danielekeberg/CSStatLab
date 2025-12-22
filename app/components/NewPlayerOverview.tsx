@@ -2,7 +2,6 @@
 import { calcAvgAimLast30 } from "./AimScore";
 
 export default function PlayerOverview({ player, stats, matches, matchRows}: { player: any, stats: any, matches: number, matchRows: any[] }) {
-    console.log(player);
     function getAimCheatChance(rating: number): number {
         if(rating < 90) return 0;
         const x = (rating - 90) / 10;
@@ -75,7 +74,6 @@ export default function PlayerOverview({ player, stats, matches, matchRows}: { p
     const avgAim = calcAvgAimLast30(matchRows) ?? player.leetify_raw?.rating.aim;
     const score = getOverallCheatChance(player?.leetify_raw?.rating?.aim, player?.leetify_raw?.stats?.preaim, player?.leetify_raw?.stats?.reaction_time_ms, stats.kd, player?.leetify_raw?.winrate);
     const riskText = getCheatRiskLabel(score);
-    console.log(stats);
     return(
         <div className="mt-5">
             {player.leetify_raw ? 

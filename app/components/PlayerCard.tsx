@@ -4,7 +4,6 @@ import { formatMatchTime } from "./FormatMatchTime";
 import { Info } from "lucide-react";
 
 export default function PlayerCard({ player }: { player: any }) {
-    console.log(player)
     return(
         <div className="flex justify-center">
             <div className="flex flex-col w-[80%] md:w-45 gap-10 justify-between my-10">

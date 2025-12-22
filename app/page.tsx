@@ -85,12 +85,12 @@ export default function Home() {
             <div className="flex gap-2 mt-10 justify-center">
               <p className="font-bold">Try:</p>
               <div className="grid text-[#b3c0d3] grid-cols-3 text-left md:text-center gap-3 md:gap-3 md:grid-cols-6">
-                <Link href="../player/76561198369432059" className="hover:underline text-center cursor-pointer">danir</Link>
-                <Link href="../player/76561198386265483" className="hover:underline text-center cursor-pointer">donk</Link>
-                <Link href="../player/76561198074762801" className="hover:underline text-center cursor-pointer">m0NESY</Link>
-                <Link href="../player/76561198113666193" className="hover:underline text-center cursor-pointer">ZywOo</Link>
-                <Link href="../player/76561198041683378" className="hover:underline text-center cursor-pointer">NiKo</Link>
-                <Link href="../player/76561198176878303" className="hover:underline text-center cursor-pointer">jL</Link>
+                <Link href={`../player/76561198369432059`} className="hover:underline text-center cursor-pointer">danir</Link>
+                <Link href={`../player/76561198386265483`} className="hover:underline text-center cursor-pointer">donk</Link>
+                <Link href={`../player/76561198074762801`} className="hover:underline text-center cursor-pointer">m0NESY</Link>
+                <Link href={`../player/76561198113666193`} className="hover:underline text-center cursor-pointer">ZywOo</Link>
+                <Link href={`../player/76561198041683378`} className="hover:underline text-center cursor-pointer">NiKo</Link>
+                <Link href={`../player/76561198176878303`} className="hover:underline text-center cursor-pointer">jL</Link>
               </div>
             </div>
           </div>
