@@ -11,6 +11,7 @@ import PerformanceChart from "@/app/components/PerformanceChart";
 import RecentMatches from "@/app/components/RecentMatches";
 import Ranks from "@/app/components/Ranks";
 import RecentWins from "@/app/components/RecentWins";
+import Affiliate from "@/app/components/Affiliate";
 
 type Player = {
     id: string;
@@ -158,6 +159,7 @@ if (!player) {
                 {player.leetify_raw ? 
                 <>
                   <PerformanceChart rows={recentMatchStats} />
+                  <Affiliate />
                   <Ranks player={player} matches={recentMatchStats} />
                   <RecentMatches matches={recentMatchStats} />
                 </>

@@ -138,7 +138,7 @@ import { calcAimScore  } from "./AimScore";
     }
 
     return (
-        <div className="w-full rounded-2xl p-4 bg-[#383838]/20 border border-[#383838] rounded-xl p-5">
+        <div className="hidden md:block w-full rounded-2xl p-4 bg-[#383838]/20 border border-[#383838] rounded-xl p-5">
             <div className="mb-3 flex items-center justify-between gap-3">
                 <div>
                     <div className="text-[#b3c0d3]">Performance (last 30 matches)</div>

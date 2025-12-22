@@ -82,7 +82,7 @@ export default function PlayerOverview({ player, stats, matches, matchRows}: { p
             <>
                 <div className="grid grid-cols-1 md:grid-cols-6 gap-5 mb-10">
                     {stats?.kd !== null && (
-                        <div className="bg-[#383838]/20 border border-[#383838] rounded-xl p-5 flex flex-col gap-3">
+                        <div className="bg-[#383838]/20 border border-[#383838] rounded-xl p-5 flex items-center md:items-start flex-col gap-3">
                             <div className="bg-[#07a4f1]/15 p-2 rounded-md w-fit">
                                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M10.4167 14.1667L10 13.3334L9.58337 14.1667H10.4167Z" stroke="#07A4F1" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
@@ -95,7 +95,7 @@ export default function PlayerOverview({ player, stats, matches, matchRows}: { p
                             <h1 className="text-[#eae8e0] font-bold text-2xl">{stats.kd != null ? stats.kd.toFixed(2) : 'Not enough data'}</h1>
                         </div>
                     )}
-                    <div className="bg-[#383838]/20 border border-[#383838] rounded-xl p-5 flex flex-col gap-3">
+                    <div className="bg-[#383838]/20 border border-[#383838] rounded-xl p-5 flex flex-col items-center md:items-start gap-3">
                         <div className="bg-[#07a4f1]/15 p-2 rounded-md w-fit">
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M9.99996 18.3333C14.6023 18.3333 18.3333 14.6023 18.3333 9.99996C18.3333 5.39759 14.6023 1.66663 9.99996 1.66663C5.39759 1.66663 1.66663 5.39759 1.66663 9.99996C1.66663 14.6023 5.39759 18.3333 9.99996 18.3333Z" stroke="#07A4F1" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
@@ -108,7 +108,7 @@ export default function PlayerOverview({ player, stats, matches, matchRows}: { p
                         <p className="text-[#b3c0d3] text-sm">AIM</p>
                         <h1 className="text-[#eae8e0] font-bold text-2xl">{player.leetify_raw.rating.aim.toFixed(1)}</h1>
                     </div>
-                    <div className="bg-[#383838]/20 border border-[#383838] rounded-xl p-5 flex flex-col gap-3">
+                    <div className="bg-[#383838]/20 border border-[#383838] rounded-xl p-5 flex flex-col items-center md:items-start gap-3">
                         <div className="bg-[#07a4f1]/15 p-2 rounded-md w-fit">
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M9.99996 18.3333C14.6023 18.3333 18.3333 14.6023 18.3333 9.99996C18.3333 5.39759 14.6023 1.66663 9.99996 1.66663C5.39759 1.66663 1.66663 5.39759 1.66663 9.99996C1.66663 14.6023 5.39759 18.3333 9.99996 18.3333Z" stroke="#07A4F1" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
@@ -119,7 +119,7 @@ export default function PlayerOverview({ player, stats, matches, matchRows}: { p
                         <p className="text-[#b3c0d3] text-sm">PREAIM</p>
                         <h1 className="text-[#eae8e0] font-bold text-2xl">{player?.leetify_raw?.stats?.preaim ? `${player?.leetify_raw?.stats?.preaim.toFixed(1)}°` : 'Not enough data'}</h1>
                     </div>
-                    <div className="bg-[#383838]/20 border border-[#383838] rounded-xl p-5 flex flex-col gap-3">
+                    <div className="bg-[#383838]/20 border border-[#383838] rounded-xl p-5 flex flex-col items-center md:items-start gap-3">
                         <div className="bg-[#07a4f1]/15 p-2 rounded-md w-fit">
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M8.33325 1.66663H11.6666" stroke="#07A4F1" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
@@ -131,7 +131,7 @@ export default function PlayerOverview({ player, stats, matches, matchRows}: { p
                         <p className="text-[#b3c0d3] text-sm">TIME TO DAMAGE</p>
                         <h1 className="text-[#eae8e0] font-bold text-2xl">{player?.leetify_raw?.stats?.reaction_time_ms ? `${player?.leetify_raw?.stats?.reaction_time_ms.toFixed(1)}ms` : 'Not enough data'}</h1>
                     </div>
-                    <div className="bg-[#383838]/20 border border-[#383838] rounded-xl p-5 flex flex-col gap-3">
+                    <div className="bg-[#383838]/20 border border-[#383838] rounded-xl p-5 flex flex-col items-center md:items-start gap-3">
                         <div className="bg-[#07a4f1]/15 p-2 rounded-md w-fit">
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M9.99996 18.3333C14.6023 18.3333 18.3333 14.6023 18.3333 9.99996C18.3333 5.39759 14.6023 1.66663 9.99996 1.66663C5.39759 1.66663 1.66663 5.39759 1.66663 9.99996C1.66663 14.6023 5.39759 18.3333 9.99996 18.3333Z" stroke="#07A4F1" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
@@ -142,7 +142,7 @@ export default function PlayerOverview({ player, stats, matches, matchRows}: { p
                         <p className="text-[#b3c0d3] text-sm">HEADSHOT ACCURACY</p>
                         <h1 className="text-[#eae8e0] font-bold text-2xl">{player?.leetify_raw?.stats?.accuracy_head ? `${player?.leetify_raw?.stats?.accuracy_head.toFixed(1)}%` : 'Not enough data'}</h1>
                     </div>
-                    <div className="bg-[#383838]/20 border border-[#383838] rounded-xl p-5 flex flex-col gap-3">
+                    <div className="bg-[#383838]/20 border border-[#383838] rounded-xl p-5 flex flex-col items-center md:items-start gap-3">
                         <div className="bg-[#07a4f1]/15 p-2 rounded-md w-fit">
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M15.8334 4.16663L4.16675 15.8333" stroke="#07A4F1" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
