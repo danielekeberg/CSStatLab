@@ -138,64 +138,62 @@ import { calcAimScore  } from "./AimScore";
     }
 
     return (
-        <div className="hidden md:block w-full rounded-2xl p-4 bg-[#383838]/20 border border-[#383838] rounded-xl p-5">
-            <div className="mb-3 flex items-center justify-between gap-3">
-                <div>
-                    <div className="text-[#b3c0d3]">Performance (last 30 matches)</div>
-                    <div className="text-lg font-semibold text-white">
-                        {metricMeta[metric].label}
+        <>
+            {filtered.length === 0 ? 
+                null
+                :
+                <div className="hidden md:block w-full rounded-2xl p-4 bg-[#383838]/20 border border-[#383838] rounded-xl p-5">
+                    <div className="mb-3 flex items-center justify-between gap-3">
+                        <div>
+                            <div className="text-[#b3c0d3]">Performance (last 30 matches)</div>
+                            <div className="text-lg font-semibold text-white">
+                                {metricMeta[metric].label}
+                            </div>
+                        </div>
+                        <select
+                            className="rounded border border-white/10 bg-neutral-950 px-3 py-2 text-sm text-[#eae8e0] outline-none"
+                            value={metric}
+                            onChange={(e) => setMetric(e.target.value as MetricKey)}
+                            >
+                            <option value="kd">KD</option>
+                            <option value="preaim">Pre-aim</option>
+                            <option value="ttd">Time to Damage (ms)</option>
+                            <option value="accuracy">Accuracy (%)</option>
+                        </select>
                     </div>
-                    </div>
-
-                    <select
-                        className="rounded border border-white/10 bg-neutral-950 px-3 py-2 text-sm text-[#eae8e0] outline-none"
-                        value={metric}
-                        onChange={(e) => setMetric(e.target.value as MetricKey)}
-                        >
-                        <option value="kd">KD</option>
-                        <option value="preaim">Pre-aim</option>
-                        <option value="ttd">Time to Damage (ms)</option>
-                        <option value="accuracy">Accuracy (%)</option>
-                    </select>
-                </div>
-
-                <div className="h-64 w-full">
-                    <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={filtered} margin={{ top: 10, right: 12, left: 0, bottom: 0 }}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#b3c0d340" />
-                        <XAxis dataKey="match" interval={0} tickFormatter={(v) => `${v}`} tickMargin={10} fontSize={12} />
-                            <Tooltip 
-                                cursor={{ stroke: "#b3c0d3", strokeWidth: 1 }}
-                                content={
-                                    <CustomTooltip
-                                    metricLabel={metricMeta[metric].label}
-                                    unit={metricMeta[metric].unit}
+                    <div className="h-64 w-full">
+                        <ResponsiveContainer width="100%" height="100%">
+                            <LineChart data={filtered} margin={{ top: 10, right: 12, left: 0, bottom: 0 }}>
+                                <CartesianGrid strokeDasharray="3 3" stroke="#b3c0d340" />
+                                <XAxis dataKey="match" interval={0} tickFormatter={(v) => `${v}`} tickMargin={10} fontSize={12} />
+                                    <Tooltip 
+                                        cursor={{ stroke: "#b3c0d3", strokeWidth: 1 }}
+                                        content={
+                                            <CustomTooltip
+                                            metricLabel={metricMeta[metric].label}
+                                            unit={metricMeta[metric].unit}
+                                            />
+                                        }
                                     />
-                                }
-                            />
-                        <YAxis
-                        tickMargin={1}
-                        width={50}
-                        fontSize={15}
-                        />
-                        <Line
-                        type="monotone"
-                        dataKey={metric}
-                        strokeWidth={2}
-                        dot={true}
-                        activeDot={false}
-                        isAnimationActive={false}
-                        stroke="#b3c0d3"
-                        />
-                    </LineChart>
-                    </ResponsiveContainer>
+                                <YAxis
+                                tickMargin={1}
+                                width={50}
+                                fontSize={15}
+                                />
+                                <Line
+                                type="monotone"
+                                dataKey={metric}
+                                strokeWidth={2}
+                                dot={true}
+                                activeDot={false}
+                                isAnimationActive={false}
+                                stroke="#b3c0d3"
+                                />
+                            </LineChart>
+                        </ResponsiveContainer>
+                    </div>
                 </div>
-
-            {filtered.length === 0 && (
-                <div className="mt-3 text-sm text-white/60">
-                Not enough data to render this metric yet.
-                </div>
-            )}
-        </div>
+            }
+        </>
     );
 }
