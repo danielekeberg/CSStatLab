@@ -18,7 +18,7 @@ export default function Home() {
                     <Header status={false} />
                     <div className="md:px-[15%] mt-10 mb-50">
                         <h1 className="text-3xl font-bold">Privacy Policy for CSStatLab</h1>
-                        <p className="italic text-xs">Last updated: 12.12.2025</p>
+                        <p className="italic text-xs">Last updated: 22.12.2025</p>
                         <div className="my-5 flex flex-col gap-2">
                             <h3 className="text-2xl font-bold">1. Introduction</h3>
                             <div className="pl-5">
