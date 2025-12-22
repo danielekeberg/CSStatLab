@@ -32,7 +32,7 @@ export default function Home() {
                         <div className="my-5 flex flex-col gap-2">
                             <h3 className="text-2xl font-bold">2. Data We Collect</h3>
                             <div className="pl-5">
-                                <h3 className="text-xl font-bold">2.1 Public PLayer Data</h3>
+                                <h3 className="text-xl font-bold">2.1 Public Player Data</h3>
                                 <div className="pl-5">
                                     <p>We collect and display <strong>public accessible data</strong> from third-party services, including but not limited to:</p>
                                     <ul className="list-disc pl-10">
@@ -87,7 +87,13 @@ export default function Home() {
                                 <p>We recommend reviewing them to understand how they handle your information.</p>
                                 <p>CSStatLab is not affiliated with Valve, Steam, Leetify, or FACEIT.</p>
                             </div>
-                            <h3 className="text-2xl font-bold">6. User Rights (GDPR & CCPA)</h3>
+                            <h3 className="text-2xl font-bold">6. Affiliate Links</h3>
+                            <div className="pl-5">
+                                <p>CSStatLab may contain affiliate links to third-party services related to gaming or Counter-Strike.</p>
+                                <p>If you click on an affiliate link and sign up or make a purchase, we may receive a small commission at no additional cost to you.</p>
+                                <p>Affiliate partners may use cookies or similar technologies in accordance with their own privacy policies.</p>
+                            </div>
+                            <h3 className="text-2xl font-bold">7. User Rights (GDPR & CCPA)</h3>
                             <div className="pl-5">
                                 <p>Depending on your region, you may have the right to:</p>
                                 <ul className="list-disc pl-10">
@@ -99,21 +105,21 @@ export default function Home() {
                                 <p>To submit a request, contact us at: <strong className="underline">daneke75160@gmail.com</strong></p>
                                 <p>We will respond within 30 days</p>
                             </div>
-                            <h3 className="text-2xl font-bold">7. Data Retention</h3>
+                            <h3 className="text-2xl font-bold">8. Data Retention</h3>
                             <div className="pl-5">
                                 <p>We retain cached match data for performance purposes</p>
                                 <p>If a player has no recent matches or their profile is set to private, cached data may remain until manually deleted or automatically purged</p>
                             </div>
-                            <h3 className="text-2xl font-bold">8. Children's Privacy</h3>
+                            <h3 className="text-2xl font-bold">9. Children's Privacy</h3>
                             <div className="pl-5">
                                 <p>CSStatLab does not knowingly collect data from users under 13</p>
                                 <p>If you believe a minor's information has been processed, contact us and we will remove it</p>
                             </div>
-                            <h3 className="text-2xl font-bold">9. Changes to This Policy</h3>
+                            <h3 className="text-2xl font-bold">10. Changes to This Policy</h3>
                             <div className="pl-5">
                                 <p>We may update this Privacy Policy from time to time. Any changes will be posted on this page with an updated "Last updated" date.</p>
                             </div>
-                            <h3 className="text-2xl font-bold">10. Contact Information</h3>
+                            <h3 className="text-2xl font-bold">11. Contact Information</h3>
                             <div className="pl-5">
                                 <p>For any questions, complaints, or data requests, please contact:</p>
                                 <p><strong>Email:</strong> daneke75160@gmail.com</p>
