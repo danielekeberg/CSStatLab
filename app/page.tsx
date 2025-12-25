@@ -3,6 +3,7 @@ import Header from "@/app/components/Header";
 import Footer from "@/app/components/Footer";
 import { useState } from "react";
 import Link from "next/link";
+import Snowfall from "react-snowfall";
 
 function extractVanity(input:any) {
   try {
@@ -52,7 +53,7 @@ export default function Home() {
   }
 
   return(
-    <div className="relative min-h-screen px-5 md:px-[15%] overflow-hidden bg-[#030914] text-white">
+    <div className="relative min-h-screen overflow-hidden bg-[#030914] text-white">
       <div className="absolute inset-0 bg-gradient-to-br from-[#040b1a] via-[#020814] to-[#030914]" />
       <div className="absolute inset-0">
         <div className="absolute -top-40 left-1/2 h-[700px] w-[700px] -translate-x-1/2 rounded-full bg-cyan-500/10 blur-3xl" />
@@ -61,7 +62,8 @@ export default function Home() {
       </div>
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0)_0%,rgba(0,0,0,0.55)_70%,rgba(0,0,0,0.85)_100%)]" />
       <div className="absolute inset-0 opacity-[0.06] [background-image:linear-gradient(rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.08)_1px,transparent_1px)] [background-size:60px_60px]" />
-      <div className="relative">
+      <Snowfall />
+      <div className="relative px-5 md:px-[15%]">
         <Header status={false} />
         <div className="flex justify-center">
           <div className="w-160 text-center pt-10 pb-20 md:py-30">

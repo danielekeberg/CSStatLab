@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import Snowfall from "react-snowfall";
 
 import Header from "@/app/components/Header";
 import Footer from "@/app/components/Footer";
@@ -49,6 +50,7 @@ function BackgroundShell({ children }: { children: React.ReactNode }) {
       </div>
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0)_0%,rgba(0,0,0,0.55)_70%,rgba(0,0,0,0.85)_100%)]" />
       <div className="absolute inset-0 opacity-[0.06] [background-image:linear-gradient(rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.08)_1px,transparent_1px)] [background-size:60px_60px]" />
+      <Snowfall />
       {children}
     </div>
   );
