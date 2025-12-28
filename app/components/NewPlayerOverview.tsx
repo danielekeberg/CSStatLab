@@ -1,5 +1,6 @@
 'use client';
 import { calcAvgAimLast30 } from "./AimScore";
+import Link from "next/link";
 
 export default function PlayerOverview({ player, stats, matches, matchRows}: { player: any, stats: any, matches: number, matchRows: any[] }) {
     function getAimCheatChance(rating: number): number {
@@ -152,9 +153,9 @@ export default function PlayerOverview({ player, stats, matches, matchRows}: { p
                         <h1 className="text-[#eae8e0] font-bold text-2xl">{player?.leetify_raw?.winrate ? `${(player?.leetify_raw?.winrate * 100).toFixed(1)}%` : 'Not enough data'}</h1>
                     </div>
                 </div>
-            <div className="flex justify-end">
+            <Link href="https://leetify.com" className="flex justify-end">
                 <img src="../leetify.png" className="h-11" />
-            </div>
+            </Link>
 
             </div>
             :
