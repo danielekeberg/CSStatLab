@@ -153,9 +153,11 @@ export default function PlayerOverview({ player, stats, matches, matchRows}: { p
                         <h1 className="text-[#eae8e0] font-bold text-2xl">{player?.leetify_raw?.winrate ? `${(player?.leetify_raw?.winrate * 100).toFixed(1)}%` : 'Not enough data'}</h1>
                     </div>
                 </div>
-            <Link href="https://leetify.com" className="flex justify-end">
-                <img src="../leetify.png" className="h-11" />
-            </Link>
+                <div className="flex justify-end">
+                    <Link target="_blank" href="https://leetify.com">
+                        <img src="../leetify.png" className="h-11" />
+                    </Link>
+                </div>
 
             </div>
             :
