@@ -226,7 +226,6 @@ export default function PlayerPage() {
                 matches={matchesLength}
                 matchRows={recentMatchStats}
               />
-
               {player.leetify_raw ? (
                 <>
                   <PerformanceChart rows={recentMatchStats} />

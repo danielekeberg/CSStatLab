@@ -77,8 +77,8 @@ export default function PlayerOverview({ player, stats, matches, matchRows}: { p
     return(
         <div className="mt-5">
             {player.leetify_raw ? 
-            <>
-                <div className="grid grid-cols-1 md:grid-cols-6 gap-5 mb-10">
+            <div className="bg-[#383838]/20 border border-[#383838] rounded-xl p-5 mb-10">
+                <div className="grid grid-cols-1 md:grid-cols-6 gap-5 mb-5">
                     {stats?.kd !== null && (
                         <div className="bg-[#383838]/20 border border-[#383838] rounded-xl p-5 flex items-center md:items-start flex-col gap-3">
                             <div className="bg-[#07a4f1]/15 p-2 rounded-md w-fit">
@@ -152,7 +152,11 @@ export default function PlayerOverview({ player, stats, matches, matchRows}: { p
                         <h1 className="text-[#eae8e0] font-bold text-2xl">{player?.leetify_raw?.winrate ? `${(player?.leetify_raw?.winrate * 100).toFixed(1)}%` : 'Not enough data'}</h1>
                     </div>
                 </div>
-            </>
+            <div className="flex justify-end">
+                <img src="../leetify.png" className="h-11" />
+            </div>
+
+            </div>
             :
             <p>We couldn’t find this player on Leetify. Showing available Steam data instead.</p>}
         </div>
