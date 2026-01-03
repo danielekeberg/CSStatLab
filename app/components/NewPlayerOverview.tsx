@@ -78,7 +78,7 @@ export default function PlayerOverview({ player, stats, matches, matchRows}: { p
     return(
         <div className="mt-5">
             {player.leetify_raw ? 
-            <div className="bg-[#383838]/20 border border-[#383838] rounded-xl p-5 mb-10">
+            <div className="md:bg-[#383838]/20 md:border border-[#383838] rounded-xl md:p-5 mb-10">
                 <div className="grid grid-cols-1 md:grid-cols-6 gap-5 mb-5">
                     {stats?.kd !== null && (
                         <div className="bg-[#383838]/20 border border-[#383838] rounded-xl p-5 flex items-center md:items-start flex-col gap-3">

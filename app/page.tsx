@@ -62,7 +62,6 @@ export default function Home() {
       </div>
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0)_0%,rgba(0,0,0,0.55)_70%,rgba(0,0,0,0.85)_100%)]" />
       <div className="absolute inset-0 opacity-[0.06] [background-image:linear-gradient(rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.08)_1px,transparent_1px)] [background-size:60px_60px]" />
-      <Snowfall />
       <div className="relative px-5 md:px-[15%]">
         <Header status={false} />
         <div className="flex justify-center">
@@ -76,7 +75,7 @@ export default function Home() {
             <div>
               <h1 className="text-5xl mb-2">Master Your Game with</h1>
               <div className="flex justify-center">
-                <h1 className="text-5xl mb-2 py-2 px-4 border border-[#0fa4f1] text-[#0fa4f1] w-fit">Precision Stats</h1>
+                <h1 className="text-5xl mb-2 py-2 px-4border border-[#0fa4f1] text-[#0fa4f1] w-fit">Precision Stats</h1>
               </div>
             </div>
             <p className="text-[#b3c0d3] my-5">Track your CS2 performance, analyze your gameplay, and climb the ranks with detailed statistics, fairplay insights, and performance trends.</p>
