@@ -5,7 +5,7 @@ import { Info } from "lucide-react";
 
 export default function PlayerCard({ player }: { player: any }) {
     return(
-        <div className="flex justify-center p-5 md:bg-[#383838]/20 md.border border-[#383838] rounded-xl mt-10">
+        <div className="flex justify-center p-5 bg-[#383838]/20 border border-[#383838] rounded-xl mt-10">
             <div className="flex flex-col md:flex-row gap-10 w-full justify-between">
                 <div className="flex flex-col md:flex-row items-center gap-4">
                     <img src={player.avatar} className="h-25 w-25 rounded border border-neutral-200" />
