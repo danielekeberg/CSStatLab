@@ -1,7 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import Snowfall from 'react-snowfall';
 
 import Header from '@/app/components/Header';
 import Footer from '@/app/components/Footer';
@@ -255,7 +254,7 @@ export default function PlayerPage() {
             <PlayerCard player={player} />
 
             <div className="w-full">
-              <div>
+              <div className="min-h-[80vh]">
                 <PlayerOverview
                   player={player}
                   stats={stats}
