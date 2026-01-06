@@ -17,12 +17,6 @@ export default function PlayerCard({ player }: { player: any }) {
           />
           <div>
             <div className="flex items-center justify-center gap-2">
-              {player.country && (
-                <img
-                  src={`https://flagsapi.com/${player.country}/flat/64.png`}
-                  className="h-6"
-                />
-              )}
               <h3 className="text-xl font-bold text-center break-words max-w-50">
                 {player.name}
               </h3>
@@ -30,7 +24,7 @@ export default function PlayerCard({ player }: { player: any }) {
             <p className="text-neutral-400 text-sm text-center mb-3">
               {player.id}
             </p>
-            <div className="gap-2 hidden md:flex justify-center items-top">
+            <div className="gap-2 flex justify-center">
               <Link
                 className="hover:bg-neutral-900 p-1 transition rounded"
                 target="_blank"
