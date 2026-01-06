@@ -141,7 +141,7 @@ export default function PlayerOverview({
     }
   };
   return (
-    <div className="mt-5">
+    <div className="mt-5 min-h-[85vh]">
       <div className="hidden py-5 md:flex w-1/3 justify-center">
         <form onSubmit={handleResolve} className="relative w-full">
           <input

@@ -3,13 +3,14 @@ import { PremierRankBadge } from '@/app/components/PremierRankBadge';
 import { formatMatchTime } from './FormatMatchTime';
 
 export default function PlayerCard({ player }: { player: any }) {
+  console.log(player);
   return (
-    <div className="md:fixed static left-0 flex justify-center md:border-r border-zinc-900 md:bg-zinc-900/50 md:h-screen">
-      <div className="flex flex-col w-75 justify-between my-5">
+    <div className="md:fixed static left-0 flex justify-center md:border-r border-zinc-900 md:bg-zinc-900/50 md:h-screen overflow-hidden">
+      <div className="flex flex-col w-75 my-5">
         <Link href="../" className="md:border-b border-zinc-900 md:px-15 pb-5">
           <img src="../csstatlab-logo.png" />
         </Link>
-        <div className="flex flex-col items-center gap-2 md:border-b border-zinc-900 pb-5">
+        <div className="flex flex-col items-center gap-2 md:border-b border-zinc-900 pb-5 my-5">
           <img
             src={player.avatar}
             className="h-25 w-25 rounded border border-neutral-200"
@@ -22,7 +23,9 @@ export default function PlayerCard({ player }: { player: any }) {
                   className="h-6"
                 />
               )}
-              <h3 className="text-xl font-bold text-center">{player.name}</h3>
+              <h3 className="text-xl font-bold text-center break-words max-w-50">
+                {player.name}
+              </h3>
             </div>
             <p className="text-neutral-400 text-sm text-center mb-3">
               {player.id}
@@ -42,7 +45,7 @@ export default function PlayerCard({ player }: { player: any }) {
               >
                 <img className="h-8" src="../leetify_logo.png" />
               </Link>
-              {player?.faceit_raw.length === 0 ? (
+              {player?.faceit_raw?.length === 0 ? (
                 ''
               ) : (
                 <div className="flex flex-col items-center">
@@ -68,21 +71,21 @@ export default function PlayerCard({ player }: { player: any }) {
             </div>
           </div>
         </div>
-        <div className="flex flex-col gap-2 mb-10 md:mb-0 px-15">
-          {player.faceit_raw.length !== 0 && (
+        <div className="flex flex-col gap-2 my-10 md:my-0 px-15 pb-5">
+          {player?.faceit_raw !== null && (
             <div className="flex justify-between items-center gap-8 md:gap-4">
               <img
                 className="h-7"
-                src={`https://leetify.com/assets/images/rank-icons/faceit${player.faceit_raw?.games?.cs2?.skill_level}.svg`}
+                src={`https://leetify.com/assets/images/rank-icons/faceit${player?.faceit_raw?.games?.cs2?.skill_level}.svg`}
               />
               <div className="flex gap-4 items-center font-bold">
                 <Link
                   target="_blank"
-                  href={`https://www.faceit.com/en/players/${player.faceit_raw?.nickname}`}
+                  href={`https://www.faceit.com/en/players/${player?.faceit_raw?.nickname}`}
                 >
-                  {player.faceit_raw.nickname}
+                  {player?.faceit_raw?.nickname}
                 </Link>
-                <p>{player.faceit_raw?.games?.cs2?.faceit_elo}</p>
+                <p>{player?.faceit_raw?.games?.cs2?.faceit_elo}</p>
               </div>
             </div>
           )}
@@ -120,16 +123,18 @@ export default function PlayerCard({ player }: { player: any }) {
               ))}
           </div>
         )}
-        {player.last_synced_at && (
-          <div className="flex gap-2 items-center text-neutral-500 text-xs justify-center mt-10 md:mt-0">
-            <p>
-              Last synced:{' '}
-              <span className="underline">
-                {formatMatchTime(player.last_synced_at)}
-              </span>
-            </p>
-          </div>
-        )}
+        <div className="h-full flex items-end justify-center">
+          {player.last_synced_at && (
+            <div className="flex gap-2 text-neutral-500 text-xs justify-center mt-10 md:mt-0">
+              <p>
+                Last synced:{' '}
+                <span className="underline">
+                  {formatMatchTime(player.last_synced_at)}
+                </span>
+              </p>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

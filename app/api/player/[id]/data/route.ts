@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
-import { createSupabaseServerClient } from "@/lib/supabaseServer";
+import { NextRequest, NextResponse } from 'next/server';
+import { createSupabaseServerClient } from '@/lib/supabaseServer';
 
 type RouteContext = { params: Promise<{ id: string }> };
 
@@ -7,25 +7,22 @@ export async function GET(req: NextRequest, context: RouteContext) {
   const { id } = await context.params;
 
   if (!id) {
-    return NextResponse.json(
-      { error: "Missing id in URL" },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: 'Missing id in URL' }, { status: 400 });
   }
 
   const supabase = createSupabaseServerClient();
 
   try {
     const { data: player, error: playerError } = await supabase
-      .from("players")
-      .select("*")
-      .eq("id", id)
+      .from('players')
+      .select('*')
+      .eq('id', id)
       .maybeSingle();
 
-    if (playerError && playerError.code !== "PGRST116") {
-      console.error("Error loading player:", playerError);
+    if (playerError && playerError.code !== 'PGRST116') {
+      console.error('Error loading player:', playerError);
       return NextResponse.json(
-        { error: "Failed to load player" },
+        { error: 'Failed to load player' },
         { status: 500 }
       );
     }
@@ -34,7 +31,7 @@ export async function GET(req: NextRequest, context: RouteContext) {
     since.setDate(since.getDate() - 30);
 
     const { data: matchStatsRows, error: matchStatsError } = await supabase
-      .from("player_match_stats")
+      .from('player_match_stats')
       .select(
         `
         match_id,
@@ -61,14 +58,14 @@ export async function GET(req: NextRequest, context: RouteContext) {
         score
       `
       )
-      .eq("player_id", id)
-      .gte("finished_at", since.toISOString())
-      .order("finished_at", { ascending: false });
+      .eq('player_id', id)
+      .gte('finished_at', since.toISOString())
+      .order('finished_at', { ascending: false });
 
     if (matchStatsError) {
-      console.error("Error loading player_match_stats:", matchStatsError);
+      console.error('Error loading player_match_stats:', matchStatsError);
       return NextResponse.json(
-        { error: "Failed to load player match stats" },
+        { error: 'Failed to load player match stats' },
         { status: 500 }
       );
     }
@@ -103,32 +100,32 @@ export async function GET(req: NextRequest, context: RouteContext) {
     for (const row of matchStatsRows) {
       matchesPlayed++;
 
-      if (typeof row.total_kills === "number") {
+      if (typeof row.total_kills === 'number') {
         totalKills += row.total_kills;
       }
 
-      if (typeof row.total_deaths === "number") {
+      if (typeof row.total_deaths === 'number') {
         totalDeaths += row.total_deaths;
       }
 
-      if (typeof row.preaim === "number") {
+      if (typeof row.preaim === 'number') {
         preaimSum += row.preaim;
         preaimCount++;
       }
 
-      if (typeof row.reaction_time_ms === "number") {
+      if (typeof row.reaction_time_ms === 'number') {
         ttdSum += row.reaction_time_ms;
         ttdCount++;
       }
 
-      if (typeof row.accuracy === "number") {
+      if (typeof row.accuracy === 'number') {
         accSum += row.accuracy;
         accCount++;
       }
 
       if (
-        typeof row.rounds_won === "number" &&
-        typeof row.rounds_lost === "number"
+        typeof row.rounds_won === 'number' &&
+        typeof row.rounds_lost === 'number'
       ) {
         if (row.rounds_won > row.rounds_lost) {
           matchesWon++;
@@ -137,8 +134,7 @@ export async function GET(req: NextRequest, context: RouteContext) {
     }
 
     const kd = totalDeaths > 0 ? totalKills / totalDeaths : 0;
-    const winrate =
-      matchesPlayed > 0 ? (matchesWon / matchesPlayed) * 100 : 0;
+    const winrate = matchesPlayed > 0 ? (matchesWon / matchesPlayed) * 100 : 0;
     const preaim = preaimCount > 0 ? preaimSum / preaimCount : 0;
     const ttd = ttdCount > 0 ? ttdSum / ttdCount : 0; // ms
     const accuracy = accCount > 0 ? accSum / accCount : 0;
@@ -159,9 +155,9 @@ export async function GET(req: NextRequest, context: RouteContext) {
       recentMatchStats: matchStatsRows,
     });
   } catch (err) {
-    console.error("Unexpected error fetching data:", err);
+    console.error('Unexpected error fetching data:', err);
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: 'Internal server error' },
       { status: 500 }
     );
   }
