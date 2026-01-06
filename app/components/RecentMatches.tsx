@@ -24,7 +24,7 @@ export default function RecentMatches({ matches }: { matches: any[] }) {
       {matches.length != 0 && (
         <div className="mt-10">
           <div className="flex gap-3 items-center my-5">
-            <p className="text-sm font-bold text-zinc-500 w-50">
+            <p className="text-sm font-bold text-zinc-500 w-70 md:w-50">
               RECENT MATCHES
             </p>
             <div className="w-full h-[1px] bg-zinc-600/80" />

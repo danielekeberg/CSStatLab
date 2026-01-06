@@ -154,7 +154,7 @@ export default function PlayerOverview({
         </form>
       </div>
       <div className="flex gap-3 items-center my-5">
-        <p className="text-sm font-bold text-zinc-500 w-60 md:w-50">
+        <p className="text-sm font-bold text-zinc-500 w-70 md:w-50">
           PRIMARY STATISTICS
         </p>
         <div className="w-full h-[1px] bg-zinc-600/80" />

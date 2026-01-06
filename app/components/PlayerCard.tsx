@@ -4,12 +4,12 @@ import { formatMatchTime } from './FormatMatchTime';
 
 export default function PlayerCard({ player }: { player: any }) {
   return (
-    <div className="md:fixed static left-0 flex justify-center md:border-r border-zinc-900 md:bg-zinc-900/50 h-screen">
+    <div className="md:fixed static left-0 flex justify-center md:border-r border-zinc-900 md:bg-zinc-900/50 md:h-screen">
       <div className="flex flex-col w-75 justify-between my-5">
         <Link href="../" className="border-b border-zinc-900 md:px-15 pb-5">
           <img src="../csstatlab-logo.png" />
         </Link>
-        <div className="flex flex-col items-center gap-2 border-b border-zinc-900 pb-5">
+        <div className="flex flex-col items-center gap-2 md:border-b border-zinc-900 pb-5">
           <img
             src={player.avatar}
             className="h-25 w-25 rounded border border-neutral-200"
@@ -68,9 +68,9 @@ export default function PlayerCard({ player }: { player: any }) {
             </div>
           </div>
         </div>
-        <div>
+        <div className="flex flex-col gap-2 mb-10 md:mb-0 px-15">
           {player.faceit_raw.length !== 0 && (
-            <div className="flex justify-center items-center gap-8 md:gap-4">
+            <div className="flex justify-between items-center gap-8 md:gap-4">
               <img
                 className="h-7"
                 src={`https://leetify.com/assets/images/rank-icons/faceit${player.faceit_raw?.games?.cs2?.skill_level}.svg`}
@@ -88,7 +88,7 @@ export default function PlayerCard({ player }: { player: any }) {
           )}
 
           {player.leetify_raw?.ranks?.premier && (
-            <div className="flex justify-between items-center px-15">
+            <div className="flex justify-between items-center">
               <p className="text-sm font-bold">Premier</p>
               <PremierRankBadge rating={player.leetify_raw?.ranks?.premier} />
             </div>
@@ -96,7 +96,7 @@ export default function PlayerCard({ player }: { player: any }) {
         </div>
 
         {player.leetify_raw?.ranks?.competitive && (
-          <div className="flex flex-col gap-2 px-10">
+          <div className="flex flex-col gap-2 md:px-10">
             {player.leetify_raw?.ranks?.competitive
               .filter((m: any) => m.rank > 0)
               .sort((a: any, b: any) => b.rank - a.rank)
@@ -121,7 +121,7 @@ export default function PlayerCard({ player }: { player: any }) {
           </div>
         )}
         {player.last_synced_at && (
-          <div className="flex gap-2 items-center text-neutral-500 text-xs justify-center">
+          <div className="flex gap-2 items-center text-neutral-500 text-xs justify-center mt-10 md:mt-0">
             <p>
               Last synced:{' '}
               <span className="underline">
