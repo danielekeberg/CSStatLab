@@ -105,7 +105,6 @@ export async function POST(req: NextRequest, context: RouteContext) {
 
     const recentMatches = leetifyProfile?.recent_matches ?? [];
     const latestMatch = recentMatches[0] ?? null;
-
     await supabase
       .from("players")
       .upsert(
@@ -115,7 +114,6 @@ export async function POST(req: NextRequest, context: RouteContext) {
         },
         { onConflict: "id" }
       );
-
     if (
       existingPlayer?.last_match_id &&
       latestMatch?.id &&
@@ -137,7 +135,6 @@ export async function POST(req: NextRequest, context: RouteContext) {
         latestMatchId: latestMatch?.id ?? null,
       });
     }
-
     const diffMinutes = minutesSince(existingPlayer?.last_synced_at ?? null);
     const profileRefreshMinutes = minutesSince(
       existingPlayer?.last_profile_refreshed_at ?? null
