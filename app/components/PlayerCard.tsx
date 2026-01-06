@@ -6,7 +6,7 @@ export default function PlayerCard({ player }: { player: any }) {
   return (
     <div className="md:fixed static left-0 flex justify-center md:border-r border-zinc-900 md:bg-zinc-900/50 md:h-screen">
       <div className="flex flex-col w-75 justify-between my-5">
-        <Link href="../" className="border-b border-zinc-900 md:px-15 pb-5">
+        <Link href="../" className="md:border-b border-zinc-900 md:px-15 pb-5">
           <img src="../csstatlab-logo.png" />
         </Link>
         <div className="flex flex-col items-center gap-2 md:border-b border-zinc-900 pb-5">
