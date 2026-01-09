@@ -2,7 +2,6 @@ import Card from './Card';
 import { Medal, Swords, TrendingUp, LineChart } from 'lucide-react';
 
 export default function Impact(player: any) {
-  console.log(player);
   return (
     <div className="my-10">
       <div className="flex gap-3 items-center my-5">
