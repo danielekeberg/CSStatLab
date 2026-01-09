@@ -20,7 +20,7 @@ function result(wins: any, loss: any) {
 export default function PlayerCard({ player }: { player: any }) {
   const [hover, setHover] = useState(false);
   return (
-    <div className="md:fixed static left-0 flex justify-center md:border-r border-zinc-900 md:bg-zinc-900/50 md:h-screen overflow-hidden">
+    <div className="md:fixed overflow-y-scroll static left-0 flex justify-center md:border-r border-zinc-900 md:bg-zinc-900/50 md:h-screen overflow-hidden">
       <div className="flex flex-col w-75 my-5">
         <Link href="../" className="md:border-b border-zinc-900 md:px-15 pb-5">
           <img src="../csstatlab-logo.png" />
@@ -112,6 +112,7 @@ export default function PlayerCard({ player }: { player: any }) {
         <div
           onMouseEnter={() => setHover(true)}
           onMouseLeave={() => setHover(false)}
+          className="pb-10"
         >
           {player?.player?.ranks?.competitive && (
             <div className="flex flex-col gap-2 md:px-10">
@@ -167,18 +168,6 @@ export default function PlayerCard({ player }: { player: any }) {
             </div>
           )}
         </div>
-        {/* <div className="text-sm text-zinc-300 flex items-end justify-center h-full">
-          <Link
-            className="bg-zinc-900 py-2 px-5 text-center rounded border border-neutral-200/20 hover:bg-zinc-800/50 hover:scale-103 transition-all duration-200"
-            href="https://csgoroll.com/r/DANIRU"
-            target="_blank"
-          >
-            <p className="font-bold">CSGOROLL</p>
-            <p className="text-zinc-400 text-xs">
-              Code: <strong>DANIRU</strong> • 3 free cases
-            </p>
-          </Link>
-        </div> */}
       </div>
     </div>
   );
