@@ -1,5 +1,5 @@
 import Card from './Card';
-import { Package, Flame, Zap, Shield } from 'lucide-react';
+import { PackageX, Flame, Zap, Shield } from 'lucide-react';
 
 export default function Utility(player: any) {
   return (
@@ -19,7 +19,7 @@ export default function Utility(player: any) {
                 (player?.player?.player?.stats?.utility_on_death_avg).toFixed(2)
               : 0
           }
-          icon={Package}
+          icon={PackageX}
         />
         <Card
           label="GRENADE DAMAGE PER GAME"

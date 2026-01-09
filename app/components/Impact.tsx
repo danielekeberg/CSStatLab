@@ -1,7 +1,8 @@
 import Card from './Card';
-import { Award, ChevronsUp, TrendingUp, LineChart } from 'lucide-react';
+import { Medal, Swords, TrendingUp, LineChart } from 'lucide-react';
 
 export default function Impact(player: any) {
+  console.log(player);
   return (
     <div className="my-10">
       <div className="flex gap-3 items-center my-5">
@@ -31,7 +32,7 @@ export default function Impact(player: any) {
               2
             ).toFixed(2) + `%`
           }
-          icon={ChevronsUp}
+          icon={Swords}
         />
         <Card
           label="TRADING EFFICIENCY"
@@ -51,7 +52,7 @@ export default function Impact(player: any) {
               ? (player?.player?.player?.rating?.clutch * 100).toFixed(2) + `%`
               : 0
           }
-          icon={Award}
+          icon={Medal}
         />
       </div>
     </div>

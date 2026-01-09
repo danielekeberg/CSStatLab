@@ -3,7 +3,7 @@ import { calcAvgAimLast30 } from './AimScore';
 import Link from 'next/link';
 import Card from './Card';
 import { useState } from 'react';
-import { Target, Crosshair, Clock, MousePointer2, Skull } from 'lucide-react';
+import { Target, Crosshair, Clock, Skull } from 'lucide-react';
 
 export default function PlayerOverview({ player }: { player: any }) {
   const [input, setInput] = useState('');
