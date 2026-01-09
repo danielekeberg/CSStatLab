@@ -19,7 +19,6 @@ function result(wins: any, loss: any) {
 
 export default function PlayerCard({ player }: { player: any }) {
   const [hover, setHover] = useState(false);
-  console.log(player);
   return (
     <div className="md:fixed static left-0 flex justify-center md:border-r border-zinc-900 md:bg-zinc-900/50 md:h-screen overflow-hidden">
       <div className="flex flex-col w-75 my-5">

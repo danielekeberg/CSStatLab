@@ -26,7 +26,7 @@ function extractVanity(input: any) {
   }
 }
 
-export default function Header() {
+export default function NewHeader() {
   const [input, setInput] = useState('');
   const handleResolve = async (e: any) => {
     e.preventDefault();

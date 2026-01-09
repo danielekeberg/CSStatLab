@@ -1,6 +1,7 @@
 import { Activity, BarChart3 } from 'lucide-react';
 import Header from './NewHeader';
 import { CopyStatsButton } from './CopyStats';
+import { assignRole } from './Role';
 
 function normalize(value: number, max: number) {
   return Math.min(value / max, 1);
@@ -42,7 +43,7 @@ export default function Overview(player: any) {
 
   const dna = {
     precision: stats?.rating.aim,
-    aggression: aggression,
+    aggression,
     utility: stats?.rating.utility,
     teamwork:
       trade_score * 0.4 +
@@ -50,9 +51,10 @@ export default function Overview(player: any) {
       anti_team_score * 0.2 +
       opening_score * 0.1,
   };
+  const role = assignRole(player.player);
+  console.log(player);
   return (
     <div className="mb-10">
-      <Header />
       <div className="md:flex items-center gap-10 mt-5">
         <div className="w-3/3">
           <div className="flex items-center gap-2">
@@ -64,18 +66,17 @@ export default function Overview(player: any) {
             </p>
           </div>
           <h1 className="text-6xl my-5 font-bold tracking-tighter">
-            STAR FRAGGER
+            {role.name}
           </h1>
           <div className="flex gap-2 items-center mb-2">
-            <div className="bg-zinc-900 tracking-widest w-fit text-zinc-400 text-xs font-bold py-1 px-2 rounded border border-zinc-800 hover:border-emerald-500/20 transition-all hover:text-zinc-300 duration-200">
-              HIGH IMPACT
-            </div>
-            <div className="bg-zinc-900 tracking-widest w-fit text-zinc-400 text-xs font-bold py-1 px-2 rounded border border-zinc-800 hover:border-emerald-500/20 transition-all hover:text-zinc-300 duration-200">
-              CARRY POTENTIAL
-            </div>
-            <div className="bg-zinc-900 tracking-widest w-fit text-zinc-400 text-xs font-bold py-1 px-2 rounded border border-zinc-800 hover:border-emerald-500/20 transition-all hover:text-zinc-300 duration-200">
-              MECHANICAL PEAK
-            </div>
+            {role.subRoles.map((label, i) => (
+              <div
+                key={i}
+                className="bg-zinc-900 tracking-widest w-fit text-zinc-400 text-xs font-bold py-1 px-2 rounded border border-zinc-800 hover:border-emerald-500/20 transition-all hover:text-zinc-300 duration-200"
+              >
+                {label}
+              </div>
+            ))}
           </div>
           <CopyStatsButton
             id={player?.player?.steam?.response?.players?.[0].steamid}

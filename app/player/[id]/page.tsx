@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 
+import NewHeader from '@/app/components/NewHeader';
 import Header from '@/app/components/Header';
 import Footer from '@/app/components/Footer';
 import Loader from '@/app/components/Loader';
@@ -214,13 +215,22 @@ export default function PlayerPage() {
           {testPlayer && <PlayerCard player={testPlayer} />}
 
           <div className="w-full">
-            <div className="min-h-[80vh]">
+            <div className="min-h-[85vh]">
               {testPlayer && (
                 <>
-                  <Overview player={testPlayer} />
-                  <PlayerOverview player={testPlayer} />
-                  <Impact player={testPlayer} />
-                  <Utility player={testPlayer} />
+                  <NewHeader />
+                  {testPlayer.player ? (
+                    <>
+                      <Overview player={testPlayer} />
+                      <PlayerOverview player={testPlayer} />
+                      <Impact player={testPlayer} />
+                      <Utility player={testPlayer} />
+                    </>
+                  ) : (
+                    <div className="py-20 w-full flex items-center justify-center">
+                      <p>No data available.</p>
+                    </div>
+                  )}
                 </>
               )}
             </div>
