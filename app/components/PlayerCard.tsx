@@ -92,6 +92,7 @@ export default function PlayerCard({ player }: { player: any }) {
               <div className="flex gap-4 items-center font-bold">
                 <Link
                   target="_blank"
+                  className="hover:underline"
                   href={`https://www.faceit.com/en/players/${player?.faceit?.nickname}`}
                 >
                   {player?.faceit?.nickname}
