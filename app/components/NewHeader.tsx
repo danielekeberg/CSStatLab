@@ -64,9 +64,23 @@ export default function NewHeader() {
           <p>Error fetching player.. Try again..</p>
         </div>
       )}
-      <div>
-        <Link target="_blank" href="https://leetify.com">
+      <div className="flex items-center gap-5">
+        <Link
+          className="hover:scale-105 scale-103 transition-all duration-200"
+          target="_blank"
+          href="https://leetify.com"
+        >
           <img src="../leetify.png" className="h-11" />
+        </Link>
+        <Link
+          className="bg-zinc-900 py-1 px-2 text-center rounded border border-neutral-200/20 hover:bg-zinc-800/50 hover:scale-103 transition-all duration-200"
+          href="https://csgoroll.com/r/DANIRU"
+          target="_blank"
+        >
+          <p className="font-bold text-sm">CSGOROLL</p>
+          <p className="text-zinc-400 text-xs">
+            Code: <strong>DANIRU</strong> • 3 free cases
+          </p>
         </Link>
       </div>
     </div>
