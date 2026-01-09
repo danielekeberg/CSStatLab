@@ -18,6 +18,9 @@ interface PlayerStats {
       t_opening_duel_success_percentage: number;
       ct_opening_duel_success_percentage: number;
       trade_kill_opportunities_per_round: number;
+      flashbang_hit_foe_per_flashbang: number;
+      flashbang_hit_foe_avg_duration: number;
+      flashbang_leading_to_kill: number;
     };
   };
   recentMatches?: Array<{
@@ -50,17 +53,41 @@ function calculateAverageKD(stats: PlayerStats): number {
 function calculateDNA(stats: PlayerStats) {
   const normalize = (value: number, max: number) => Math.min(value / max, 1);
 
+  const spread = (value: number, min: number, max: number) => {
+    const clamped = Math.max(min, Math.min(max, value));
+    return ((clamped - min) / (max - min)) * 100;
+  };
+
   const trade_score =
-    stats?.player?.stats?.trade_kills_success_percentage * 0.4 +
-    stats?.player?.stats?.traded_deaths_success_percentage * 0.4 +
+    spread(stats?.player?.stats?.trade_kills_success_percentage, 20, 70) * 0.4 +
+    spread(stats?.player?.stats?.traded_deaths_success_percentage, 20, 70) *
+      0.4 +
     normalize(stats?.player?.stats?.trade_kill_opportunities_per_round, 0.5) *
+      100 *
       0.2;
 
-  const anti_team_score =
-    100 -
-    stats?.player?.stats?.flashbang_hit_friend_per_flashbang * 80 -
-    stats?.player?.stats?.he_friends_damage_avg * 10 -
-    normalize(stats?.player?.stats?.utility_on_death_avg, 500) * 20;
+  const flash_penalty = Math.min(
+    100,
+    stats?.player?.stats?.flashbang_hit_friend_per_flashbang * 120
+  );
+  const he_penalty = Math.min(
+    100,
+    stats?.player?.stats?.he_friends_damage_avg * 30
+  );
+  const anti_team_damage = 100 - (flash_penalty * 0.6 + he_penalty * 0.4);
+
+  const utility_impact =
+    spread(stats?.player?.stats?.flashbang_hit_foe_per_flashbang, 0.5, 1.2) *
+      0.4 +
+    spread(stats?.player?.stats?.flashbang_leading_to_kill || 0, 5, 20) * 0.3 +
+    spread(stats?.player?.stats?.flashbang_hit_foe_avg_duration, 1.5, 3.5) *
+      0.3;
+
+  const utility_economy = spread(
+    600 - stats?.player?.stats.utility_on_death_avg,
+    0,
+    450
+  );
 
   const opening_score =
     stats?.player?.stats?.ct_opening_duel_success_percentage * 0.25 +
@@ -77,10 +104,10 @@ function calculateDNA(stats: PlayerStats) {
     aggression,
     utility: stats?.player?.rating?.utility,
     teamwork:
-      trade_score * 0.4 +
-      stats?.player?.rating?.utility * 0.3 +
-      anti_team_score * 0.2 +
-      opening_score * 0.1,
+      trade_score * 0.35 +
+      anti_team_damage * 0.25 +
+      utility_impact * 0.25 +
+      utility_economy * 0.15,
   };
 }
 

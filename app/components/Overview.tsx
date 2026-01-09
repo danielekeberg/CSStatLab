@@ -7,6 +7,59 @@ function normalize(value: number, max: number) {
   return Math.min(value / max, 1);
 }
 
+function calculateDNA(stats: any) {
+  const normalize = (value: number, max: number) => Math.min(value / max, 1);
+
+  const spread = (value: number, min: number, max: number) => {
+    const clamped = Math.max(min, Math.min(max, value));
+    return ((clamped - min) / (max - min)) * 100;
+  };
+
+  const trade_score =
+    spread(stats.stats.trade_kills_success_percentage, 20, 70) * 0.4 +
+    spread(stats.stats.traded_deaths_success_percentage, 20, 70) * 0.4 +
+    normalize(stats.stats.trade_kill_opportunities_per_round, 0.5) * 100 * 0.2;
+
+  const flash_penalty = Math.min(
+    100,
+    stats.stats.flashbang_hit_friend_per_flashbang * 120
+  );
+  const he_penalty = Math.min(100, stats.stats.he_friends_damage_avg * 30);
+  const anti_team_damage = 100 - (flash_penalty * 0.6 + he_penalty * 0.4);
+
+  const utility_impact =
+    spread(stats.stats.flashbang_hit_foe_per_flashbang, 0.5, 1.2) * 0.4 +
+    spread(stats.stats.flashbang_leading_to_kill || 0, 5, 20) * 0.3 +
+    spread(stats.stats.flashbang_hit_foe_avg_duration, 1.5, 3.5) * 0.3;
+
+  const utility_economy = spread(
+    600 - stats.stats.utility_on_death_avg,
+    0,
+    450
+  );
+
+  const opening_score =
+    stats.stats.ct_opening_duel_success_percentage * 0.25 +
+    stats.stats.t_opening_duel_success_percentage * 0.25;
+
+  const t = stats.stats.t_opening_duel_success_percentage ?? 0;
+  const ct = stats.stats.ct_opening_duel_success_percentage ?? 0;
+  const raw = t * 0.65 + ct * 0.35;
+  const normalized = Math.min(1, Math.max(0, (raw - 30) / (60 - 30)));
+  const aggression = Math.round(Math.pow(normalized, 0.8) * 100);
+
+  return {
+    precision: stats.rating.aim,
+    aggression,
+    utility: stats.rating.utility,
+    teamwork:
+      trade_score * 0.35 +
+      anti_team_damage * 0.25 +
+      utility_impact * 0.25 +
+      utility_economy * 0.15,
+  };
+}
+
 export default function Overview(player: any) {
   const stats = player?.player?.player;
 
@@ -18,41 +71,9 @@ export default function Overview(player: any) {
     return 'bg-orange-500';
   };
 
-  const trade_score =
-    stats?.stats.trade_kills_success_percentage * 0.4 +
-    stats?.stats.traded_deaths_success_percentage * 0.4 +
-    normalize(stats?.stats.trade_kill_opportunities_per_round, 0.5) * 0.2;
-  const anti_team_score =
-    100 -
-    stats?.stats.flashbang_hit_friend_per_flashbang * 80 -
-    stats?.stats.he_friends_damage_avg * 10 -
-    normalize(stats?.stats.utility_on_death_avg, 500) * 20;
-  const opening_score =
-    stats?.stats.ct_opening_duel_success_percentage * 0.25 +
-    stats?.stats.t_opening_duel_success_percentage * 0.25 +
-    stats?.stats.ct_opening_aggression_success_rate * 0.25 +
-    stats?.stats.t_opening_aggression_success_rate * 0.25;
-
-  const t = stats?.stats?.t_opening_duel_success_percentage ?? 0;
-  const ct = stats?.stats?.ct_opening_duel_success_percentage ?? 0;
-  const raw = t * 0.65 + ct * 0.35;
-  const min = 30;
-  const max = 60;
-  const normalized = Math.min(1, Math.max(0, (raw - min) / (max - min)));
-  const aggression = Math.round(Math.pow(normalized, 0.8) * 100);
-
-  const dna = {
-    precision: stats?.rating.aim,
-    aggression,
-    utility: stats?.rating.utility,
-    teamwork:
-      trade_score * 0.4 +
-      stats?.rating.utility * 0.3 +
-      anti_team_score * 0.2 +
-      opening_score * 0.1,
-  };
+  const dna = calculateDNA(player?.player?.player);
   const role = assignRole(player.player);
-  console.log(player);
+
   return (
     <div className="mb-10">
       <div className="md:flex items-center gap-10 mt-5">
@@ -74,7 +95,7 @@ export default function Overview(player: any) {
                 key={i}
                 className="bg-zinc-900 tracking-widest w-fit text-zinc-400 text-xs font-bold py-1 px-2 rounded border border-zinc-800 hover:border-emerald-500/20 transition-all hover:text-zinc-300 duration-200"
               >
-                {label}
+                {label.toUpperCase()}
               </div>
             ))}
           </div>
