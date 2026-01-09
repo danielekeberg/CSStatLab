@@ -34,6 +34,7 @@ function extractVanity(input: any) {
 export default function Home() {
   const [input, setInput] = useState('');
   const [steamId, setSteamId] = useState('');
+  const [error, setError] = useState(false);
 
   const handleResolve = async (e: any) => {
     e.preventDefault();
@@ -45,6 +46,8 @@ export default function Home() {
       );
       const data = await res.json();
       if (!res.ok) {
+        setError(true);
+        setTimeout(() => setError(false), 2500);
         console.error(data.error || 'Something went wrong');
       } else {
         window.location.href = `../player/${data.steam64id}`;
@@ -57,6 +60,11 @@ export default function Home() {
   return (
     <div className="relative px-5 md:px-[15%]">
       <Header status={false} />
+      {error && (
+        <div className="absolute top-5 right-5 rounded border border-neutral-200/20 bg-rose-500 py-2 px-3 text-sm shadow">
+          <p>Error fetching player.. Try again..</p>
+        </div>
+      )}
       <div className="flex justify-center">
         <div className="w-160 text-center pt-10 pb-20 md:py-30">
           <div className="hidden mb-5 rounded-xs md:flex flex-col gap-2 p-5">
