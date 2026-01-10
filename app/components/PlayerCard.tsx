@@ -168,6 +168,14 @@ export default function PlayerCard({ player }: { player: any }) {
             </div>
           )}
         </div>
+        {/* <div className="text-sm text-zinc-300 flex items-end justify-center h-full pb-10">
+          <Link
+            className="bg-zinc-900 py-2 px-5 text-center rounded border border-neutral-200/20 hover:bg-zinc-800/50 hover:scale-103 transition-all duration-200"
+            href="../giveaway/"
+          >
+            <h1 className="font-bold">GIVEAWAY</h1>
+          </Link>
+        </div> */}
       </div>
     </div>
   );

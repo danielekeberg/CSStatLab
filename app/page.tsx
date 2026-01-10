@@ -113,7 +113,7 @@ export default function Home() {
           </form>
           <div className="flex gap-2 mt-10 justify-center">
             <p className="font-bold">Try:</p>
-            <div className="grid text-[#b3c0d3] grid-cols-3 text-left md:text-center gap-3 md:gap-3 md:grid-cols-6">
+            <div className="grid text-[#b3c0d3] grid-cols-3 md:flex md:text-center gap-3 md:gap-3 md:grid-cols-6">
               <Link
                 href={`../player/76561198369432059`}
                 className="hover:underline text-center cursor-pointer"
