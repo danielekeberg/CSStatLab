@@ -8,7 +8,7 @@ export default function Home() {
       <Header status={false} />
       <div className="md:px-[15%] mt-10 mb-50">
         <h1 className="text-3xl font-bold">Privacy Policy for CSStatLab</h1>
-        <p className="italic text-xs">Last updated: 22.12.2025</p>
+        <p className="italic text-xs">Last updated: 14.01.2026</p>
         <div className="my-5 flex flex-col gap-2">
           <h3 className="text-2xl font-bold">1. Introduction</h3>
           <div className="pl-5">
@@ -85,23 +85,7 @@ export default function Home() {
               with advertisers or third parties.
             </p>
           </div>
-          <h3 className="text-2xl font-bold">
-            4. How We Store and Protect Data
-          </h3>
-          <div className="pl-5">
-            <ul className="list-disc pl-10">
-              <li>
-                All stored data (such as match history and aggregated stats) is
-                saved securely using Supabase
-              </li>
-              <li>We only store public information returned by the APIs</li>
-              <li>Sensitive private data is never requested or stored</li>
-              <li>
-                Access to administrative tools is strictly limited and secured
-              </li>
-            </ul>
-          </div>
-          <h3 className="text-2xl font-bold">5. Third-Party Services</h3>
+          <h3 className="text-2xl font-bold">4. Third-Party Services</h3>
           <div className="pl-5">
             <p>CSStatLab interacts with third-party APIs:</p>
             <ul className="list-disc font-bold pl-10">
@@ -118,7 +102,7 @@ export default function Home() {
               CSStatLab is not affiliated with Valve, Steam, Leetify, or FACEIT.
             </p>
           </div>
-          <h3 className="text-2xl font-bold">6. Affiliate Links</h3>
+          <h3 className="text-2xl font-bold">5. Affiliate Links</h3>
           <div className="pl-5">
             <p>
               CSStatLab may contain affiliate links to third-party services
@@ -133,27 +117,7 @@ export default function Home() {
               accordance with their own privacy policies.
             </p>
           </div>
-          <h3 className="text-2xl font-bold">7. User Rights (GDPR & CCPA)</h3>
-          <div className="pl-5">
-            <p>Depending on your region, you may have the right to:</p>
-            <ul className="list-disc pl-10">
-              <li>Request deletion of your stored match data</li>
-              <li>
-                Request that your profile be excluded from future indexing
-              </li>
-              <li>Request correction of inaccurate stored information</li>
-              <li>
-                Request a copy of all stored public data related to your Steam
-                ID
-              </li>
-            </ul>
-            <p>
-              To submit a request, contact us at:{' '}
-              <strong className="underline">daneke75160@gmail.com</strong>
-            </p>
-            <p>We will respond within 30 days</p>
-          </div>
-          <h3 className="text-2xl font-bold">8. Data Retention</h3>
+          <h3 className="text-2xl font-bold">6. Data Retention</h3>
           <div className="pl-5">
             <p>We retain cached match data for performance purposes</p>
             <p>
@@ -162,7 +126,7 @@ export default function Home() {
               automatically purged
             </p>
           </div>
-          <h3 className="text-2xl font-bold">9. Children's Privacy</h3>
+          <h3 className="text-2xl font-bold">7. Children's Privacy</h3>
           <div className="pl-5">
             <p>CSStatLab does not knowingly collect data from users under 13</p>
             <p>
@@ -170,14 +134,14 @@ export default function Home() {
               us and we will remove it
             </p>
           </div>
-          <h3 className="text-2xl font-bold">10. Changes to This Policy</h3>
+          <h3 className="text-2xl font-bold">8. Changes to This Policy</h3>
           <div className="pl-5">
             <p>
               We may update this Privacy Policy from time to time. Any changes
               will be posted on this page with an updated "Last updated" date.
             </p>
           </div>
-          <h3 className="text-2xl font-bold">11. Contact Information</h3>
+          <h3 className="text-2xl font-bold">9. Contact Information</h3>
           <div className="pl-5">
             <p>
               For any questions, complaints, or data requests, please contact:
