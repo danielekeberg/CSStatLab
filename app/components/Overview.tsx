@@ -48,6 +48,8 @@ function calculateDNA(stats: any) {
   const normalized = Math.min(1, Math.max(0, (raw - 30) / (60 - 30)));
   const aggression = Math.round(Math.pow(normalized, 0.8) * 100);
 
+  console.log(stats);
+
   return {
     precision: stats.rating.aim,
     aggression,
